@@ -2,8 +2,9 @@
 #include <torch/script.h>
 #include <torch/torch.h>
 #include <torchvision/vision.h>
+#include "vision/vision.h"
 
-int test () {
+R_VISION_API int test () {
   torch::DeviceType device_type;
   device_type = torch::kCPU;
 
@@ -39,6 +40,7 @@ int test () {
     inputs.push_back(torch::rand({1, 3, 10, 10}, options));
 
     auto gpu_out = model.forward(inputs);
+
     std::cout << gpu_out << "\n";
   }
 

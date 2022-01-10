@@ -9,4 +9,11 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+SystemRequirements: C++11
 RoxygenNote: 7.1.2
+LinkingTo: 
+    Rcpp,
+    torch
+Imports: 
+    Rcpp,
+    torch

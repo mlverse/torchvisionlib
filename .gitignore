@@ -2,8 +2,8 @@
 inst/lib
 inst/include
 inst/share
-
 .Rhistory
 .Rdata
 .httr-oauth
 .DS_Store
+resnet18.pt

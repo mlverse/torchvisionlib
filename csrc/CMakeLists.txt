@@ -18,13 +18,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 include(ExternalProject)
 set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/torchvision_install)
 
-ExternalProject_Add(TorchVision
-  GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG v0.10.0
-  CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR}
+ExternalProject_Add(TorchVision-project
+  GIT_REPOSITORY https://github.com/dfalbel/vision
+  GIT_TAG feat/no-python
+  CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR} -DCMAKE_DISABLE_FIND_PACKAGE_Python3=TRUE
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}"
 )
-find_package(TorchVision REQUIRED)
+
+SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
+SET(TORCHVISION_LIB_DIR ${TorchVision_DESTDIR}/lib)
+
+add_library(TorchVision SHARED IMPORTED)
+add_library(TorchVision::library ALIAS TorchVision)
+set_target_properties(TorchVision PROPERTIES IMPORTED_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.dylib)
 
 set(TORCHVISION_SRC src/vision.cpp)
 
@@ -33,14 +39,15 @@ add_library(vision::library ALIAS vision)
 
 target_include_directories(vision PUBLIC
     ${PROJECT_SOURCE_DIR}/include
+    ${TORCHVISION_INCLUDE_DIR}
 )
 
-add_dependencies(vision TorchVision)
+add_dependencies(vision TorchVision-project)
 
 set_property(TARGET vision PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(vision "${TORCH_LIBRARIES}")
-target_link_libraries(vision TorchVision::TorchVision)
+target_link_libraries(vision TorchVision)
 
 # Syncronize the headers and the def file with the Rcpp
 # interface.
