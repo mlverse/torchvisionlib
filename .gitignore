@@ -1,0 +1,9 @@
+.Rproj.user
+inst/lib
+inst/include
+inst/share
+
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store

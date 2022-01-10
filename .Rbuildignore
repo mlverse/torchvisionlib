@@ -1,0 +1,6 @@
+^torchvisionlib\.Rproj$
+^\.Rproj\.user$
+
+^inst/lib$
+^inst/include$
+^inst/share$
