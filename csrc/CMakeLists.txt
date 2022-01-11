@@ -20,8 +20,8 @@ set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/torchvision_install)
 
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/dfalbel/vision
-  GIT_TAG feat/no-python
-  CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR} -DCMAKE_DISABLE_FIND_PACKAGE_Python3=TRUE
+  GIT_TAG feature/no-python-cpp
+  CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
