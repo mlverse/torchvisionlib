@@ -1,10 +1,12 @@
 #include <iostream>
 #include <torch/script.h>
 #include <torch/torch.h>
+#define LANTERN_TYPES_IMPL // Should be defined only in a single file.
+#include <lantern/types.h>
 #include <torchvision/vision.h>
 #include "vision/vision.h"
 
-R_VISION_API int test () {
+R_VISION_API int test (void* path) {
   torch::DeviceType device_type;
   device_type = torch::kCPU;
 
@@ -12,7 +14,8 @@ R_VISION_API int test () {
   try {
     std::cout << "Loading model\n";
     // Deserialize the ScriptModule from a file using torch::jit::load().
-    model = torch::jit::load("resnet18.pt");
+    std::cout << from_raw::string(path) << "\n";
+    model = torch::jit::load(from_raw::string(path));
     std::cout << "Model loaded\n";
   } catch (const torch::Error& e) {
     std::cout << "error loading the model\n";

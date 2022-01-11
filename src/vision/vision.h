@@ -8,6 +8,6 @@
 #define R_VISION_API extern "C"
 #endif
 
-R_VISION_API int test ();
+R_VISION_API int test (void* path);
 
 
