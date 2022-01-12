@@ -28,9 +28,18 @@ ExternalProject_Add(TorchVision-project
 SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
 SET(TORCHVISION_LIB_DIR ${TorchVision_DESTDIR}/lib)
 
+if(APPLE)
+  SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.dylib)
+elseif(WIN32)
+  SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/torchvision.dll)
+else()
+  SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.so)
+endif()
+
+
 add_library(TorchVision SHARED IMPORTED)
 add_library(TorchVision::library ALIAS TorchVision)
-set_target_properties(TorchVision PROPERTIES IMPORTED_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.dylib)
+set_target_properties(TorchVision PROPERTIES IMPORTED_LOCATION ${TORCHVISION_LIB_LOCATION})
 
 set(TORCHVISION_SRC src/vision.cpp)
 
