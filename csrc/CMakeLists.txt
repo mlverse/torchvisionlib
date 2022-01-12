@@ -10,6 +10,15 @@ execute_process (
 )
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${TORCH_HOME}")
 
+if(WIN32)
+  execute_process (
+      COMMAND Rscript -e "cat(R.home())"
+      OUTPUT_VARIABLE R_HOME
+  )
+  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${R_HOME}")
+endif()
+
+
 # Now that the prefix path is set we can tell cmake to go
 # and find Torch.
 find_package(Torch REQUIRED)
