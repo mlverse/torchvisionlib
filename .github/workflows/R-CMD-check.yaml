@@ -88,7 +88,8 @@ jobs:
 
       - run: |
           Rscript -e 'cat(list.files(R.home()))'
-          Rscript -e 'cat(list.files(R.home("lib")))'
+          Rscript -e 'cat(list.files(R.home("bin")))'
+          Rscript -e 'cat(list.files(R.home("share")))'
           Rscript -e 'cat(list.files(R.home("include")))'
 
       - run: |
