@@ -86,6 +86,9 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - run: |
+          Rscript -e "cat(list.files(R.home("lib")))"
+          Rscript -e "cat(list.files(R.home("include")))"
 
       - run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
