@@ -5,3 +5,5 @@
 ^inst/include$
 ^inst/share$
 ^inst/bin$
+
+^csrc$
