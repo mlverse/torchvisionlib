@@ -2,8 +2,10 @@
 inst/lib
 inst/include
 inst/share
+inst/bin
 .Rhistory
 .Rdata
 .httr-oauth
 .DS_Store
 resnet18.pt
+src/vision.lib

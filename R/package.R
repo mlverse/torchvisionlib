@@ -41,7 +41,7 @@ lib_path <- function(name = "vision") {
   if (.Platform$OS.type == "unix") {
     file.path(install_path, "lib", paste0("lib", name, lib_ext()))
   } else {
-    file.path(install_path, "lib", paste0(name, lib_ext()))
+    file.path(install_path, "bin", paste0(name, lib_ext()))
   }
 }
 
@@ -64,7 +64,7 @@ install_vision <- function(url = Sys.getenv("VISION_URL", unset = NA)) {
 
   if (is.na(url)) {
     tmp <- tempfile(fileext = ".zip")
-    version <- packageDescription("vision")$Version
+    version <- packageDescription("torchvisionlib")$Version
     os <- get_cmake_style_os()
     dev <- if (torch::cuda_is_available()) "cu" else "cpu"
 

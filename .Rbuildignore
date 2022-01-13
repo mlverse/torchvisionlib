@@ -4,3 +4,4 @@
 ^inst/lib$
 ^inst/include$
 ^inst/share$
+^inst/bin$

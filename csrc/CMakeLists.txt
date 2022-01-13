@@ -9,21 +9,32 @@ execute_process (
     OUTPUT_VARIABLE TORCH_HOME
 )
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${TORCH_HOME}")
+set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
+include(ExternalProject)
 if(WIN32)
-  execute_process (
-      COMMAND Rscript -e "cat(R.home())"
-      OUTPUT_VARIABLE R_HOME
+  SET(COMMON_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR})
+
+  ExternalProject_Add(zlib
+    GIT_REPOSITORY https://github.com/madler/zlib.git
+    GIT_TAG v1.2.11
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/zlib"
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DHAVE_UNISTD_H=off
   )
-  execute_process (
-      COMMAND Rscript -e "cat(list.files(R.home()))"
-      OUTPUT_VARIABLE R_LIB
+  ExternalProject_Add(libpng
+    GIT_REPOSITORY https://github.com/glennrp/libpng
+    GIT_TAG v1.6.37
+    DEPENDS zlib
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS}
+
   )
-  message(R_LIB)
-  SET(ZLIB_LIBRARY ${R_HOME}/lib)
-  SET(PNG_LIBRARY ${R_HOME}/lib)
-  SET(PNG_INCLUDE_DIR ${R_HOME}/include)
-  SET(JPEG_LIBRARY ${R_HOME}/lib)
+  ExternalProject_Add(libjpeg
+    GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
+    GIT_TAG 2.1.2
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS}
+  )
 endif()
 
 
@@ -32,8 +43,7 @@ endif()
 find_package(Torch REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
-include(ExternalProject)
-set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/torchvision_install)
+set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
 set(TORCHVISION_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR})
 if(WIN32)
@@ -43,8 +53,9 @@ endif()
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/dfalbel/vision
   GIT_TAG feature/no-python-cpp
+  DEPENDS libpng libjpeg
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
-  PREFIX "${CMAKE_CURRENT_BINARY_DIR}"
+  PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
 )
 
 SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
@@ -53,7 +64,7 @@ SET(TORCHVISION_LIB_DIR ${TorchVision_DESTDIR}/lib)
 if(APPLE)
   SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.dylib)
 elseif(WIN32)
-  SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/torchvision.dll)
+  SET(TORCHVISION_LIB_LOCATION ${TorchVision_DESTDIR}/bin/torchvision.dll)
 else()
   SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.so)
 endif()
@@ -61,7 +72,11 @@ endif()
 
 add_library(TorchVision SHARED IMPORTED)
 add_library(TorchVision::library ALIAS TorchVision)
+
 set_target_properties(TorchVision PROPERTIES IMPORTED_LOCATION ${TORCHVISION_LIB_LOCATION})
+if (WIN32)
+  set_target_properties(TorchVision PROPERTIES IMPORTED_IMPLIB ${TorchVision_DESTDIR}/lib/torchvision.lib)
+endif()
 
 set(TORCHVISION_SRC src/vision.cpp)
 
@@ -115,5 +130,5 @@ install(TARGETS vision DESTINATION lib)
 include(CPack)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../inst)
-install(TARGETS vision DESTINATION lib)
+install(TARGETS vision)
 install(DIRECTORY ${TorchVision_DESTDIR}/ DESTINATION .)
