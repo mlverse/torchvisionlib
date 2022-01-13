@@ -37,6 +37,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          windows-path-include-mingw: false
 
       - name: Install dependencies
         run: Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
@@ -85,17 +86,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - shell: Rscript {0}
-        run: |
-          print(list.files(R.home()))
-          print(list.files(R.home("library"), recursive = TRUE, full.names = TRUE))
-          print(list.files(R.home("bin")))
-          print(list.files(R.home("include")))
-          print(list.files(R.home("share")))
-          print(list.files(R.home("src")))
-          print(list.files(R.home("src/library"), recursive = TRUE, full.names = TRUE))
-
+          windows-path-include-mingw: false
 
       - run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
