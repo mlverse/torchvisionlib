@@ -50,10 +50,16 @@ if(WIN32)
   set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DZLIB_LIBRARY=${ZLIB_LIBRARY} -DPNG_LIBRARY=${PNG_LIBRARY} -DPNG_INCLUDE_DIR=${PNG_INCLUDE_DIR} -DJPEG_LIBRARY=${JPEG_LIBRARY})
 endif()
 
+if (WIN32)
+  set(TORCHVISION_DEPENDS libpng libjpeg)
+else()
+  set(TORCHVISION_DEPENDS)
+endif()
+
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/dfalbel/vision
   GIT_TAG feature/no-python-cpp
-  DEPENDS libpng libjpeg
+  DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
 )
