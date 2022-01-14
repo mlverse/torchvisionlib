@@ -68,7 +68,7 @@ install_vision <- function(url = Sys.getenv("VISION_URL", unset = NA)) {
     os <- get_cmake_style_os()
     dev <- if (torch::cuda_is_available()) "cu" else "cpu"
 
-    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/libvision/vision-%s+%s-%s.zip",
+    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/torchvisionlib/vision-%s+%s-%s.zip",
                    version, dev, os)
   }
 
