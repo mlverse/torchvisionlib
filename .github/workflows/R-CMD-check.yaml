@@ -91,7 +91,8 @@ jobs:
       - run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
 
-      - run: |
+      - shell: bash
+        run: |
           cd csrc
           mkdir build && cd build
           cmake ..
