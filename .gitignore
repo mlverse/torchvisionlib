@@ -9,3 +9,5 @@ inst/bin
 .DS_Store
 resnet18.pt
 src/vision.lib
+fasterrcnn.pt
+.vscode

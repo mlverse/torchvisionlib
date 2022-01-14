@@ -83,7 +83,7 @@ if (WIN32)
   set_target_properties(TorchVision PROPERTIES IMPORTED_IMPLIB ${TorchVision_DESTDIR}/lib/torchvision.lib)
 endif()
 
-set(TORCHVISION_SRC src/vision.cpp)
+set(TORCHVISION_SRC src/vision.cpp src/ops.cpp)
 
 add_library(vision SHARED ${TORCHVISION_SRC})
 add_library(vision::library ALIAS vision)

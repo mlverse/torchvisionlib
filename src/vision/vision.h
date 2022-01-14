@@ -9,5 +9,6 @@
 #endif
 
 R_VISION_API int test (void* path);
+R_VISION_API void* c_vision_ops_nms (void* dets, void* scores, double iou_threshold);
 
 
