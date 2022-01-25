@@ -7,15 +7,15 @@ NULL
 .onLoad <- function(lib, pkg) {
   if (torch::torch_is_installed()) {
 
-    if (!vision_is_installed())
+    if (!torchvisionlib_is_installed())
       install_vision()
 
-    if (!vision_is_installed()) {
+    if (!torchvisionlib_is_installed()) {
       if (interactive())
-        warning("libvision is not installed. Run `intall_vision()` before using the package.")
+        warning("torchvisionlib is not installed. Run `intall_torchvisionlib()` before using the package.")
     } else {
       dyn.load(lib_path("torchvision"), local = FALSE)
-      dyn.load(lib_path("vision"), local = FALSE)
+      dyn.load(lib_path("torchvisionlib"), local = FALSE)
 
       # when using devtools::load_all() the library might be available in
       # `lib/pkg/src`
@@ -29,13 +29,13 @@ NULL
 }
 
 inst_path <- function() {
-  install_path <- Sys.getenv("VISION_HOME")
+  install_path <- Sys.getenv("TORCHVISIONLIB_HOME")
   if (nzchar(install_path)) return(install_path)
 
   system.file("", package = "torchvisionlib")
 }
 
-lib_path <- function(name = "vision") {
+lib_path <- function(name = "torchvisionlib") {
   install_path <- inst_path()
 
   if (.Platform$OS.type == "unix") {
@@ -54,11 +54,11 @@ lib_ext <- function() {
     ".dll"
 }
 
-vision_is_installed <- function() {
+torchvisionlib_is_installed <- function() {
   file.exists(lib_path())
 }
 
-install_vision <- function(url = Sys.getenv("VISION_URL", unset = NA)) {
+install_torchvisionlib <- function(url = Sys.getenv("TORCHVISIONLIB_URL", unset = NA)) {
 
   if (!interactive() && Sys.getenv("TORCH_INSTALL", unset = 0) == "0") return()
 
@@ -68,7 +68,7 @@ install_vision <- function(url = Sys.getenv("VISION_URL", unset = NA)) {
     os <- get_cmake_style_os()
     dev <- if (torch::cuda_is_available()) "cu" else "cpu"
 
-    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/torchvisionlib/vision-%s+%s-%s.zip",
+    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/torchvisionlib/torchvisionlib-%s+%s-%s.zip",
                    version, dev, os)
   }
 

@@ -4,9 +4,10 @@
 #define LANTERN_TYPES_IMPL // Should be defined only in a single file.
 #include <lantern/types.h>
 #include <torchvision/vision.h>
-#include "vision/vision.h"
+#include <torchvisionlib/torchvisionlib.h>
 
-R_VISION_API int test (void* path) {
+// [[torch::export(rcpp=FALSE)]]
+int test(void* path) {
   torch::DeviceType device_type;
   device_type = torch::kCPU;
 

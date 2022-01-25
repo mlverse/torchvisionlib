@@ -1,4 +1,4 @@
-project(vision)
+project(torchvisionlib)
 cmake_minimum_required(VERSION 3.16)
 
 # We find a LibTorch installation trough the torch package.
@@ -56,8 +56,8 @@ else()
 endif()
 
 ExternalProject_Add(TorchVision-project
-  GIT_REPOSITORY https://github.com/dfalbel/vision
-  GIT_TAG feature/no-python-cpp
+  GIT_REPOSITORY https://github.com/pytorch/vision
+  GIT_TAG main
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
@@ -83,35 +83,44 @@ if (WIN32)
   set_target_properties(TorchVision PROPERTIES IMPORTED_IMPLIB ${TorchVision_DESTDIR}/lib/torchvision.lib)
 endif()
 
-set(TORCHVISION_SRC src/vision.cpp src/ops.cpp)
+set(TORCHVISION_SRC src/torchvisionlib.cpp src/ops.cpp src/exports.cpp)
 
-add_library(vision SHARED ${TORCHVISION_SRC})
-add_library(vision::library ALIAS vision)
+add_library(torchvisionlib SHARED ${TORCHVISION_SRC})
+add_library(torchvisionlib::library ALIAS torchvisionlib)
 
-target_include_directories(vision PUBLIC
+target_include_directories(torchvisionlib PUBLIC
     ${PROJECT_SOURCE_DIR}/include
     ${TORCHVISION_INCLUDE_DIR}
 )
 
-add_dependencies(vision TorchVision-project)
+set(TORCHVISIONLIB_HEADERS
+    include/torchvisionlib/torchvisionlib.h
+    include/torchvisionlib/exports.h
+)
+set_property(TARGET torchvisionlib
+ PROPERTY PUBLIC_HEADER ${TORCHVISIONLIB_HEADERS}
+)
 
-set_property(TARGET vision PROPERTY CXX_STANDARD 17)
+add_dependencies(torchvisionlib TorchVision-project)
 
-target_link_libraries(vision "${TORCH_LIBRARIES}")
-target_link_libraries(vision TorchVision)
+add_custom_target(torchvisionlib_export
+  COMMAND Rscript -e "torchexport::export()"
+  COMMENT "Regenerating export code."
+  VERBATIM
+)
+add_dependencies(torchvisionlib torchvisionlib_export)
+
+set_property(TARGET torchvisionlib PROPERTY CXX_STANDARD 17)
+
+target_link_libraries(torchvisionlib "${TORCH_LIBRARIES}")
+target_link_libraries(torchvisionlib TorchVision)
 
 # Syncronize the headers and the def file with the Rcpp
 # interface.
-add_custom_command(TARGET vision POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/src/vision.def ${PROJECT_SOURCE_DIR}/../inst/def/vision.def
+add_custom_command(TARGET torchvisionlib POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/src/torchvisionlib.def ${PROJECT_SOURCE_DIR}/../inst/def/torchvisionlib.def
     COMMENT "Copied def file to inst folder."
 )
-
-add_custom_command(TARGET vision POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/include/vision/vision.h ${PROJECT_SOURCE_DIR}/../src/vision/vision.h
-    COMMENT "Copied vision.h file to src folder."
-)
-
 
 # Set CPack related code to automatically generate installation bundles.
 # The bundle name will have the same version as defined in the R DESCRIPTION
@@ -131,9 +140,8 @@ else()
 endif()
 
 
-install(TARGETS vision DESTINATION lib)
 include(CPack)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../inst)
-install(TARGETS vision)
+install(TARGETS torchvisionlib LIBRARY PUBLIC_HEADER DESTINATION include/torchvisionlib)
 install(DIRECTORY ${TorchVision_DESTDIR}/ DESTINATION .)
