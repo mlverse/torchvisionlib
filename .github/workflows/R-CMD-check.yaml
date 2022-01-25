@@ -40,7 +40,9 @@ jobs:
           windows-path-include-mingw: false
 
       - name: Install dependencies
-        run: Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+        run: |
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - run: |
           cd csrc
@@ -90,6 +92,7 @@ jobs:
 
       - run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - shell: bash
         run: |
