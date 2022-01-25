@@ -8,7 +8,7 @@ NULL
   if (torch::torch_is_installed()) {
 
     if (!torchvisionlib_is_installed())
-      install_vision()
+      install_torchvisionlib()
 
     if (!torchvisionlib_is_installed()) {
       if (interactive())
