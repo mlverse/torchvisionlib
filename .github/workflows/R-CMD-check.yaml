@@ -48,7 +48,7 @@ jobs:
           cd csrc
           mkdir build && cd build
           cmake ..
-          cmake --build . --target package --config Release
+          cmake --build . --target package --config Release --parallel 4
 
       - uses: svenstaro/upload-release-action@v2
         with:
@@ -99,7 +99,7 @@ jobs:
           cd csrc
           mkdir build && cd build
           cmake ..
-          cmake --build . --target package --config Release
+          cmake --build . --target package --config Release --parallel 4
           Rscript -e "cat('ZIP file:', normalizePath(list.files(pattern='zip', full.names=TRUE)))"
           Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
           Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
