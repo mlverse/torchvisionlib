@@ -24,6 +24,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_deform_conv2d
+torch::Tensor rcpp_vision_ops_deform_conv2d(torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_deform_conv2d(SEXP inputSEXP, SEXP weightSEXP, SEXP offsetSEXP, SEXP maskSEXP, SEXP biasSEXP, SEXP stride_hSEXP, SEXP stride_wSEXP, SEXP pad_hSEXP, SEXP pad_wSEXP, SEXP dilation_hSEXP, SEXP dilation_wSEXP, SEXP groupsSEXP, SEXP offset_groupsSEXP, SEXP use_maskSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type weight(weightSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type offset(offsetSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type mask(maskSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type bias(biasSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type stride_h(stride_hSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type stride_w(stride_wSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type pad_h(pad_hSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type pad_w(pad_wSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type dilation_h(dilation_hSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type dilation_w(dilation_wSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type groups(groupsSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type offset_groups(offset_groupsSEXP);
+    Rcpp::traits::input_parameter< bool >::type use_mask(use_maskSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_deform_conv2d(input, weight, offset, mask, bias, stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test_f
 int test_f(torch::string path);
 RcppExport SEXP _torchvisionlib_test_f(SEXP pathSEXP) {
@@ -38,6 +62,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
+    {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
     {"_torchvisionlib_test_f", (DL_FUNC) &_torchvisionlib_test_f, 1},
     {NULL, NULL, 0}
 };

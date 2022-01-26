@@ -33,8 +33,7 @@ when repeated values are present.
 }
 \examples{
 if (torchvisionlib_is_installed()) {
-ops_nms(torch::torch_rand(3, 4), torch::torch_rand(3), 0.5)
+  ops_nms(torch::torch_rand(3, 4), torch::torch_rand(3), 0.5)
 }
-
 }
 \concept{ops}

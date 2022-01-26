@@ -1,3 +1,5 @@
+library(torch)
+
 create_tensors_with_iou <- function(n, iou_thresh) {
   # force last box to have a pre-defined iou with the first box
   # let b0 be [x0, y0, x1, y1], and b1 be [x0, y0, x1 + d, y1],

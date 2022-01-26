@@ -24,3 +24,24 @@ test_that("nms", {
   )
 
 })
+
+test_that("deform_conv", {
+
+  input <- torch_rand(4, 3, 10, 10)
+  kh <- kw <- 3
+  weight <- torch_rand(5, 3, kh, kw)
+  offset <- torch_rand(4, 2 * kh * kw, 8, 8)
+  mask <- torch_rand(4, kh * kw, 8, 8)
+  out <- ops_deform_conv2d(input, offset, weight, mask = mask)
+  expect_equal(out$shape, c(4,5,8,8))
+
+  expect_error(
+    ops_deform_conv2d(torch_rand(10), offset, weight, mask = mask),
+    regexp = "Expected input_c.ndimension()"
+  )
+  expect_error(
+    ops_deform_conv2d(input, torch_rand(5, 4, kh, kw), weight, mask = mask),
+    regexp = "the shape of the offset tensor at"
+  )
+
+})
