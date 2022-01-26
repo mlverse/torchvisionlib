@@ -18,12 +18,12 @@ TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_t
   try {
     return  make_raw::Tensor(vision_ops_nms(from_raw::Tensor(dets), from_raw::Tensor(scores), iou_threshold));
   } TORCHVISIONLIB_HANDLE_EXCEPTION
-  return ( void* ) NULL;
+  return (void*) NULL;
 }
 int test (void* path);
 TORCHVISIONLIB_API int _test (void* path) {
   try {
     return  (test(path));
   } TORCHVISIONLIB_HANDLE_EXCEPTION
-  return ( int ) NULL;
+  return 10;
 }
