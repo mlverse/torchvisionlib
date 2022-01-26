@@ -1,9 +1,10 @@
 PKG_LIBS=\
 	-L. \
-  -lvision
+  -ltorchvisionlib
+PKG_CPPFLAGS = -I../inst/include/
 
-.PHONY: all vision
-all: clean vision
+.PHONY: all torchvisionlib
+all: clean torchvisionlib
 
 # Creates the import library from the .def file.
 # Keeping the def file in the source folder makes more sense because it's easy
@@ -11,8 +12,8 @@ all: clean vision
 # a plain text file.
 # But MingGW can't take the .def file as an input to the linker, so we need to
 # create the import library.
-vision: clean
-	$(DLLTOOL) -d ../inst/def/vision.def -l vision.lib
+torchvisionlib: clean
+	$(DLLTOOL) -d ../inst/def/torchvisionlib.def -l torchvisionlib.lib
 
 clean:
-	rm -rf vision.lib
+	rm -rf torchvisionlib.lib

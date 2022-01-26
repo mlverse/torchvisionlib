@@ -25,5 +25,5 @@
 #' @family ops
 #' @export
 ops_nms <- function(dets, scores, iou_threshold) {
-  vision_ops_nms(dets, scores, iou_threshold)$add(1L)
+  rcpp_vision_ops_nms(dets, scores, iou_threshold)$add(1L)
 }

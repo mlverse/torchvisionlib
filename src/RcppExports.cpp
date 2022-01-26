@@ -11,16 +11,16 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// vision_ops_nms
-torch::index::Tensor vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold);
-RcppExport SEXP _torchvisionlib_vision_ops_nms(SEXP detsSEXP, SEXP scoresSEXP, SEXP iou_thresholdSEXP) {
+// rcpp_vision_ops_nms
+torch::Tensor rcpp_vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_nms(SEXP detsSEXP, SEXP scoresSEXP, SEXP iou_thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< torch::Tensor >::type dets(detsSEXP);
     Rcpp::traits::input_parameter< torch::Tensor >::type scores(scoresSEXP);
     Rcpp::traits::input_parameter< double >::type iou_threshold(iou_thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(vision_ops_nms(dets, scores, iou_threshold));
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_nms(dets, scores, iou_threshold));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -37,7 +37,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_torchvisionlib_vision_ops_nms", (DL_FUNC) &_torchvisionlib_vision_ops_nms, 3},
+    {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
     {"_torchvisionlib_test_f", (DL_FUNC) &_torchvisionlib_test_f, 1},
     {NULL, NULL, 0}
 };

@@ -1,4 +1,0 @@
-LIBRARY VISION
-EXPORTS
-  test
-  c_vision_ops_nms

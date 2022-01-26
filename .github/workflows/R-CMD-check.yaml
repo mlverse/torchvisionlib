@@ -40,13 +40,15 @@ jobs:
           windows-path-include-mingw: false
 
       - name: Install dependencies
-        run: Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+        run: |
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - run: |
           cd csrc
           mkdir build && cd build
           cmake ..
-          cmake --build . --target package --config Release
+          cmake --build . --target package --config Release --parallel 4
 
       - uses: svenstaro/upload-release-action@v2
         with:
@@ -90,16 +92,17 @@ jobs:
 
       - run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - shell: bash
         run: |
           cd csrc
           mkdir build && cd build
           cmake ..
-          cmake --build . --target package --config Release
+          cmake --build . --target package --config Release --parallel 4
           Rscript -e "cat('ZIP file:', normalizePath(list.files(pattern='zip', full.names=TRUE)))"
           Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
-          Rscript -e "writeLines(paste0('VISION_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
+          Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
 
       - uses: r-lib/actions/check-r-package@v1
         with:

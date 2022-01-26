@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 
 ^inst/lib$
-^inst/include$
+^inst/include/torchvision$
 ^inst/share$
 ^inst/bin$
 
