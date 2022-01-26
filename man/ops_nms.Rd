@@ -31,4 +31,10 @@ respect to a reference box, the selected box is not guaranteed to be the same
 between CPU and GPU. This is similar to the behavior of argsort in PyTorch
 when repeated values are present.
 }
+\examples{
+if (torchvisionlib_is_installed()) {
+ops_nms(torch::torch_rand(3, 4), torch::torch_rand(3), 0.5)
+}
+
+}
 \concept{ops}

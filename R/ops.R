@@ -22,6 +22,11 @@
 #' int64 tensor with the indices of the elements that have been kept by NMS,
 #' sorted in decreasing order of scores
 #'
+#' @examples
+#' if (torchvisionlib_is_installed()) {
+#' ops_nms(torch::torch_rand(3, 4), torch::torch_rand(3), 0.5)
+#' }
+#'
 #' @family ops
 #' @export
 ops_nms <- function(dets, scores, iou_threshold) {
