@@ -1,6 +1,7 @@
 .Rproj.user
 inst/lib
-inst/include/torchvision
+inst/include/
+!inst/include/torchvision
 inst/share
 inst/bin
 .Rhistory
