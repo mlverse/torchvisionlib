@@ -2,6 +2,7 @@
 
 export(ops_deform_conv2d)
 export(ops_nms)
+export(torchvisionlib_is_installed)
 importFrom(Rcpp,sourceCpp)
 importFrom(utils,download.file)
 importFrom(utils,packageDescription)

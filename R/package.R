@@ -54,6 +54,9 @@ lib_ext <- function() {
     ".dll"
 }
 
+#' Checks if an installation of torchvisionlib was found.
+#'
+#' @export
 torchvisionlib_is_installed <- function() {
   file.exists(lib_path())
 }
