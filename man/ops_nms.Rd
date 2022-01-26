@@ -4,15 +4,15 @@
 \alias{ops_nms}
 \title{Performs non-maximum suppression (NMS) on the boxes}
 \usage{
-ops_nms(dets, scores, iou_threshold)
+ops_nms(boxes, scores, iou_threshold)
 }
 \arguments{
+\item{boxes}{\code{Tensor[N,4]} boxes to perform NMS on. They are expected to be
+in \verb{(x1, y1, x2, y2)} format with \verb{0 <= x1 < x2} and \verb{0 <= y1 < y2}.}
+
 \item{scores}{\code{Tensor[N]} scores for each one of the boxes.}
 
 \item{iou_threshold}{\code{float} discards all overlapping boxes with \code{IoU > iou_threshold}.}
-
-\item{boxes}{\code{Tensor[N,4]} boxes to perform NMS on. They are expected to be
-in \verb{(x1, y1, x2, y2)} format with \verb{0 <= x1 < x2} and \verb{0 <= y1 < y2}.}
 }
 \value{
 int64 tensor with the indices of the elements that have been kept by NMS,
