@@ -1,6 +1,9 @@
 project(torchvisionlib)
 cmake_minimum_required(VERSION 3.16)
 
+# accommodate differing conventions
+include(GNUInstallDirs)
+
 # We find a LibTorch installation trough the torch package.
 # This is the best approach if we want to make sure we are
 # targetting the same LibTorch version as used by torch.
@@ -64,7 +67,7 @@ ExternalProject_Add(TorchVision-project
 )
 
 SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
-SET(TORCHVISION_LIB_DIR ${TorchVision_DESTDIR}/lib)
+SET(TORCHVISION_LIB_DIR ${TorchVision_DESTDIR}/${CMAKE_INSTALL_LIBDIR})
 
 if(APPLE)
   SET(TORCHVISION_LIB_LOCATION ${TORCHVISION_LIB_DIR}/libtorchvision.dylib)
