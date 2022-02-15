@@ -1,5 +1,6 @@
 .Rproj.user
 inst/lib
+inst/lib64
 inst/include/
 !inst/include/torchvision
 inst/share

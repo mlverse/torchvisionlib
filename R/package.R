@@ -39,7 +39,11 @@ lib_path <- function(name = "torchvisionlib") {
   install_path <- inst_path()
 
   if (.Platform$OS.type == "unix") {
-    file.path(install_path, "lib", paste0("lib", name, lib_ext()))
+    if (file.exists(file.path(install_path, "lib64"))) {
+      file.path(install_path, "lib64", paste0("lib", name, lib_ext()))
+    } else {
+      file.path(install_path, "lib", paste0("lib", name, lib_ext()))
+    }
   } else {
     file.path(install_path, "bin", paste0(name, lib_ext()))
   }
