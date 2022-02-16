@@ -15,7 +15,8 @@ LinkingTo:
     torch
 Imports: 
     Rcpp,
-    torch
+    torch,
+    rlang
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
