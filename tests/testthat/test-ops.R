@@ -58,6 +58,7 @@ test_that("ps roi align works", {
   expect_equal(
     as.numeric(output),
     # result validated with pytorch.
-    c(0.105428881943226, -0.360159754753113, 0.21501287817955)
+    c(0.105428881943226, -0.360159754753113, 0.21501287817955),
+    tolerance = 1e-4
   )
 })
