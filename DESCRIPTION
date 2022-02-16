@@ -1,10 +1,13 @@
 Package: torchvisionlib
-Title: What the Package Does (One Line, Title Case)
+Title: Additional Operators for Image Models
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
+    person(family = "RStudio", role = c("cph"))
+    )
+Description: Implements additional operators for computer vision models, including
+    operators necessary for image segmentation and object detection deep learning
+    models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
