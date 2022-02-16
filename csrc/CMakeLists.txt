@@ -83,7 +83,7 @@ if (WIN32)
   set_target_properties(TorchVision PROPERTIES IMPORTED_IMPLIB ${TorchVision_DESTDIR}/lib/torchvision.lib)
 endif()
 
-set(TORCHVISION_SRC src/torchvisionlib.cpp src/ops.cpp src/exports.cpp)
+set(TORCHVISION_SRC src/torchvisionlib.cpp src/ops.cpp src/exports.cpp src/torchvisionlib_types.cpp)
 
 add_library(torchvisionlib SHARED ${TORCHVISION_SRC})
 add_library(torchvisionlib::library ALIAS torchvisionlib)
@@ -96,6 +96,7 @@ target_include_directories(torchvisionlib PUBLIC
 set(TORCHVISIONLIB_HEADERS
     include/torchvisionlib/torchvisionlib.h
     include/torchvisionlib/exports.h
+    include/torchvisionlib/torchvisionlib_types.h
 )
 set_property(TARGET torchvisionlib
  PROPERTY PUBLIC_HEADER ${TORCHVISIONLIB_HEADERS}

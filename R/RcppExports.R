@@ -9,6 +9,22 @@ rcpp_vision_ops_deform_conv2d <- function(input, weight, offset, mask, bias, str
     .Call('_torchvisionlib_rcpp_vision_ops_deform_conv2d', PACKAGE = 'torchvisionlib', input, weight, offset, mask, bias, stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask)
 }
 
+rcpp_vision_ops_ps_roi_align <- function(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio) {
+    .Call('_torchvisionlib_rcpp_vision_ops_ps_roi_align', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio)
+}
+
+rcpp_delete_tensor_pair <- function(x) {
+    invisible(.Call('_torchvisionlib_rcpp_delete_tensor_pair', PACKAGE = 'torchvisionlib', x))
+}
+
+rcpp_tensor_pair_get_first <- function(x) {
+    .Call('_torchvisionlib_rcpp_tensor_pair_get_first', PACKAGE = 'torchvisionlib', x)
+}
+
+rcpp_tensor_pair_get_second <- function(x) {
+    .Call('_torchvisionlib_rcpp_tensor_pair_get_second', PACKAGE = 'torchvisionlib', x)
+}
+
 test_f <- function(path) {
     .Call('_torchvisionlib_test_f', PACKAGE = 'torchvisionlib', path)
 }

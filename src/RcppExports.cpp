@@ -48,6 +48,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_ps_roi_align
+torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_align(torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_ps_roi_align(SEXP inputSEXP, SEXP roisSEXP, SEXP spatial_scaleSEXP, SEXP pooled_heightSEXP, SEXP pooled_widthSEXP, SEXP sampling_ratioSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type rois(roisSEXP);
+    Rcpp::traits::input_parameter< double >::type spatial_scale(spatial_scaleSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_height(pooled_heightSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_width(pooled_widthSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type sampling_ratio(sampling_ratioSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_ps_roi_align(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_delete_tensor_pair
+void rcpp_delete_tensor_pair(void* x);
+RcppExport SEXP _torchvisionlib_rcpp_delete_tensor_pair(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< void* >::type x(xSEXP);
+    rcpp_delete_tensor_pair(x);
+    return R_NilValue;
+END_RCPP
+}
+// rcpp_tensor_pair_get_first
+torch::Tensor rcpp_tensor_pair_get_first(torchvisionlib::tensor_pair x);
+RcppExport SEXP _torchvisionlib_rcpp_tensor_pair_get_first(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torchvisionlib::tensor_pair >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_tensor_pair_get_first(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_tensor_pair_get_second
+torch::Tensor rcpp_tensor_pair_get_second(torchvisionlib::tensor_pair x);
+RcppExport SEXP _torchvisionlib_rcpp_tensor_pair_get_second(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torchvisionlib::tensor_pair >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_tensor_pair_get_second(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test_f
 int test_f(torch::string path);
 RcppExport SEXP _torchvisionlib_test_f(SEXP pathSEXP) {
@@ -63,6 +111,10 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
     {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
+    {"_torchvisionlib_rcpp_vision_ops_ps_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_align, 6},
+    {"_torchvisionlib_rcpp_delete_tensor_pair", (DL_FUNC) &_torchvisionlib_rcpp_delete_tensor_pair, 1},
+    {"_torchvisionlib_rcpp_tensor_pair_get_first", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_first, 1},
+    {"_torchvisionlib_rcpp_tensor_pair_get_second", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_second, 1},
     {"_torchvisionlib_test_f", (DL_FUNC) &_torchvisionlib_test_f, 1},
     {NULL, NULL, 0}
 };

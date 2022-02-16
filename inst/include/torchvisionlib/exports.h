@@ -29,7 +29,11 @@ TORCHVISIONLIB_API void torchvisionlib_last_error_clear();
 
 TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_threshold);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
+TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio);
 TORCHVISIONLIB_API int _test (void* path);
+TORCHVISIONLIB_API void _delete_tensor_pair (void* x);
+TORCHVISIONLIB_API void* _tensor_pair_get_first (void* x);
+TORCHVISIONLIB_API void* _tensor_pair_get_second (void* x);
 
 #ifdef RCPP_VERSION
 inline void* vision_ops_nms (void* dets, void* scores, double iou_threshold) {
@@ -42,8 +46,28 @@ inline void* vision_ops_deform_conv2d (void* input, void* weight, void* offset, 
   host_exception_handler();
   return ret;
 }
+inline void* vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio) {
+  auto ret =  _vision_ops_ps_roi_align(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio);
+  host_exception_handler();
+  return ret;
+}
 inline int test (void* path) {
   auto ret =  _test(path);
+  host_exception_handler();
+  return ret;
+}
+inline void delete_tensor_pair (void* x) {
+   _delete_tensor_pair(x);
+  host_exception_handler();
+  
+}
+inline void* tensor_pair_get_first (void* x) {
+  auto ret =  _tensor_pair_get_first(x);
+  host_exception_handler();
+  return ret;
+}
+inline void* tensor_pair_get_second (void* x) {
+  auto ret =  _tensor_pair_get_second(x);
   host_exception_handler();
   return ret;
 }
