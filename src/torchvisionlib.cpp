@@ -16,8 +16,3 @@ void host_exception_handler ()
   }
 }
 
-// [[Rcpp::export]]
-int test_f (torch::string path)
-{
-  return _test(path.get());
-}

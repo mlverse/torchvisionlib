@@ -37,7 +37,3 @@ rcpp_tensor_pair_get_second <- function(x) {
     .Call('_torchvisionlib_rcpp_tensor_pair_get_second', PACKAGE = 'torchvisionlib', x)
 }
 
-test_f <- function(path) {
-    .Call('_torchvisionlib_test_f', PACKAGE = 'torchvisionlib', path)
-}
-

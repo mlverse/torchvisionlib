@@ -33,7 +33,6 @@ TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, doub
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
 TORCHVISIONLIB_API void* _vision_ops_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned);
 TORCHVISIONLIB_API void* _vision_ops_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
-TORCHVISIONLIB_API int _test (void* path);
 TORCHVISIONLIB_API void _delete_tensor_pair (void* x);
 TORCHVISIONLIB_API void* _tensor_pair_get_first (void* x);
 TORCHVISIONLIB_API void* _tensor_pair_get_second (void* x);
@@ -66,11 +65,6 @@ inline void* vision_ops_roi_align (void* input, void* rois, double spatial_scale
 }
 inline void* vision_ops_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
   auto ret =  _vision_ops_roi_pool(input, rois, spatial_scale, pooled_height, pooled_width);
-  host_exception_handler();
-  return ret;
-}
-inline int test (void* path) {
-  auto ret =  _test(path);
   host_exception_handler();
   return ret;
 }

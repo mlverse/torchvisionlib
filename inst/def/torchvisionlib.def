@@ -9,7 +9,6 @@ EXPORTS
   _vision_ops_ps_roi_pool
   _vision_ops_roi_align
   _vision_ops_roi_pool
-  _test
   _delete_tensor_pair
   _tensor_pair_get_first
   _tensor_pair_get_second

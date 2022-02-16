@@ -56,13 +56,6 @@ TORCHVISIONLIB_API void* _vision_ops_roi_pool (void* input, void* rois, double s
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
-int test (void* path);
-TORCHVISIONLIB_API int _test (void* path) {
-  try {
-    return  (test(path));
-  } TORCHVISIONLIB_HANDLE_EXCEPTION
-  return 10;
-}
 void delete_tensor_pair (void* x);
 TORCHVISIONLIB_API void _delete_tensor_pair (void* x) {
   try {

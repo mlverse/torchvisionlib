@@ -13,3 +13,4 @@ resnet18.pt
 src/vision.lib
 fasterrcnn.pt
 .vscode
+fasterrcnn_mobilenet_v3_large_320_fpn.pt
