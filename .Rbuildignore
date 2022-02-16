@@ -9,3 +9,4 @@
 ^csrc$
 ^\.github$
 ^LICENSE\.md$
+^README\.Rmd$
