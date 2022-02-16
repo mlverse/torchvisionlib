@@ -94,7 +94,7 @@ ops_deform_conv2d <- function(input,
   strides <- .pair(stride)
   pads <- .pair(padding)
   dils <- .pair(dilation)
-  weights <- tail(weight$shape, 2)
+  weights <- utils::tail(weight$shape, 2)
   n_in_channels <- input$shape[2]
 
   n_offset_grps <- offset$shape[2] %/% (2 * weights[1] * weights[2])
