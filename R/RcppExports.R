@@ -13,6 +13,18 @@ rcpp_vision_ops_ps_roi_align <- function(input, rois, spatial_scale, pooled_heig
     .Call('_torchvisionlib_rcpp_vision_ops_ps_roi_align', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio)
 }
 
+rcpp_vision_ops_ps_roi_pool <- function(input, rois, spatial_scale, pooled_height, pooled_width) {
+    .Call('_torchvisionlib_rcpp_vision_ops_ps_roi_pool', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width)
+}
+
+rcpp_vision_ops_roi_align <- function(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned) {
+    .Call('_torchvisionlib_rcpp_vision_ops_roi_align', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned)
+}
+
+rcpp_vision_ops_roi_pool <- function(input, rois, spatial_scale, pooled_height, pooled_width) {
+    .Call('_torchvisionlib_rcpp_vision_ops_roi_pool', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width)
+}
+
 rcpp_delete_tensor_pair <- function(x) {
     invisible(.Call('_torchvisionlib_rcpp_delete_tensor_pair', PACKAGE = 'torchvisionlib', x))
 }

@@ -30,6 +30,9 @@ TORCHVISIONLIB_API void torchvisionlib_last_error_clear();
 TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_threshold);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio);
+TORCHVISIONLIB_API void* _vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+TORCHVISIONLIB_API void* _vision_ops_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned);
+TORCHVISIONLIB_API void* _vision_ops_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
 TORCHVISIONLIB_API int _test (void* path);
 TORCHVISIONLIB_API void _delete_tensor_pair (void* x);
 TORCHVISIONLIB_API void* _tensor_pair_get_first (void* x);
@@ -48,6 +51,21 @@ inline void* vision_ops_deform_conv2d (void* input, void* weight, void* offset, 
 }
 inline void* vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio) {
   auto ret =  _vision_ops_ps_roi_align(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio);
+  host_exception_handler();
+  return ret;
+}
+inline void* vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  auto ret =  _vision_ops_ps_roi_pool(input, rois, spatial_scale, pooled_height, pooled_width);
+  host_exception_handler();
+  return ret;
+}
+inline void* vision_ops_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned) {
+  auto ret =  _vision_ops_roi_align(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned);
+  host_exception_handler();
+  return ret;
+}
+inline void* vision_ops_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  auto ret =  _vision_ops_roi_pool(input, rois, spatial_scale, pooled_height, pooled_width);
   host_exception_handler();
   return ret;
 }

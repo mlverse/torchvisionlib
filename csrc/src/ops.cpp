@@ -59,3 +59,55 @@ tensor_pair vision_ops_ps_roi_align(
     sampling_ratio
   );
 };
+
+// [[torch::export]]
+tensor_pair vision_ops_ps_roi_pool(
+    torch::Tensor input,
+    torch::Tensor rois,
+    double spatial_scale,
+    int64_t pooled_height,
+    int64_t pooled_width) {
+  return vision::ops::ps_roi_pool(
+    input,
+    rois,
+    spatial_scale,
+    pooled_height,
+    pooled_width
+  );
+}
+
+// [[torch::export]]
+torch::Tensor vision_ops_roi_align(
+    torch::Tensor input,
+    torch::Tensor rois,
+    double spatial_scale,
+    int64_t pooled_height,
+    int64_t pooled_width,
+    int64_t sampling_ratio,
+    bool aligned) {
+  return vision::ops::roi_align(
+    input,
+    rois,
+    spatial_scale,
+    pooled_height,
+    pooled_width,
+    sampling_ratio,
+    aligned
+  );
+}
+
+// [[torch::export]]
+tensor_pair vision_ops_roi_pool(
+    torch::Tensor input,
+    torch::Tensor rois,
+    double spatial_scale,
+    int64_t pooled_height,
+    int64_t pooled_width) {
+  return vision::ops::roi_pool(
+    input,
+    rois,
+    spatial_scale,
+    pooled_height,
+    pooled_width
+  );
+}

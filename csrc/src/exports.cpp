@@ -35,6 +35,27 @@ TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, doub
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
+tensor_pair vision_ops_ps_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+TORCHVISIONLIB_API void* _vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  try {
+    return  make_raw::TensorPair(vision_ops_ps_roi_pool(from_raw::Tensor(input), from_raw::Tensor(rois), spatial_scale, pooled_height, pooled_width));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
+torch::Tensor vision_ops_roi_align (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned);
+TORCHVISIONLIB_API void* _vision_ops_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned) {
+  try {
+    return  make_raw::Tensor(vision_ops_roi_align(from_raw::Tensor(input), from_raw::Tensor(rois), spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
+tensor_pair vision_ops_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+TORCHVISIONLIB_API void* _vision_ops_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  try {
+    return  make_raw::TensorPair(vision_ops_roi_pool(from_raw::Tensor(input), from_raw::Tensor(rois), spatial_scale, pooled_height, pooled_width));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
 int test (void* path);
 TORCHVISIONLIB_API int _test (void* path) {
   try {

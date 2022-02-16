@@ -64,6 +64,53 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_ps_roi_pool
+torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_pool(torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_ps_roi_pool(SEXP inputSEXP, SEXP roisSEXP, SEXP spatial_scaleSEXP, SEXP pooled_heightSEXP, SEXP pooled_widthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type rois(roisSEXP);
+    Rcpp::traits::input_parameter< double >::type spatial_scale(spatial_scaleSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_height(pooled_heightSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_width(pooled_widthSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_ps_roi_pool(input, rois, spatial_scale, pooled_height, pooled_width));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_vision_ops_roi_align
+torch::Tensor rcpp_vision_ops_roi_align(torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_roi_align(SEXP inputSEXP, SEXP roisSEXP, SEXP spatial_scaleSEXP, SEXP pooled_heightSEXP, SEXP pooled_widthSEXP, SEXP sampling_ratioSEXP, SEXP alignedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type rois(roisSEXP);
+    Rcpp::traits::input_parameter< double >::type spatial_scale(spatial_scaleSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_height(pooled_heightSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_width(pooled_widthSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type sampling_ratio(sampling_ratioSEXP);
+    Rcpp::traits::input_parameter< bool >::type aligned(alignedSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_roi_align(input, rois, spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_vision_ops_roi_pool
+torchvisionlib::tensor_pair rcpp_vision_ops_roi_pool(torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_roi_pool(SEXP inputSEXP, SEXP roisSEXP, SEXP spatial_scaleSEXP, SEXP pooled_heightSEXP, SEXP pooled_widthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type rois(roisSEXP);
+    Rcpp::traits::input_parameter< double >::type spatial_scale(spatial_scaleSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_height(pooled_heightSEXP);
+    Rcpp::traits::input_parameter< int64_t >::type pooled_width(pooled_widthSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_roi_pool(input, rois, spatial_scale, pooled_height, pooled_width));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_delete_tensor_pair
 void rcpp_delete_tensor_pair(void* x);
 RcppExport SEXP _torchvisionlib_rcpp_delete_tensor_pair(SEXP xSEXP) {
@@ -112,6 +159,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
     {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_align, 6},
+    {"_torchvisionlib_rcpp_vision_ops_ps_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_pool, 5},
+    {"_torchvisionlib_rcpp_vision_ops_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_roi_align, 7},
+    {"_torchvisionlib_rcpp_vision_ops_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_roi_pool, 5},
     {"_torchvisionlib_rcpp_delete_tensor_pair", (DL_FUNC) &_torchvisionlib_rcpp_delete_tensor_pair, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_first", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_first, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_second", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_second, 1},

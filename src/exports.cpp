@@ -16,6 +16,18 @@ torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_align (torch::Tensor input, t
   return  vision_ops_ps_roi_align(input.get(), rois.get(), spatial_scale, pooled_height, pooled_width, sampling_ratio);
 }
 // [[Rcpp::export]]
+torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  return  vision_ops_ps_roi_pool(input.get(), rois.get(), spatial_scale, pooled_height, pooled_width);
+}
+// [[Rcpp::export]]
+torch::Tensor rcpp_vision_ops_roi_align (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned) {
+  return  vision_ops_roi_align(input.get(), rois.get(), spatial_scale, pooled_height, pooled_width, sampling_ratio, aligned);
+}
+// [[Rcpp::export]]
+torchvisionlib::tensor_pair rcpp_vision_ops_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width) {
+  return  vision_ops_roi_pool(input.get(), rois.get(), spatial_scale, pooled_height, pooled_width);
+}
+// [[Rcpp::export]]
 void rcpp_delete_tensor_pair (void* x) {
    delete_tensor_pair(x);
 }
