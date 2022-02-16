@@ -45,3 +45,19 @@ test_that("deform_conv", {
   )
 
 })
+
+test_that("ps roi align works", {
+
+  torch::torch_manual_seed(2)
+  input <- torch_randn(1, 3, 28, 28)
+  boxes <- list(torch_tensor(matrix(c(1,1,5,5), ncol = 4)))
+
+  roi <- nn_ps_roi_align(output_size = c(1, 1))
+
+  output <- roi(input, boxes)
+  expect_equal(
+    as.numeric(output),
+    # result validated with pytorch.
+    c(0.105428881943226, -0.360159754753113, 0.21501287817955)
+  )
+})
