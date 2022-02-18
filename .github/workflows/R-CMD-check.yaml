@@ -24,7 +24,7 @@ jobs:
           - {os: macOS-latest}
           - {os: windows-latest}
           - {os: ubuntu-18.04}
-          - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1"}
+          - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
 
     env:
       TORCH_INSTALL: 1
@@ -46,6 +46,15 @@ jobs:
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
+
+      - if: ${{matrix.config.cuda != ''}}
+        run: |
+          wget --quiet ${{matrix.config.cudnn}} -O cudnn.tgz
+          tar -xzvf cudnn.tgz
+          sudo cp cuda/include/cudnn*.h $CUDA_PATH/include
+          sudo cp cuda/lib64/libcudnn* $CUDA_PATH/lib64
+          sudo chmod a+r $CUDA_PATH/include/cudnn*.h $CUDA_PATH/lib64/libcudnn*
+          rm cudnn.tgz
 
       - name: Install dependencies
         run: |
