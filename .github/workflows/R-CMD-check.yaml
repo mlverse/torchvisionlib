@@ -24,10 +24,12 @@ jobs:
           - {os: macOS-latest}
           - {os: windows-latest}
           - {os: ubuntu-18.04}
+          - {os: ubuntu-18.04, cuda: '11.3'}
 
     env:
       TORCH_INSTALL: 1
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CUDA: '${{matrix.cuda}}'
 
     steps:
       - uses: actions/checkout@v2
@@ -38,6 +40,12 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
           windows-path-include-mingw: false
+
+      - if: ${{matrix.cuda != ''}}
+        uses: Jimver/cuda-toolkit@v0.2.5
+        id: cuda-toolkit
+        with:
+          cuda: ${{matrix.config.cuda}}
 
       - name: Install dependencies
         run: |
