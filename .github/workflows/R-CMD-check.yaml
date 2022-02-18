@@ -24,7 +24,7 @@ jobs:
           - {os: macOS-latest}
           - {os: windows-latest}
           - {os: ubuntu-18.04}
-          - {os: ubuntu-18.04, cuda: '11.3'}
+          - {os: ubuntu-18.04, cuda: '11.3.1'}
 
     env:
       TORCH_INSTALL: 1
