@@ -18,7 +18,7 @@ LinkingTo:
     torch
 Imports: 
     Rcpp,
-    torch,
+    torch (>= 0.7.0),
     rlang,
     glue
 Suggests: 
