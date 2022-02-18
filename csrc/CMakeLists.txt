@@ -13,14 +13,6 @@ execute_process (
 )
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
-if ("${TORCH_HOME}" STREQUAL "")
-execute_process (
-    COMMAND Rscript -e "normalizePath(file.path(system.file('', package = 'torch')), mustWork = FALSE)"
-    OUTPUT_VARIABLE TORCH_HOME
-)
-message(STATUS "TORCH_HOME=${TORCH_HOME}")
-endif()
-
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${TORCH_HOME}")
 set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 

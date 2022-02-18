@@ -41,6 +41,10 @@ jobs:
           use-public-rspm: true
           windows-path-include-mingw: false
 
+      - name: Free up 24GB of disk space
+        if: ${{ matrix.config.os == 'ubuntu-18.04' }}
+        run: sudo rm -rf /usr/share/dotnet
+
       - if: ${{matrix.config.cuda != ''}}
         uses: Jimver/cuda-toolkit@v0.2.5
         id: cuda-toolkit
