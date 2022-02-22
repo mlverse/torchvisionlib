@@ -27,6 +27,9 @@ jobs:
           - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
           - {os: ubuntu-18.04, cuda: '11.1', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.1-linux-x64-v8.0.5.39.tgz'}
           - {os: ubuntu-18.04, cuda: '10.2', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-linux-x64-v7.6.5.32.tgz'}
+          - {os: windows-latest, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
+          - {os: windows-latest, cuda: '11.1', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.1-windows-x64-v8.0.5.39.zip'}
+          - {os: windows-latest, cuda: '10.2', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-windows10-x64-v7.6.5.32.zip'}
 
     env:
       TORCH_INSTALL: 1
@@ -53,7 +56,7 @@ jobs:
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
 
-      - if: ${{matrix.config.cuda != ''}}
+      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'linux') }}
         run: |
           wget --quiet ${{matrix.config.cudnn}} -O cudnn.tgz
           tar -xzvf cudnn.tgz
@@ -61,6 +64,16 @@ jobs:
           sudo cp cuda/lib64/libcudnn* $CUDA_PATH/lib64
           sudo chmod a+r $CUDA_PATH/include/cudnn*.h $CUDA_PATH/lib64/libcudnn*
           rm cudnn.tgz
+          
+      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'windows') }}
+        run: |
+          curl ${{ matrix.config.cudnn }} --output cudnn.zip --silent --location
+          Expand-Archive -Path cudnn.zip -DestinationPath "C:\cudnn"
+          Move-Item -Path "C:\cudnn\cuda\bin\cudnn*.dll" -Destination "${CUDA_PATH}\bin"
+          Move-Item -Path "C:\cudnn\cuda\include\cudnn*.h" -Destination "${CUDA_PATH}\include"
+          Move-Item -Path "C:\cudnn\cuda\lib\x64\cudnn*.lib" -Destination "${CUDA_PATH}\lib\x64"
+          echo "CUDNN_INCLUDE_PATH=""${CUDA_PATH}\include""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "CUDNN_LIBRARY_PATH=""${CUDA_PATH}\lib\x64""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Install dependencies
         run: |
