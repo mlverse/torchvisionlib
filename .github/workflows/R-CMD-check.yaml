@@ -69,6 +69,8 @@ jobs:
         run: |
           curl ${{ matrix.config.cudnn }} --output cudnn.zip --silent --location
           Expand-Archive -Path cudnn.zip -DestinationPath "C:\cudnn"
+          Get-ChildItem -Path "C:\cudnn"
+          Get-ChildItem -Path "${CUDA_PATH}"
           Move-Item -Path "C:\cudnn\cuda\bin\cudnn*.dll" -Destination "${CUDA_PATH}\bin"
           Move-Item -Path "C:\cudnn\cuda\include\cudnn*.h" -Destination "${CUDA_PATH}\include"
           Move-Item -Path "C:\cudnn\cuda\lib\x64\cudnn*.lib" -Destination "${CUDA_PATH}\lib\x64"
