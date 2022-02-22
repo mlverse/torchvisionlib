@@ -70,10 +70,10 @@ jobs:
           curl ${{ matrix.config.cudnn }} --output cudnn.zip --silent --location
           Expand-Archive -Path cudnn.zip -DestinationPath "C:\cudnn"
           Get-ChildItem -Path "C:\cudnn"
-          Get-ChildItem -Path "${CUDA_PATH}"
-          Move-Item -Path "C:\cudnn\cuda\bin\cudnn*.dll" -Destination "${CUDA_PATH}\bin"
-          Move-Item -Path "C:\cudnn\cuda\include\cudnn*.h" -Destination "${CUDA_PATH}\include"
-          Move-Item -Path "C:\cudnn\cuda\lib\x64\cudnn*.lib" -Destination "${CUDA_PATH}\lib\x64"
+          Get-ChildItem -Path ${CUDA_PATH}
+          Move-Item -Path "C:\cudnn\cuda\bin\cudnn*.dll" -Destination ${CUDA_PATH}\bin
+          Move-Item -Path "C:\cudnn\cuda\include\cudnn*.h" -Destination ${CUDA_PATH}\include
+          Move-Item -Path "C:\cudnn\cuda\lib\x64\cudnn*.lib" -Destination ${CUDA_PATH}\lib\x64
           echo "CUDNN_INCLUDE_PATH=""${CUDA_PATH}\include""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "CUDNN_LIBRARY_PATH=""${CUDA_PATH}\lib\x64""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
