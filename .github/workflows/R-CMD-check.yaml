@@ -56,7 +56,7 @@ jobs:
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
 
-      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'linux') }}
+      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'ubuntu') }}
         run: |
           wget --quiet ${{matrix.config.cudnn}} -O cudnn.tgz
           tar -xzvf cudnn.tgz
