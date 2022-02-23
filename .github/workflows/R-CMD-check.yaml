@@ -33,6 +33,7 @@ jobs:
 
     env:
       TORCH_INSTALL: 1
+      TORCH_TEST: 1
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
 
@@ -64,7 +65,7 @@ jobs:
           sudo cp cuda/lib64/libcudnn* $CUDA_PATH/lib64
           sudo chmod a+r $CUDA_PATH/include/cudnn*.h $CUDA_PATH/lib64/libcudnn*
           rm cudnn.tgz
-          
+
       - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'windows') }}
         run: |
           curl ${{ matrix.config.cudnn }} --output cudnn.zip --silent --location
@@ -115,6 +116,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       TORCH_INSTALL: 1
+      TORCH_TEST: 1
 
     steps:
       - uses: actions/checkout@v2
