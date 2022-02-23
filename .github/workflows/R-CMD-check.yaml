@@ -91,6 +91,7 @@ jobs:
           cmake --build . --target package --config Release --parallel 4
 
       - id: version
+        shell: bash
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           echo "::set-output name=version::$version"
