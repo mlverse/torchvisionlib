@@ -36,6 +36,7 @@ jobs:
       TORCH_TEST: 1
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
+      MAKEFLAGS: '-j8'
 
     steps:
       - uses: actions/checkout@v2
@@ -122,6 +123,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
       TORCH_INSTALL: 1
       TORCH_TEST: 1
+      MAKEFLAGS: '-j8'
 
     steps:
       - uses: actions/checkout@v2
