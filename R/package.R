@@ -78,9 +78,8 @@ install_torchvisionlib <- function(url = Sys.getenv("TORCHVISIONLIB_URL", unset 
       runtime_version <- torch::cuda_runtime_version()
       dev <- paste0(dev, runtime_version[1,1], runtime_version[1,2])
     }
-
-    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/torchvisionlib/torchvisionlib-%s+%s-%s.zip",
-                   version, dev, os)
+    url <- sprintf("https://github.com/mlverse/torchvisionlib/releases/download/v%s/torchvisionlib-%s+%s-%s.zip",
+                   version, version, dev, os)
   }
 
   if (is_url(url)) {
