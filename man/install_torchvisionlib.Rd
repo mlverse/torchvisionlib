@@ -2,10 +2,18 @@
 % Please edit documentation in R/package.R
 \name{torchvisionlib_is_installed}
 \alias{torchvisionlib_is_installed}
+\alias{install_torchvisionlib}
 \title{Checks if an installation of torchvisionlib was found.}
 \usage{
 torchvisionlib_is_installed()
+
+install_torchvisionlib(url = Sys.getenv("TORCHVISIONLIB_URL", unset = NA))
+}
+\arguments{
+\item{url}{Url for the binaries. Can also be the file path to the binaries.}
 }
 \description{
 Checks if an installation of torchvisionlib was found.
+
+Install additional libraries
 }

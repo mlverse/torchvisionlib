@@ -59,12 +59,17 @@ lib_ext <- function() {
 }
 
 #' Checks if an installation of torchvisionlib was found.
-#'
+#' @rdname install_torchvisionlib
 #' @export
 torchvisionlib_is_installed <- function() {
   file.exists(lib_path())
 }
 
+#' Install additional libraries
+#'
+#' @param url Url for the binaries. Can also be the file path to the binaries.
+#'
+#' @export
 install_torchvisionlib <- function(url = Sys.getenv("TORCHVISIONLIB_URL", unset = NA)) {
 
   if (!interactive() && Sys.getenv("TORCH_INSTALL", unset = 0) == "0") return()
