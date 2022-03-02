@@ -15,7 +15,13 @@ importantly it provides full support for JIT operators defined in
 
 ## Installation
 
-You can install the development version of torchvisionlib from
+torchvisionlib can be installed from CRAN with:
+
+``` r
+install.packages("torchvisionlib")
+```
+
+You can also install the development version of torchvisionlib from
 [GitHub](https://github.com/) with:
 
 ``` r

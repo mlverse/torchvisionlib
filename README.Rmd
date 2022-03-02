@@ -26,7 +26,13 @@ us to load 'scripted' object detection and image segmentation models.
 
 ## Installation
 
-You can install the development version of torchvisionlib from [GitHub](https://github.com/) with:
+torchvisionlib can be installed from CRAN with:
+
+```r
+install.packages("torchvisionlib")
+```
+
+You can also install the development version of torchvisionlib from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
