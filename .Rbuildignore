@@ -10,3 +10,8 @@
 ^\.github$
 ^LICENSE\.md$
 ^README\.Rmd$
+
+^fasterrcnn_mobilenet_v3_large_320_fpn\.pt$
+^fasterrcnn\.pt$
+^\.vscode$
+^resnet18\.pt$
