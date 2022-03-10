@@ -4,6 +4,14 @@
 # torchvisionlib
 
 <!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![R-CMD-check](https://github.com/mlverse/torchvisionlib/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mlverse/torchvisionlib/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/torchvisionlib)](https://CRAN.R-project.org/package=torchvisionlib)
+[![](https://cranlogs.r-pkg.org/badges/torchvisionlib)](https://cran.r-project.org/package=torchvisionlib)
+[![Discord](https://img.shields.io/discord/837019024499277855?logo=discord)](https://discord.com/invite/s3D5cKhBkx)
 <!-- badges: end -->
 
 The goal of torchvisionlib is to provide access to C++ opeartions
