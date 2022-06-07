@@ -49,6 +49,11 @@ jobs:
         if: ${{ matrix.config.os == 'ubuntu-18.04' }}
         run: sudo rm -rf /usr/share/dotnet
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: 'latest'
+
       - if: ${{matrix.config.cuda != ''}}
         uses: Jimver/cuda-toolkit@v0.2.7
         id: cuda-toolkit
