@@ -22,11 +22,11 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest}
-          - {os: windows-latest}
+          - {os: windows-2019}
           - {os: ubuntu-18.04}
           - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
           - {os: ubuntu-18.04, cuda: '10.2', cuda_patch: "89", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-linux-x64-v7.6.5.32.tgz'}
-          - {os: windows-latest, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
+          - {os: windows-2019, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
 
     env:
       TORCH_INSTALL: 1
