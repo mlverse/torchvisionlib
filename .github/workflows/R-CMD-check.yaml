@@ -50,7 +50,7 @@ jobs:
         run: sudo rm -rf /usr/share/dotnet
 
       - if: ${{matrix.config.cuda != ''}}
-        uses: Jimver/cuda-toolkit@v0.2.5
+        uses: Jimver/cuda-toolkit@v0.2.7
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
