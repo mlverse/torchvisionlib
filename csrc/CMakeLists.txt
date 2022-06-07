@@ -13,6 +13,13 @@ execute_process (
 )
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
+if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
+  if (WIN32)
+    find_package(CUDAToolkit)
+  endif()
+  enable_language(CUDA)
+endif()
+
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${TORCH_HOME}")
 set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
