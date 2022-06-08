@@ -96,15 +96,23 @@ jobs:
         shell: bash
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
+          fname=$(Rscript -e "cat(list.files('csrc/build/', '*.zip'))")
           echo "::set-output name=version::$version"
+          echo "::set-output name=fname::$fname"
 
       - uses: svenstaro/upload-release-action@v2
+        if: github.ref_name == 'main'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: csrc/build/*.zip
           overwrite: true
           file_glob: true
           tag: v${{ steps.version.outputs.version }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.version.outputs.fname }}
+          path: csrc/build/*.zip
 
 
   R-CMD-check:
