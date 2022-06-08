@@ -30,7 +30,7 @@ if(WIN32)
     GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.2.12
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/zlib"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS}
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_ASM_COMPILER=MSVC
   )
   ExternalProject_Add(libpng
     GIT_REPOSITORY https://github.com/glennrp/libpng
