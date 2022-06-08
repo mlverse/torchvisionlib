@@ -117,17 +117,17 @@ jobs:
 
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    needs: Build-Libs
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release', rtools: '42'}
-          - {os: windows-latest, r: '3.6'}
-          - {os: ubuntu-18.04,   r: 'release'}
+          - {os: macOS-latest,   r: 'release', artifact: '+cpu-Darwin.zip'}
+          - {os: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
+          - {os: windows-latest, r: '3.6', artifact: '+cpu-win64.zip'}
+          - {os: ubuntu-18.04,   r: 'release', artifact: '+cpu-Linux.zip'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -153,13 +153,22 @@ jobs:
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
           Rscript -e "remotes::install_github('mlverse/torchexport')"
 
-      - shell: bash
+      - name: Query package version
+        shell: bash
+        id: version
         run: |
-          cd csrc
-          mkdir build && cd build
-          cmake ..
-          cmake --build . --target package --config Release --parallel 4
-          Rscript -e "cat('ZIP file:', normalizePath(list.files(pattern='zip', full.names=TRUE)))"
+          version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
+          echo "::set-output name=version::$version"
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: 'torchvisionlib-${{ steps.version.outputs.version }}${{ matrix.config.artifact }}'
+          path: /lib
+
+      - name: Set the path to the lib
+        shell: bash
+        run: |
+          Rscript -e "cat('ZIP file:', normalizePath(list.files("/lib", pattern='zip', full.names=TRUE)))"
           Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
           Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
 
