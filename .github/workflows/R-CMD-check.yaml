@@ -179,9 +179,9 @@ jobs:
       - name: Set the path to the lib
         shell: bash
         run: |
-          Rscript -e "cat('ZIP file:', normalizePath(list.files("build/", pattern='zip', full.names=TRUE)))"
+          Rscript -e "cat('ZIP file:', normalizePath(list.files('build/', pattern='zip', full.names=TRUE)))"
           Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
-          Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
+          Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files('build/', pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
