@@ -82,14 +82,9 @@ jobs:
           echo "CUDNN_LIBRARY_PATH=""${CUDA_PATH}\lib\x64""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          cache-version: '2-${{ matrix.config.cuda }}'
-          extra-packages: |
-            any::desc
-            any::remotes
-            any::rcmdcheck
-            mlverse/torchexport
+        run: |
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - run: |
           cd csrc
@@ -155,14 +150,9 @@ jobs:
           windows-path-include-mingw: false
 
       - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          cache-version: 'check-1-${{ matrix.config.cuda }}'
-          extra-packages: |
-            any::desc
-            any::remotes
-            any::rcmdcheck
-            mlverse/torchexport
+        run: |
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
+          Rscript -e "remotes::install_github('mlverse/torchexport')"
 
       - name: Query package version
         shell: bash
