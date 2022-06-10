@@ -22,14 +22,11 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest}
-          - {os: windows-latest}
+          - {os: windows-2019}
           - {os: ubuntu-18.04}
           - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
-          - {os: ubuntu-18.04, cuda: '11.1', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.1-linux-x64-v8.0.5.39.tgz'}
           - {os: ubuntu-18.04, cuda: '10.2', cuda_patch: "89", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-linux-x64-v7.6.5.32.tgz'}
-          - {os: windows-latest, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
-          - {os: windows-latest, cuda: '11.1', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.1-windows-x64-v8.0.5.39.zip'}
-          - {os: windows-latest, cuda: '10.2', cuda_patch: "89", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-windows10-x64-v7.6.5.32.zip'}
+          - {os: windows-2019, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
 
     env:
       TORCH_INSTALL: 1
@@ -41,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
@@ -52,8 +49,13 @@ jobs:
         if: ${{ matrix.config.os == 'ubuntu-18.04' }}
         run: sudo rm -rf /usr/share/dotnet
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: 'latest'
+
       - if: ${{matrix.config.cuda != ''}}
-        uses: Jimver/cuda-toolkit@v0.2.5
+        uses: Jimver/cuda-toolkit@v0.2.7
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
@@ -94,9 +96,12 @@ jobs:
         shell: bash
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
+          fname=$(Rscript -e "cat(list.files('csrc/build/', '*.zip'))")
           echo "::set-output name=version::$version"
+          echo "::set-output name=fname::$fname"
 
       - uses: svenstaro/upload-release-action@v2
+        if: github.ref_name == 'main'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: csrc/build/*.zip
@@ -104,20 +109,25 @@ jobs:
           file_glob: true
           tag: v${{ steps.version.outputs.version }}
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.version.outputs.fname }}
+          path: csrc/build/*.zip
+
 
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    needs: Build-Libs
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: windows-latest, r: '3.6'}
-          - {os: ubuntu-18.04,   r: 'release'}
+          - {os: macOS-latest,   r: 'release', artifact: '+cpu-Darwin.zip'}
+          - {os: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
+          - {os: windows-latest, r: '3.6', artifact: '+cpu-win64.zip'}
+          - {os: ubuntu-18.04,   r: 'release', artifact: '+cpu-Linux.zip'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -131,28 +141,39 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
+          rtools-version: ${{ matrix.config.rtools }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
           windows-path-include-mingw: false
 
-      - run: |
+      - name: Install dependencies
+        run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))" -e "remotes::install_deps(dependencies = TRUE, INSTALL_opts='--no-multiarch')"
           Rscript -e "remotes::install_github('mlverse/torchexport')"
 
-      - shell: bash
+      - name: Query package version
+        shell: bash
+        id: version
         run: |
-          cd csrc
-          mkdir build && cd build
-          cmake ..
-          cmake --build . --target package --config Release --parallel 4
-          Rscript -e "cat('ZIP file:', normalizePath(list.files(pattern='zip', full.names=TRUE)))"
-          Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
-          Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files(pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
+          version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
+          echo "::set-output name=version::$version"
 
-      - uses: r-lib/actions/check-r-package@v1
+      - uses: actions/download-artifact@v3
+        with:
+          name: 'torchvisionlib-${{ steps.version.outputs.version }}${{ matrix.config.artifact }}'
+          path: build/
+
+      - name: Set the path to the lib
+        shell: bash
+        run: |
+          Rscript -e "cat('ZIP file:', normalizePath(list.files('build/', pattern='zip', full.names=TRUE)))"
+          Rscript -e "cat('ENV file:', Sys.getenv('GITHUB_ENV'))"
+          Rscript -e "writeLines(paste0('TORCHVISIONLIB_URL=',normalizePath(list.files('build/', pattern='zip', full.names=TRUE))), Sys.getenv('GITHUB_ENV'))"
+
+      - uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"error"'
           args: 'c("--no-multiarch", "--no-manual")'

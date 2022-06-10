@@ -13,6 +13,13 @@ execute_process (
 )
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
+if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
+  if (WIN32)
+    find_package(CUDAToolkit)
+  endif()
+  enable_language(CUDA)
+endif()
+
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "${TORCH_HOME}")
 set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
@@ -21,9 +28,9 @@ if(WIN32)
   SET(COMMON_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR})
   ExternalProject_Add(zlib
     GIT_REPOSITORY https://github.com/madler/zlib.git
-    GIT_TAG v1.2.11
+    GIT_TAG v1.2.12
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/zlib"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DHAVE_UNISTD_H=off
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_ASM_COMPILER=MSVC -DCMAKE_ASM_NASM_COMPILER=MSVC
   )
   ExternalProject_Add(libpng
     GIT_REPOSITORY https://github.com/glennrp/libpng
@@ -62,7 +69,7 @@ endif()
 
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG main
+  GIT_TAG release/0.12
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
