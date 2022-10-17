@@ -1,6 +1,6 @@
 Package: torchvisionlib
 Title: Additional Operators for Image Models
-Version: 0.2.0.9000
+Version: 0.2.0.9001
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
     person(family = "RStudio", role = c("cph"))
@@ -23,4 +23,6 @@ Imports:
     glue
 Suggests: 
     testthat (>= 3.0.0)
+Remotes:
+    mlverse/torch
 Config/testthat/edition: 3
