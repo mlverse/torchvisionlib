@@ -49,6 +49,11 @@ if(WIN32)
 endif()
 
 
+if(APPLE)
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(PNG libpng16 REQUIRED)
+endif()
+
 # Now that the prefix path is set we can tell cmake to go
 # and find Torch.
 find_package(Torch REQUIRED)
