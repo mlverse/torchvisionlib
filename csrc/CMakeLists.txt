@@ -49,11 +49,6 @@ if(WIN32)
 endif()
 
 
-if(APPLE)
-  find_package(PkgConfig REQUIRED)
-  pkg_check_modules(PNG libpng16 REQUIRED)
-endif()
-
 # Now that the prefix path is set we can tell cmake to go
 # and find Torch.
 find_package(Torch REQUIRED)
@@ -64,6 +59,8 @@ set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 set(TORCHVISION_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR})
 if(WIN32)
   set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DZLIB_LIBRARY=${ZLIB_LIBRARY} -DPNG_LIBRARY=${PNG_LIBRARY} -DPNG_INCLUDE_DIR=${PNG_INCLUDE_DIR} -DJPEG_LIBRARY=${JPEG_LIBRARY})
+elseif(APPLE)
+  set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DCMAKE_FIND_FRAMEWORK=LAST)
 endif()
 
 if (WIN32)
