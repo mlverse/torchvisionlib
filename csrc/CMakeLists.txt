@@ -69,7 +69,7 @@ endif()
 
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG release/0.13
+  GIT_TAG v0.13.1
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
