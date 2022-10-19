@@ -14,10 +14,15 @@ NULL
       if (interactive())
         warning("torchvisionlib is not installed. Run `intall_torchvisionlib()` before using the package.")
     } else {
-      libpath <- lib_path("torchvisionlib")
-      withr::with_dir(dirname(libpath), {
-        dyn.load(basename(libpath))
-      })
+      if (grepl("mingw", R.version[["os"]])) {
+        libpath <- lib_path("torchvisionlib")
+        withr::with_dir(dirname(libpath), {
+          dyn.load(basename(libpath), local = FALSE)
+        })
+      } else {
+        dyn.load(lib_path("torchvision"), local = FALSE)
+        dyn.load(lib_path("torchvisionlib"), local = FALSE)
+      }
 
       # when using devtools::load_all() the library might be available in
       # `lib/pkg/src`
