@@ -21,6 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          - {os: ["self-hosted", "m1"]}
           - {os: macOS-latest}
           - {os: windows-2019}
           - {os: ubuntu-18.04}
