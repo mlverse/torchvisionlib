@@ -20,7 +20,8 @@ Imports:
     Rcpp,
     torch (>= 0.8.0),
     rlang,
-    glue
+    glue,
+    withr
 Suggests: 
     testthat (>= 3.0.0)
 Remotes:
