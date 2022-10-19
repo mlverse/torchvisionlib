@@ -37,7 +37,7 @@ if(WIN32)
     GIT_TAG v1.6.37
     DEPENDS zlib
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:\rtools40\ucrt64\include
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
