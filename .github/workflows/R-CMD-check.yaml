@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@3c1e5d7
+      - uses: r-lib/actions/setup-r@3c1e5d7156f6799c8ac76c744d6484f4fdbe8d0d
         if: ${{ !contains(matrix.config.os, 'm1') }}
         with:
           r-version: ${{ matrix.config.r }}
