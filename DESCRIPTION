@@ -25,5 +25,5 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Remotes:
-    mlverse/torch@register
+    mlverse/torch
 Config/testthat/edition: 3
