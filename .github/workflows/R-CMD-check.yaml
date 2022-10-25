@@ -126,7 +126,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release', artifact: '+cpu-Darwin.zip'}
+          - {os: macOS-latest,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
+          - {os: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
           - {os: windows-latest, r: '3.6', artifact: '+cpu-win64.zip'}
           - {os: ubuntu-18.04,   r: 'release', artifact: '+cpu-Linux.zip'}
@@ -144,6 +145,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
 
       - uses: r-lib/actions/setup-r@v2
+        if: ${{ !contains(matrix.config.os, 'm1') }}
         with:
           r-version: ${{ matrix.config.r }}
           rtools-version: ${{ matrix.config.rtools }}
