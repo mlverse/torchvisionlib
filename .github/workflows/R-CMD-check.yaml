@@ -22,7 +22,7 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest}
-          - {os: ['self-hosted', 'm1'], cmake_prefix_path: '/opt/homebrew/', apple_processor: 'arm64'}
+          - {os: ['self-hosted', 'm1']}
           - {os: windows-2019}
           - {os: ubuntu-18.04}
           - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
@@ -35,8 +35,6 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
       MAKEFLAGS: '-j8'
-      CMAKE_PREFIX_PATH: ${{ matrix.config.cmake_prefix_path }}
-      CMAKE_APPLE_SILICON_PROCESSOR: ${{ matrix.config.apple_processor }}
 
     steps:
       - uses: actions/checkout@v2
