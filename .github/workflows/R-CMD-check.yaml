@@ -56,7 +56,7 @@ jobs:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1
         with:
-          cmake-version: '3.18'
+          cmake-version: '3.21'
 
       - if: ${{matrix.config.cuda != ''}}
         uses: Jimver/cuda-toolkit@v0.2.7
