@@ -18,12 +18,10 @@ LinkingTo:
     torch
 Imports: 
     Rcpp,
-    torch (>= 0.8.0),
+    torch (>= 0.9.0),
     rlang,
     glue,
     withr
 Suggests: 
     testthat (>= 3.0.0)
-Remotes:
-    mlverse/torch
 Config/testthat/edition: 3
