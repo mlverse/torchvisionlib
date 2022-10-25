@@ -154,6 +154,9 @@ else()
   set(CPACK_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION}+cpu)
 endif()
 
+if(APPLE)
+  set(CPACK_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION}+cpu+${CMAKE_SYSTEM_PROCESSOR})
+endif()
 
 include(CPack)
 
