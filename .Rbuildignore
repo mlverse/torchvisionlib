@@ -17,3 +17,4 @@
 ^resnet18\.pt$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
