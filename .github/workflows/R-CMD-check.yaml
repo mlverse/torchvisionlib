@@ -64,6 +64,9 @@ jobs:
 
       - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'ubuntu') }}
         run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
           wget --quiet ${{matrix.config.cudnn}} -O cudnn.tgz
           tar -xzvf cudnn.tgz
           sudo cp cuda/include/cudnn*.h $CUDA_PATH/include
