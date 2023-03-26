@@ -39,6 +39,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
       MAKEFLAGS: '-j8'
+      DEBIAN_FRONTEND: 'noninteractive'
 
     steps:
       - uses: actions/checkout@v2
@@ -50,6 +51,10 @@ jobs:
           apt-get install -y curl sudo libxml2-dev wget chrpath rsync git
           curl -fsSL https://get.docker.com -o get-docker.sh
           DRY_RUN=1 sh ./get-docker.sh
+
+      - uses: mlverse/torch/.github/actions/setup-r@main
+        with:
+          r_version: ${{ matrix.config.r_version}}
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1
@@ -67,10 +72,6 @@ jobs:
         uses: mlverse/torch/.github/actions/install-cudnn@main
         with:
           cuda_version: ${{ matrix.config.cuda }}
-
-      - uses: mlverse/torch/.github/actions/setup-r@main
-        with:
-          r_version: ${{ matrix.config.r_version}}
 
       - name: Install dependencies
         run: |
