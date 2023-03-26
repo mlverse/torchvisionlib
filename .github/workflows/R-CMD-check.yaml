@@ -43,14 +43,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@v2
-        if: ${{ !contains(matrix.config.os, 'm1') }}
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-          windows-path-include-mingw: false
-
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1
         with:
@@ -67,6 +59,10 @@ jobs:
         uses: mlverse/torch/.github/actions/install-cudnn@main
         with:
           cuda_version: ${{ matrix.config.cuda }}
+
+      - uses: mlverse/torch/.github/actions/setup-r@main
+        with:
+          r_version: ${{ matrix.config.r_version}}
 
       - name: Install dependencies
         run: |
