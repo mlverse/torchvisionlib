@@ -26,7 +26,7 @@ jobs:
           - {runner: [self-hosted, m1],        os: macOS}
           - {runner: windows-2019,             os: windows}
           - {runner: ubuntu-latest,            os: ubuntu}
-          - {runner: [self-hosted, gce, disk], os: ubuntu , cuda: '11.7', cuda_patch: "0"}
+          - {runner: [self-hosted, gce, disk], os: ubuntu, cuda: '11.7', cuda_patch: "0"}
           - {runner: windows-2019              os: windows, cuda: '11.7', cuda_patch: "0" }
 
         include:
