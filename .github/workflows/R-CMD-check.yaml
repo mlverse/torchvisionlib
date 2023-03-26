@@ -25,9 +25,8 @@ jobs:
           - {os: ['self-hosted', 'm1']}
           - {os: windows-2019, r: '4.2.1'}
           - {os: ubuntu-18.04}
-          - {os: ubuntu-18.04, cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-linux-x64-v8.2.1.32.tgz'}
-          - {os: ubuntu-18.04, cuda: '10.2', cuda_patch: "89", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-10.2-linux-x64-v7.6.5.32.tgz'}
-          - {os: windows-2019, r: '4.2.1', cuda: '11.3', cuda_patch: "1", cudnn: 'https://storage.googleapis.com/torch-lantern-builds/cudnn/cudnn-11.3-windows-x64-v8.2.1.32.zip'}
+          - {os: ubuntu-18.04, cuda: '11.7', cuda_patch: "0"}
+          - {os: windows-2019, r: '4.2.1', cuda: '11.7', cuda_patch: "0"}
 
     env:
       TORCH_INSTALL: 1
@@ -68,26 +67,11 @@ jobs:
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
 
-      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'ubuntu') }}
-        run: |
-          wget --quiet ${{matrix.config.cudnn}} -O cudnn.tgz
-          tar -xzvf cudnn.tgz
-          sudo cp cuda/include/cudnn*.h $CUDA_PATH/include
-          sudo cp cuda/lib64/libcudnn* $CUDA_PATH/lib64
-          sudo chmod a+r $CUDA_PATH/include/cudnn*.h $CUDA_PATH/lib64/libcudnn*
-          rm cudnn.tgz
-
-      - if: ${{ matrix.config.cuda != '' && contains(matrix.config.os, 'windows') }}
-        run: |
-          curl ${{ matrix.config.cudnn }} --output cudnn.zip --silent --location
-          Expand-Archive -Path cudnn.zip -DestinationPath "C:\cudnn"
-          Get-ChildItem -Path "C:\cudnn"
-          Get-ChildItem -Path "${env:CUDA_PATH}"
-          Move-Item -Path "C:\cudnn\cuda\bin\cudnn*.dll" -Destination "${env:CUDA_PATH}\bin"
-          Move-Item -Path "C:\cudnn\cuda\include\cudnn*.h" -Destination "${env:CUDA_PATH}\include"
-          Move-Item -Path "C:\cudnn\cuda\lib\x64\cudnn*.lib" -Destination "${env:CUDA_PATH}\lib\x64"
-          echo "CUDNN_INCLUDE_PATH=""${CUDA_PATH}\include""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "CUDNN_LIBRARY_PATH=""${CUDA_PATH}\lib\x64""" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Install CuDNN
+        if: ${{ matrix.config.cuda != '' }}
+        uses: mlverse/torch/.github/actions/install-cudnn@main
+        with:
+          cuda_version: ${{ matrix.config.cuda }}
 
       - name: Install dependencies
         run: |
