@@ -15,18 +15,23 @@ name: R-CMD-check
 jobs:
 
   Build-Libs:
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ${{ matrix.config.runner }}
+    container: ${{ matrix.container }}
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest}
-          - {os: ['self-hosted', 'm1']}
-          - {os: windows-2019, r: '4.2.1'}
-          - {os: ubuntu-18.04}
-          - {os: ubuntu-18.04, cuda: '11.7', cuda_patch: "0"}
-          - {os: windows-2019, r: '4.2.1', cuda: '11.7', cuda_patch: "0"}
+          - {runner: macOS-latest,             os: macOS}
+          - {runner: [self-hosted, m1],        os: macOS}
+          - {runner: windows-2019,             os: windows}
+          - {runner: ubuntu-latest,            os: ubuntu}
+          - {runner: [self-hosted, gce, disk], os: ubuntu , cuda: '11.7', cuda_patch: "0"}
+          - {runner: windows-2019              os: windows, cuda: '11.7', cuda_patch: "0" }
+
+        include:
+          - config: {os: ubuntu}
+            container: ubuntu:18.04
 
     env:
       TORCH_INSTALL: 1
@@ -45,16 +50,6 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
           windows-path-include-mingw: false
-
-      - name: Free up 24GB of disk space
-        if: ${{ matrix.config.os == 'ubuntu-18.04' }}
-        run: |
-          df -h
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1
