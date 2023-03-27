@@ -25,7 +25,7 @@ set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
 include(ExternalProject)
 if(WIN32)
-  SET(COMMON_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR})
+  SET(COMMON_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR})
   ExternalProject_Add(zlib
     GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.2.12
@@ -37,12 +37,11 @@ if(WIN32)
     GIT_TAG v1.6.37
     DEPENDS zlib
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
-    GIT_TAG jpeg-9b
-    DEPENDS zlib
+    GIT_TAG 2.0.6
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
     CMAKE_ARGS ${COMMON_CMAKE_ARGS}
   )
