@@ -41,7 +41,7 @@ if(WIN32)
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
-    GIT_TAG 2.1.5.1
+    GIT_TAG 2.1.2
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
     CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_STATIC=0 -DWITH_TURBOJPEG=0
   )
