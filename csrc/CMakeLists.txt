@@ -74,6 +74,7 @@ ExternalProject_Add(TorchVision-project
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
+  PATCH_COMMAND git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff
 )
 
 SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
