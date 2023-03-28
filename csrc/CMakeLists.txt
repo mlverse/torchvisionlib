@@ -41,7 +41,7 @@ if(WIN32)
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
-    GIT_TAG 2.0.6
+    GIT_TAG 2.1.5.1
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
     CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_STATIC=0 -DWITH_TURBOJPEG=0
   )
@@ -70,8 +70,8 @@ else()
 endif()
 
 ExternalProject_Add(TorchVision-project
-  GIT_REPOSITORY https://github.com/dfalbel/vision
-  GIT_TAG v0.14.1-patch
+  GIT_REPOSITORY https://github.com/pytorch/vision
+  GIT_TAG v0.14.1
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
