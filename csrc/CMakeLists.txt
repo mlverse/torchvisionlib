@@ -64,8 +64,10 @@ endif()
 
 if (WIN32)
   set(TORCHVISION_DEPENDS libpng libjpeg)
+  set(PATCH_CMD "git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff")
 else()
   set(TORCHVISION_DEPENDS)
+  set(PATCH_CMD "")
 endif()
 
 ExternalProject_Add(TorchVision-project
@@ -74,7 +76,7 @@ ExternalProject_Add(TorchVision-project
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
-  PATCH_COMMAND git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff
+  PATCH_COMMAND ${PATCH_CMD}
 )
 
 SET(TORCHVISION_INCLUDE_DIR ${TorchVision_DESTDIR}/include)
