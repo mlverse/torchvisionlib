@@ -1,7 +1,12 @@
 #include <lantern/types.h>
+#include <string>
+#include <iostream>
+#include <torch/torch.h>
 #include <torchvision/ops/ops.h>
+#include <torchvision/io/image/cpu/decode_jpeg.h>
 #include <torchvisionlib/torchvisionlib.h>
 #include <torchvisionlib/torchvisionlib_types.h>
+
 
 // [[torch::export]]
 torch::Tensor vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold) {
@@ -110,4 +115,26 @@ tensor_pair vision_ops_roi_pool(
     pooled_height,
     pooled_width
   );
+}
+
+// [[torch::export]]
+torch::Tensor vision_read_jpeg(std::string fpath) {
+  std::ifstream file(fpath, std::ios::binary | std::ios::ate);
+  std::streamsize size = file.tellg();
+  file.seekg(0, std::ios::beg);
+
+  std::vector<char> buffer(size);
+  if (!file.read(buffer.data(), size))
+  {
+      throw std::runtime_error("Error reading file.");
+  }
+
+  auto ten = torch::from_blob(buffer.data(), {size}, torch::kByte);
+  return vision::image::decode_jpeg(ten);
+}
+
+// [[torch::export]]
+torch::Tensor vision_read_jpeg_float(std::string fpath) {
+  auto ten = vision_read_jpeg(fpath);
+  return ten.to(torch::kFloat32).div_(255);
 }

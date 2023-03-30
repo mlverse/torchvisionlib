@@ -9,6 +9,8 @@ torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_align (torch::Tensor input, t
 torchvisionlib::tensor_pair rcpp_vision_ops_ps_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
 torch::Tensor rcpp_vision_ops_roi_align (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio, bool aligned);
 torchvisionlib::tensor_pair rcpp_vision_ops_roi_pool (torch::Tensor input, torch::Tensor rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
+torch::Tensor rcpp_vision_read_jpeg (torch::string fpath);
+torch::Tensor rcpp_vision_read_jpeg_float (torch::string fpath);
 void rcpp_delete_tensor_pair (void* x);
 torch::Tensor rcpp_tensor_pair_get_first (torchvisionlib::tensor_pair x);
 torch::Tensor rcpp_tensor_pair_get_second (torchvisionlib::tensor_pair x);

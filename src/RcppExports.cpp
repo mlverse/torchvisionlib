@@ -111,6 +111,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_read_jpeg
+torch::Tensor rcpp_vision_read_jpeg(torch::string fpath);
+RcppExport SEXP _torchvisionlib_rcpp_vision_read_jpeg(SEXP fpathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::string >::type fpath(fpathSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_read_jpeg(fpath));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rcpp_vision_read_jpeg_float
+torch::Tensor rcpp_vision_read_jpeg_float(torch::string fpath);
+RcppExport SEXP _torchvisionlib_rcpp_vision_read_jpeg_float(SEXP fpathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::string >::type fpath(fpathSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_read_jpeg_float(fpath));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_delete_tensor_pair
 void rcpp_delete_tensor_pair(void* x);
 RcppExport SEXP _torchvisionlib_rcpp_delete_tensor_pair(SEXP xSEXP) {
@@ -151,6 +173,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_pool, 5},
     {"_torchvisionlib_rcpp_vision_ops_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_roi_align, 7},
     {"_torchvisionlib_rcpp_vision_ops_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_roi_pool, 5},
+    {"_torchvisionlib_rcpp_vision_read_jpeg", (DL_FUNC) &_torchvisionlib_rcpp_vision_read_jpeg, 1},
+    {"_torchvisionlib_rcpp_vision_read_jpeg_float", (DL_FUNC) &_torchvisionlib_rcpp_vision_read_jpeg_float, 1},
     {"_torchvisionlib_rcpp_delete_tensor_pair", (DL_FUNC) &_torchvisionlib_rcpp_delete_tensor_pair, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_first", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_first, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_second", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_second, 1},

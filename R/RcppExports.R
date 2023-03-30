@@ -25,6 +25,14 @@ rcpp_vision_ops_roi_pool <- function(input, rois, spatial_scale, pooled_height, 
     .Call('_torchvisionlib_rcpp_vision_ops_roi_pool', PACKAGE = 'torchvisionlib', input, rois, spatial_scale, pooled_height, pooled_width)
 }
 
+rcpp_vision_read_jpeg <- function(fpath) {
+    .Call('_torchvisionlib_rcpp_vision_read_jpeg', PACKAGE = 'torchvisionlib', fpath)
+}
+
+rcpp_vision_read_jpeg_float <- function(fpath) {
+    .Call('_torchvisionlib_rcpp_vision_read_jpeg_float', PACKAGE = 'torchvisionlib', fpath)
+}
+
 rcpp_delete_tensor_pair <- function(x) {
     invisible(.Call('_torchvisionlib_rcpp_delete_tensor_pair', PACKAGE = 'torchvisionlib', x))
 }
