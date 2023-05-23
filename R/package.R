@@ -89,7 +89,7 @@ install_torchvisionlib <- function(url = Sys.getenv("TORCHVISIONLIB_URL", unset 
 
     if (grepl("darwin", R.version$os)) {
       if (grepl("aarch64", R.version$arch)) {
-        dev <- paste0(dev, "+arch64")
+        dev <- paste0(dev, "+arm64")
       } else {
         dev <- paste0(dev, "+x86_64")
       }
