@@ -12,7 +12,7 @@ include(GNUInstallDirs)
 # installation path as the libtorch path. otherwise we will
 # install our own copy of libtorch.
 execute_process(
-  COMMAND Rscript -e "cat(as.numeric(require(torch)))"
+  COMMAND Rscript -e "cat(as.numeric(require(sjasj)))"
   OUTPUT_VARIABLE TORCH_INSTALLED
 )
 
@@ -25,19 +25,10 @@ if ("${TORCH_INSTALLED}" STREQUAL "1")
   )
 else()
   SET(TORCH_INSTALL_SCRIPT "https://raw.githubusercontent.com/mlverse/torch/main/R/install.R")
+  SET(TORCH_HOME "${CMAKE_CURRENT_BINARY_DIR}/torch")
   execute_process(
-      COMMAND Rscript -e "source('${TORCH_INSTALL_SCRIPT}'); cat(libtorch_url())"
-      OUTPUT_VARIABLE TORCH_URL
+      COMMAND Rscript -e "Sys.setenv(TORCH_HOME='${TORCH_HOME}');source('${TORCH_INSTALL_SCRIPT}'); install_torch();"
   )
-  include(FetchContent)
-  FetchContent_Declare(
-    torch
-    URL ${TORCH_URL}
-    DOWNLOAD_NO_EXTRACT false
-    TLS_VERIFY false
-  )
-  FetchContent_MakeAvailable(torch)
-  set(TORCH_HOME ${torch_SOURCE_DIR})
 endif()
 
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
