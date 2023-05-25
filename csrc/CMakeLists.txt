@@ -7,10 +7,39 @@ include(GNUInstallDirs)
 # We find a LibTorch installation trough the torch package.
 # This is the best approach if we want to make sure we are
 # targetting the same LibTorch version as used by torch.
-execute_process (
-    COMMAND Rscript -e "cat(torch::torch_install_path())"
-    OUTPUT_VARIABLE TORCH_HOME
+
+# check if torch is installed, if it's we'll use the torch
+# installation path as the libtorch path. otherwise we will
+# install our own copy of libtorch.
+execute_process(
+  COMMAND Rscript -e "cat(as.numeric(require(torch)))"
+  OUTPUT_VARIABLE TORCH_INSTALLED
 )
+
+message(STATUS "TORCH_INSTALLED: ${TORCH_INSTALLED}")
+
+if ("${TORCH_INSTALLED}" STREQUAL "1")
+  execute_process(
+      COMMAND Rscript -e "cat(torch::torch_install_path())"
+      OUTPUT_VARIABLE TORCH_HOME
+  )
+else()
+  SET(TORCH_INSTALL_SCRIPT "https://raw.githubusercontent.com/mlverse/torch/main/R/install.R")
+  execute_process(
+      COMMAND Rscript -e "source('${TORCH_INSTALL_SCRIPT}'); cat(libtorch_url())"
+      OUTPUT_VARIABLE TORCH_URL
+  )
+  include(FetchContent)
+  FetchContent_Declare(
+    torch
+    URL ${TORCH_URL}
+    DOWNLOAD_NO_EXTRACT false
+    TLS_VERIFY false
+  )
+  FetchContent_MakeAvailable(torch)
+  set(TORCH_HOME ${torch_SOURCE_DIR})
+endif()
+
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
