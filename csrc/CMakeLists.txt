@@ -12,7 +12,7 @@ include(GNUInstallDirs)
 # installation path as the libtorch path. otherwise we will
 # install our own copy of libtorch.
 execute_process(
-  COMMAND Rscript -e "cat(as.numeric(require(sas, quietly = TRUE)))"
+  COMMAND Rscript -e "cat(as.numeric(require(torch, quietly = TRUE)))"
   OUTPUT_VARIABLE TORCH_INSTALLED
 )
 
@@ -131,6 +131,7 @@ add_library(torchvisionlib::library ALIAS torchvisionlib)
 
 target_include_directories(torchvisionlib PUBLIC
     ${PROJECT_SOURCE_DIR}/include
+    ${TORCH_HOME}/include
     ${TORCHVISION_INCLUDE_DIR}
 )
 
