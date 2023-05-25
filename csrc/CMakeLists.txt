@@ -12,7 +12,7 @@ include(GNUInstallDirs)
 # installation path as the libtorch path. otherwise we will
 # install our own copy of libtorch.
 execute_process(
-  COMMAND Rscript -e "cat(as.numeric(require(torch)))"
+  COMMAND Rscript -e "cat(as.numeric(require(torch, quietly = TRUE)))"
   OUTPUT_VARIABLE TORCH_INSTALLED
 )
 
