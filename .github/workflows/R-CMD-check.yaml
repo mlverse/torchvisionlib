@@ -121,7 +121,7 @@ jobs:
           - {os: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
           - {os: windows-latest, r: '3.6', artifact: '+cpu-win64.zip'}
-          - {os: ubuntu-18.04,   r: 'release', artifact: '+cpu-Linux.zip'}
+          - {os: ubuntu-20.04,   r: 'release', artifact: '+cpu-Linux.zip'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
