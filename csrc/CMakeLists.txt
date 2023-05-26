@@ -7,10 +7,36 @@ include(GNUInstallDirs)
 # We find a LibTorch installation trough the torch package.
 # This is the best approach if we want to make sure we are
 # targetting the same LibTorch version as used by torch.
-execute_process (
-    COMMAND Rscript -e "cat(torch::torch_install_path())"
-    OUTPUT_VARIABLE TORCH_HOME
+
+# check if torch is installed, if it's we'll use the torch
+# installation path as the libtorch path. otherwise we will
+# install our own copy of libtorch.
+execute_process(
+  COMMAND Rscript -e "cat(as.numeric(require(torch, quietly = TRUE)))"
+  OUTPUT_VARIABLE TORCH_INSTALLED
 )
+
+message(STATUS "TORCH_INSTALLED: ${TORCH_INSTALLED}")
+
+if ("${TORCH_INSTALLED}" STREQUAL "1")
+  execute_process(
+      COMMAND Rscript -e "cat(torch::torch_install_path())"
+      OUTPUT_VARIABLE TORCH_HOME
+  )
+else()
+  SET(TORCH_INSTALL_SCRIPT "https://raw.githubusercontent.com/mlverse/torch/main/R/install.R")
+  SET(TORCH_DESCRIPTION "https://raw.githubusercontent.com/mlverse/torch/main/DESCRIPTION")
+  execute_process (
+    COMMAND Rscript -e "cat(desc::desc(text=readLines('${TORCH_DESCRIPTION}'))$get('Version'))"
+    OUTPUT_VARIABLE TORCH_R_VERSION
+  )
+  message(STATUS "TORCH_R_VERSION: ${TORCH_R_VERSION}")
+  SET(TORCH_HOME "${CMAKE_CURRENT_BINARY_DIR}/torch")
+  execute_process(
+      COMMAND Rscript -e "Sys.setenv(TORCH_HOME='${TORCH_HOME}', TORCH_R_VERSION='${TORCH_R_VERSION}', TORCH_COMMIT_SHA='none');source('${TORCH_INSTALL_SCRIPT}'); install_torch();"
+  )
+endif()
+
 message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
@@ -37,13 +63,13 @@ if(WIN32)
     GIT_TAG v1.6.37
     DEPENDS zlib
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include -DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
     GIT_TAG 2.1.2
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0 -DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include
   )
 endif()
 
@@ -57,7 +83,7 @@ set(TorchVision_DESTDIR ${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
 set(TORCHVISION_CMAKE_ARGS -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH} -DCMAKE_INSTALL_PREFIX=${TorchVision_DESTDIR})
 if(WIN32)
-  set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DZLIB_LIBRARY=${ZLIB_LIBRARY} -DPNG_LIBRARY=${PNG_LIBRARY} -DPNG_INCLUDE_DIR=${PNG_INCLUDE_DIR} -DJPEG_LIBRARY=${JPEG_LIBRARY})
+  set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DZLIB_LIBRARY=${ZLIB_LIBRARY} -DPNG_LIBRARY=${PNG_LIBRARY} -DPNG_INCLUDE_DIR=${PNG_INCLUDE_DIR} -DJPEG_LIBRARY=${JPEG_LIBRARY} -DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include)
 elseif(APPLE)
   set(TORCHVISION_CMAKE_ARGS ${TORCHVISION_CMAKE_ARGS} -DCMAKE_FIND_FRAMEWORK=LAST)
 endif()
@@ -105,6 +131,7 @@ add_library(torchvisionlib::library ALIAS torchvisionlib)
 
 target_include_directories(torchvisionlib PUBLIC
     ${PROJECT_SOURCE_DIR}/include
+    ${TORCH_HOME}/include
     ${TORCHVISION_INCLUDE_DIR}
 )
 
