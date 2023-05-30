@@ -54,8 +54,9 @@ The (RoI) Align operator is mentioned in \href{https://arxiv.org/abs/1711.07264}
 
 }}
 \examples{
-if (torch::torch_is_installed()) {
+if (torchvisionlib_is_installed()) {
 library(torch)
+library(torchvisionlib)
 input <- torch_randn(1, 3, 28, 28)
 boxes <- list(torch_tensor(matrix(c(1,1,5,5), ncol = 4)))
 roi <- nn_ps_roi_align(output_size = c(1, 1))
