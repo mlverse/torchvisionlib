@@ -56,6 +56,20 @@ TORCHVISIONLIB_API void* _vision_ops_roi_pool (void* input, void* rois, double s
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
+torch::Tensor vision_read_jpeg (std::string fpath);
+TORCHVISIONLIB_API void* _vision_read_jpeg (void* fpath) {
+  try {
+    return  make_raw::Tensor(vision_read_jpeg(from_raw::string(fpath)));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
+torch::Tensor vision_read_jpeg_float (std::string fpath);
+TORCHVISIONLIB_API void* _vision_read_jpeg_float (void* fpath) {
+  try {
+    return  make_raw::Tensor(vision_read_jpeg_float(from_raw::string(fpath)));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
 void delete_tensor_pair (void* x);
 TORCHVISIONLIB_API void _delete_tensor_pair (void* x) {
   try {

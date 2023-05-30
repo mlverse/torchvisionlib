@@ -50,9 +50,9 @@ The (RoI) Align operator is mentioned in \href{https://arxiv.org/abs/1711.07264}
 }
 \section{Functions}{
 \itemize{
-\item \code{nn_ps_roi_align}: The \code{\link[torch:nn_module]{torch::nn_module()}} wrapper for \code{\link[=ops_ps_roi_align]{ops_ps_roi_align()}}.
-}}
+\item \code{nn_ps_roi_align()}: The \code{\link[torch:nn_module]{torch::nn_module()}} wrapper for \code{\link[=ops_ps_roi_align]{ops_ps_roi_align()}}.
 
+}}
 \examples{
 if (torch::torch_is_installed()) {
 library(torch)

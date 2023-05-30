@@ -28,6 +28,14 @@ torchvisionlib::tensor_pair rcpp_vision_ops_roi_pool (torch::Tensor input, torch
   return  vision_ops_roi_pool(input.get(), rois.get(), spatial_scale, pooled_height, pooled_width);
 }
 // [[Rcpp::export]]
+torch::Tensor rcpp_vision_read_jpeg (torch::string fpath) {
+  return  vision_read_jpeg(fpath.get());
+}
+// [[Rcpp::export]]
+torch::Tensor rcpp_vision_read_jpeg_float (torch::string fpath) {
+  return  vision_read_jpeg_float(fpath.get());
+}
+// [[Rcpp::export]]
 void rcpp_delete_tensor_pair (void* x) {
    delete_tensor_pair(x);
 }

@@ -11,8 +11,7 @@ Description: Implements additional operators for computer vision models, includi
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-SystemRequirements: C++11
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 LinkingTo: 
     Rcpp,
     torch
@@ -25,5 +24,3 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Remotes:
-    mlverse/torch
