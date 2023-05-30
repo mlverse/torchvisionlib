@@ -1,6 +1,6 @@
 Package: torchvisionlib
 Title: Additional Operators for Image Models
-Version: 0.3.0.9000
+Version: 0.4.0
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
     person(family = "RStudio", role = c("cph"))

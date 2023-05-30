@@ -1,4 +1,4 @@
-# torchvisionlib (development version)
+# torchvisionlib 0.4.0
 
 - Updates to support LibTorch v1.13.1
 - New faster image reader. By reading directly into a torch tensor it can be 2x times faster than `jpeg::readJPEG`. (#15)
