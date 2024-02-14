@@ -22,12 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-latest,             r_version: release, os: macOS}
-          - {runner: [self-hosted, m1],        r_version: '',      os: macOS}
-          - {runner: windows-2019,             r_version: release, os: windows}
-          - {runner: ubuntu-latest,            r_version: release, os: ubuntu}
-          - {runner: [self-hosted, gce, disk], r_version: release, os: ubuntu, cuda: 11.7, cuda_patch: 0}
-          - {runner: windows-2019,             r_version: release, os: windows, cuda: 11.7, cuda_patch: 0}
+          - {runner: macOS-latest,         r_version: release, os: macOS}
+          - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
+          - {runner: windows-2019,         r_version: release, os: windows}
+          - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
+          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 11.7, cuda_patch: 0}
+          - {runner: windows-2019,         r_version: release, os: windows, cuda: 11.7, cuda_patch: 0}
 
         include:
           - config: {os: ubuntu}
