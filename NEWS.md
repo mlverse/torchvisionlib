@@ -1,4 +1,4 @@
-# torchvisionlib (development version)
+# torchvisionlib 0.5.0
 
 - Updates to support LibTorch v2.0.1
 
