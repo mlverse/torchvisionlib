@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-13,         r_version: release, os: macOS}
+          - {runner: macOS-13,             r_version: release, os: macOS}
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2019,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
