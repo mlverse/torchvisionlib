@@ -58,9 +58,9 @@ jobs:
           DRY_RUN=1 sh ./get-docker.sh
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1
+        uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: '3.25.2'
+          cmake-version: 'latest'
 
       - if: ${{matrix.config.cuda != ''}}
         uses: Jimver/cuda-toolkit@v0.2.21
