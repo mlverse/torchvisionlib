@@ -102,7 +102,7 @@ jobs:
           file_glob: true
           tag: v${{ steps.version.outputs.version }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.version.outputs.fname }}
           path: csrc/build/*.zip
@@ -157,7 +157,7 @@ jobs:
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           echo "::set-output name=version::$version"
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: 'torchvisionlib-${{ steps.version.outputs.version }}${{ matrix.config.artifact }}'
           path: build/
