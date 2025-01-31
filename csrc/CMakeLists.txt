@@ -53,7 +53,7 @@ if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
 
       # Clone the NVTX repository (shallow clone to save time)
       execute_process(
-        COMMAND git clone --depth 1 --branch main https://github.com/NVIDIA/NVTX.git
+        COMMAND git clone --depth 1 --branch release-v3 https://github.com/NVIDIA/NVTX.git
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/third_party"
         RESULT_VARIABLE GIT_RESULT
       )
