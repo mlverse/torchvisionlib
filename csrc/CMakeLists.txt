@@ -42,31 +42,17 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
     find_package(CUDAToolkit REQUIRED)
-    set(NVTX_SOURCE_DIR "${TORCH_HOME}/third_party/NVTX")
-
-    # Check if NVTX headers already exist in the source directory
-    if(NOT EXISTS "${TORCH_HOME}/third_party/NVTX/LICENSE.txt")
-      message(STATUS "Downloading NVTX into project source directory...")
-
-      # Create the third_party directory if it doesn't exist
-      file(MAKE_DIRECTORY "${TORCH_HOME}/third_party")
-
-      # Clone the NVTX repository (shallow clone to save time)
-      execute_process(
-        COMMAND git clone --depth 1 --branch release-v3 https://github.com/NVIDIA/NVTX.git
-        WORKING_DIRECTORY "${TORCH_HOME}/third_party"
-        RESULT_VARIABLE GIT_RESULT
-      )
-
-      # Check for errors
-      if(NOT GIT_RESULT EQUAL 0)
-        message(FATAL_ERROR "Failed to download NVTX: Git error ${GIT_RESULT}")
-      endif()
-      
-      message(STATUS "NVTX downloaded to: ${NVTX_SOURCE_DIR}")
-    else()
-      message(STATUS "NVTX already exists in source directory")
-endif()
+    message(STATUS "PyTorch NVTX headers workaround: Yes")
+    # only do this if nvToolsExt is not defined and CUDA::nvtx3 exists
+    if(NOT TARGET CUDA::nvToolsExt AND TARGET CUDA::nvtx3)
+        add_library(CUDA::nvToolsExt INTERFACE IMPORTED)
+        # ensure that PyTorch is told to use NVTX3 headers
+        target_compile_definitions(
+            CUDA::nvToolsExt INTERFACE
+            TORCH_CUDA_USE_NVTX3
+        )
+        target_link_libraries(CUDA::nvToolsExt INTERFACE CUDA::nvtx3)
+    endif()
   endif()
   enable_language(CUDA)
 endif()
