@@ -42,17 +42,6 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
     find_package(CUDAToolkit REQUIRED)
-    message(STATUS "PyTorch NVTX headers workaround: Yes")
-    # only do this if nvToolsExt is not defined and CUDA::nvtx3 exists
-    if(NOT TARGET CUDA::nvToolsExt AND TARGET CUDA::nvtx3)
-        add_library(CUDA::nvToolsExt INTERFACE IMPORTED)
-        # ensure that PyTorch is told to use NVTX3 headers
-        target_compile_definitions(
-            CUDA::nvToolsExt INTERFACE
-            TORCH_CUDA_USE_NVTX3
-        )
-        target_link_libraries(CUDA::nvToolsExt INTERFACE CUDA::nvtx3)
-    endif()
   endif()
   enable_language(CUDA)
 endif()
@@ -103,7 +92,7 @@ endif()
 
 if (WIN32)
   set(TORCHVISION_DEPENDS libpng libjpeg)
-  set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff || true)
+  set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff ${CMAKE_SOURCE_DIR}/patch/nvtx_workaround.diff || true)
 else()
   set(TORCHVISION_DEPENDS)
 endif()
@@ -115,7 +104,6 @@ ExternalProject_Add(TorchVision-project
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_CACHE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision/src/TorchVision-project"
   PATCH_COMMAND ${PATCH_CMD}
 )
 

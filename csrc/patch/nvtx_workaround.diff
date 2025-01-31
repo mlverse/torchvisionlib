@@ -1,0 +1,26 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f243055990..04b06e8335 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,6 +15,21 @@ option(WITH_WEBP "Enable features requiring LibWEBP." OFF)
+ option(WITH_AVIF "Enable features requiring LibAVIF." OFF)
+ 
+ if(WITH_CUDA)
++  if (WIN32)
++    find_package(CUDAToolkit REQUIRED)
++    message(STATUS "PyTorch NVTX headers workaround: Yes")
++    # only do this if nvToolsExt is not defined and CUDA::nvtx3 exists
++    if(NOT TARGET CUDA::nvToolsExt AND TARGET CUDA::nvtx3)
++        add_library(CUDA::nvToolsExt INTERFACE IMPORTED)
++        # ensure that PyTorch is told to use NVTX3 headers
++        target_compile_definitions(
++            CUDA::nvToolsExt INTERFACE
++            TORCH_CUDA_USE_NVTX3
++        )
++        target_link_libraries(CUDA::nvToolsExt INTERFACE CUDA::nvtx3)
++    endif()
++  endif()
++
+   enable_language(CUDA)
+   add_definitions(-D__CUDA_NO_HALF_OPERATORS__)
+   add_definitions(-DWITH_CUDA)
