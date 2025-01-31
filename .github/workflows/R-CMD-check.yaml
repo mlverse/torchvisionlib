@@ -26,8 +26,8 @@ jobs:
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2019,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
-          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 11.7, cuda_patch: 0}
-          - {runner: windows-2019,         r_version: release, os: windows, cuda: 11.7, cuda_patch: 0}
+          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 12.4, cuda_patch: 1}
+          - {runner: windows-2019,         r_version: release, os: windows, cuda: 12.4, cuda_patch: 1}
 
         include:
           - config: {os: ubuntu}
