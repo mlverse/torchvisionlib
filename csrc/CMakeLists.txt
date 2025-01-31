@@ -42,12 +42,31 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
     find_package(CUDAToolkit REQUIRED)
-    
-    if(TARGET CUDA::nvtx3)
-      message(STATUS "Found CUDA::nvtx3")
+    set(NVTX_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/NVTX")
+
+    # Check if NVTX headers already exist in the source directory
+    if(NOT EXISTS "${NVTX_SOURCE_DIR}/LICENSE.txt")
+      message(STATUS "Downloading NVTX into project source directory...")
+
+      # Create the third_party directory if it doesn't exist
+      file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/third_party")
+
+      # Clone the NVTX repository (shallow clone to save time)
+      execute_process(
+        COMMAND git clone --depth 1 --branch main https://github.com/NVIDIA/NVTX.git
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/third_party"
+        RESULT_VARIABLE GIT_RESULT
+      )
+
+      # Check for errors
+      if(NOT GIT_RESULT EQUAL 0)
+        message(FATAL_ERROR "Failed to download NVTX: Git error ${GIT_RESULT}")
+      endif()
+      
+      message(STATUS "NVTX downloaded to: ${NVTX_SOURCE_DIR}")
     else()
-      message(FATAL_ERROR "CUDA::nvtx3 target not found!")
-    endif()
+      message(STATUS "NVTX already exists in source directory")
+endif()
   endif()
   enable_language(CUDA)
 endif()
