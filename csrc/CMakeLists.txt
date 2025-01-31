@@ -64,13 +64,13 @@ if(WIN32)
     GIT_TAG v1.6.37
     DEPENDS zlib
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include -DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools44/x86_64-w64-mingw32.static.posix/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
     GIT_TAG 2.1.2
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0-DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0 -DCMAKE_IGNORE_PATH=C:/rtools44/x86_64-w64-mingw32.static.posix/include
   )
 endif()
 
@@ -100,7 +100,7 @@ endif()
 message(STATUS "CMAKE_ARGS: ${TORCHVISION_CMAKE_ARGS}")
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG v0.15.2
+  GIT_TAG v0.20.1
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_CACHE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"
