@@ -42,46 +42,6 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
     find_package(CUDAToolkit REQUIRED)
-    set(NVTX_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/")
-
-    # Check if NVTX headers already exist in the source directory
-    if(NOT EXISTS "${NVTX_SOURCE_DIR}/NVTX/LICENSE.txt")
-      message(STATUS "Downloading NVTX into project source directory...")
-
-      # Create the third_party directory if it doesn't exist
-      file(MAKE_DIRECTORY "${NVTX_SOURCE_DIR}")
-
-      # Clone the NVTX repository (shallow clone to save time)
-      execute_process(
-        COMMAND git clone --depth 1 --branch release-v3 https://github.com/NVIDIA/NVTX.git
-        WORKING_DIRECTORY "${NVTX_SOURCE_DIR}"
-        RESULT_VARIABLE GIT_RESULT
-      )
-
-      message(STATUS "Git clone result: ${GIT_RESULT}. Into ${NVTX_SOURCE_DIR}")
-
-    endif()
-
-    set(NVTX_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third_party/")
-
-    # Check if NVTX headers already exist in the source directory
-    if(NOT EXISTS "${NVTX_SOURCE_DIR}/NVTX/LICENSE.txt")
-      message(STATUS "Downloading NVTX into project source directory...")
-
-      # Create the third_party directory if it doesn't exist
-      file(MAKE_DIRECTORY "${NVTX_SOURCE_DIR}")
-
-      # Clone the NVTX repository (shallow clone to save time)
-      execute_process(
-        COMMAND git clone --depth 1 --branch release-v3 https://github.com/NVIDIA/NVTX.git
-        WORKING_DIRECTORY "${NVTX_SOURCE_DIR}"
-        RESULT_VARIABLE GIT_RESULT
-      )
-
-      message(STATUS "Git clone result: ${GIT_RESULT}. Into ${NVTX_SOURCE_DIR}")
-
-    endif()
-
   endif()
   enable_language(CUDA)
 endif()
@@ -136,7 +96,6 @@ endif()
 
 if (WIN32)
   set(TORCHVISION_DEPENDS libpng libjpeg)
-  set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/nvtx_workaround.diff || true)
 else()
   set(TORCHVISION_DEPENDS)
 endif()
