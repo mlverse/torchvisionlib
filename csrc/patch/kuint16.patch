@@ -1,21 +1,12 @@
 diff --git a/torchvision/csrc/io/image/cpu/decode_png.cpp b/torchvision/csrc/io/image/cpu/decode_png.cpp
-index ede14c1e94..f8a642de82 100644
+index ede14c1e94..9a63d9f995 100644
 --- a/torchvision/csrc/io/image/cpu/decode_png.cpp
 +++ b/torchvision/csrc/io/image/cpu/decode_png.cpp
-@@ -9,6 +9,7 @@ namespace image {
- using namespace exif_private;
+@@ -2,6 +2,7 @@
+ #include "../common.h"
+ #include "common_png.h"
+ #include "exif.h"
++#include <torch/types.h>
  
- #if !PNG_FOUND
-+
- torch::Tensor decode_png(
-     const torch::Tensor& data,
-     ImageReadMode mode,
-@@ -197,7 +198,7 @@ torch::Tensor decode_png(
-   auto is_16_bits = bit_depth == 16;
-   auto tensor = torch::empty(
-       {int64_t(height), int64_t(width), channels},
--      is_16_bits ? at::kUInt16 : torch::kU8);
-+      is_16_bits ? torch::kU6 : torch::kU8);
-   if (is_little_endian()) {
-     png_set_swap(png_ptr);
-   }
+ namespace vision {
+ namespace image {
