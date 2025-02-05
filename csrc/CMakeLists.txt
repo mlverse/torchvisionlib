@@ -42,6 +42,8 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
     find_package(CUDAToolkit REQUIRED)
+  else()
+    set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/kuint16.patch || true)
   endif()
   enable_language(CUDA)
 endif()
@@ -99,8 +101,6 @@ if (WIN32)
 else()
   set(TORCHVISION_DEPENDS)
 endif()
-
-set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/kuint16.patch || true)
 
 message(STATUS "CMAKE_ARGS: ${TORCHVISION_CMAKE_ARGS}")
 ExternalProject_Add(TorchVision-project

@@ -1,21 +1,20 @@
 diff --git a/torchvision/csrc/io/image/cpu/decode_png.cpp b/torchvision/csrc/io/image/cpu/decode_png.cpp
-index ede14c1e94..65079a26f1 100644
+index ede14c1e94..a42bd06c35 100644
 --- a/torchvision/csrc/io/image/cpu/decode_png.cpp
 +++ b/torchvision/csrc/io/image/cpu/decode_png.cpp
-@@ -2,6 +2,7 @@
- #include "../common.h"
- #include "common_png.h"
- #include "exif.h"
-+#include <torch/types.h>
+@@ -195,9 +195,13 @@ torch::Tensor decode_png(
  
- namespace vision {
- namespace image {
-@@ -197,7 +198,7 @@ torch::Tensor decode_png(
+   auto num_pixels_per_row = width * channels;
    auto is_16_bits = bit_depth == 16;
++
++  if (is_16_bits) {
++    throw std::runtime_error("16-bit PNG images are not supported.");
++  }
++
    auto tensor = torch::empty(
-       {int64_t(height), int64_t(width), channels},
+-      {int64_t(height), int64_t(width), channels},
 -      is_16_bits ? at::kUInt16 : torch::kU8);
-+      is_16_bits ? c10::kUInt16 : torch::kU8);
++      {int64_t(height), int64_t(width), channels}, torch::kU8);
    if (is_little_endian()) {
      png_set_swap(png_ptr);
    }
