@@ -76,8 +76,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck'))"
-          Rscript -e "remotes::install_github('mlverse/torchexport')"
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms'))"
+          Rscript -e "remotes::install_github('mlverse/torchexport', force = TRUE)"
 
       - run: |
           cd csrc
