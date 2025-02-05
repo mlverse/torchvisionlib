@@ -100,7 +100,7 @@ else()
   set(TORCHVISION_DEPENDS)
 endif()
 
-set(PATCH_CMD "git apply ${CMAKE_CURRENT_SOURCE_DIR}/patch/kuint16.patch || true")
+set(PATCH_CMD "git apply ${CMAKE_SOURCE_DIR}/patch/kuint16.patch || true")
 
 message(STATUS "CMAKE_ARGS: ${TORCHVISION_CMAKE_ARGS}")
 ExternalProject_Add(TorchVision-project
