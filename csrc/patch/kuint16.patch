@@ -18,3 +18,19 @@ index ede14c1e94..a42bd06c35 100644
    if (is_little_endian()) {
      png_set_swap(png_ptr);
    }
+diff --git a/torchvision/csrc/ops/nms.cpp b/torchvision/csrc/ops/nms.cpp
+index 5ecf8812f1..2cbbe93873 100644
+--- a/torchvision/csrc/ops/nms.cpp
++++ b/torchvision/csrc/ops/nms.cpp
+@@ -18,11 +18,5 @@ at::Tensor nms(
+   return op.call(dets, scores, iou_threshold);
+ }
+ 
+-TORCH_LIBRARY_FRAGMENT(torchvision, m) {
+-  m.set_python_module("torchvision._meta_registrations");
+-  m.def(TORCH_SELECTIVE_SCHEMA(
+-      "torchvision::nms(Tensor dets, Tensor scores, float iou_threshold) -> Tensor"));
+-}
+-
+ } // namespace ops
+ } // namespace vision
