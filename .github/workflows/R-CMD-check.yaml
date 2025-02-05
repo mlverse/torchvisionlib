@@ -117,7 +117,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: mac,     runner: macOS-latest,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
+          - {os: mac,     runner: macOS-13,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
           - {os: m1mac,   runner: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows, runner: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
           - {os: windows, runner: windows-latest, r: '3.6', artifact: '+cpu-win64.zip'}
