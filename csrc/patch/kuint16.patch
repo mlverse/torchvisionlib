@@ -15,7 +15,7 @@ index ede14c1e94..f8a642de82 100644
    auto tensor = torch::empty(
        {int64_t(height), int64_t(width), channels},
 -      is_16_bits ? at::kUInt16 : torch::kU8);
-+      is_16_bits ? torch::kUInt16 : torch::kU8);
++      is_16_bits ? torch::kU6 : torch::kU8);
    if (is_little_endian()) {
      png_set_swap(png_ptr);
    }
