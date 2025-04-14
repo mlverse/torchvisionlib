@@ -41,7 +41,9 @@ message(STATUS "TORCH_HOME=${TORCH_HOME}")
 
 if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   if (WIN32)
-    find_package(CUDAToolkit)
+    find_package(CUDAToolkit REQUIRED)
+  else()
+    set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/kuint16.patch || true)
   endif()
   enable_language(CUDA)
 endif()
@@ -64,13 +66,13 @@ if(WIN32)
     GIT_TAG v1.6.37
     DEPENDS zlib
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libpng"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools40/ucrt64/include -DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DCMAKE_IGNORE_PATH=C:/rtools44/x86_64-w64-mingw32.static.posix/include -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};${CURRENT_BINARY_DIR}/lib
   )
   ExternalProject_Add(libjpeg
     GIT_REPOSITORY https://github.com/libjpeg-turbo/libjpeg-turbo
     GIT_TAG 2.1.2
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libjpeg"
-    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0-DCMAKE_IGNORE_PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/include
+    CMAKE_ARGS ${COMMON_CMAKE_ARGS} -DWITH_JPEG8=0 -DWITH_JPEG7=0 -DENABLE_SHARED=0 -DWITH_TURBOJPEG=0 -DCMAKE_IGNORE_PATH=C:/rtools44/x86_64-w64-mingw32.static.posix/include
   )
 endif()
 
@@ -85,14 +87,17 @@ set(TORCHVISION_CMAKE_ARGS -DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH})
 list(APPEND TORCHVISION_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${TorchVision_DESTDIR})
 
 if(WIN32)
-  list(APPEND TORCHVISION_CMAKE_ARGS -DCMAKE_IGNORE_PREFIX_PATH:PATH=C:/rtools43/x86_64-w64-mingw32.static.posix/)
+  list(APPEND TORCHVISION_CMAKE_ARGS -DCMAKE_IGNORE_PREFIX_PATH:PATH=C:/rtools44/x86_64-w64-mingw32.static.posix/)
+  if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
+    list(APPEND TORCHVISION_CMAKE_ARGS -DWITH_CUDA=ON)
+  endif()
+
 elseif(APPLE)
   list(APPEND TORCHVISION_CMAKE_ARGS -DCMAKE_FIND_FRAMEWORK:STRING=LAST)
 endif()
 
 if (WIN32)
   set(TORCHVISION_DEPENDS libpng libjpeg)
-  set(PATCH_CMD git apply ${CMAKE_SOURCE_DIR}/patch/jpeg_types.diff || true)
 else()
   set(TORCHVISION_DEPENDS)
 endif()
@@ -100,7 +105,7 @@ endif()
 message(STATUS "CMAKE_ARGS: ${TORCHVISION_CMAKE_ARGS}")
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG v0.15.2
+  GIT_TAG v0.20.1
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_CACHE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"

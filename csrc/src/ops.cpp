@@ -1,6 +1,7 @@
 #include <lantern/types.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <torch/torch.h>
 #include <torchvision/ops/ops.h>
 #include <torchvision/io/image/cpu/decode_jpeg.h>
