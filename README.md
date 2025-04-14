@@ -14,7 +14,7 @@ status](https://www.r-pkg.org/badges/version/torchvisionlib)](https://CRAN.R-pro
 [![Discord](https://img.shields.io/discord/837019024499277855?logo=discord)](https://discord.com/invite/s3D5cKhBkx)
 <!-- badges: end -->
 
-The goal of torchvisionlib is to provide access to C++ opeartions
+The goal of torchvisionlib is to provide access to C++ operations
 implemented in [torchvision](https://github.com/pytorch/vision). It
 provides plain R acesss to some of those C++ operations but, most
 importantly it provides full support for JIT operators defined in
