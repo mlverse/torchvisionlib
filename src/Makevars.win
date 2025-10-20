@@ -1,19 +1,48 @@
-PKG_LIBS=\
-	-L. \
-  -ltorchvisionlib
-PKG_CPPFLAGS = -I../inst/include/
 
-.PHONY: all torchvisionlib
-all: clean torchvisionlib
+# Get torch C++ flags and libraries
+PKG_CXXFLAGS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_cxxflags()" --quiet)
+PKG_LIBS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_libs()" --quiet)
 
-# Creates the import library from the .def file.
+# Include auto-generated exports
+PKG_CPPFLAGS += -I../inst/include
+
+# Detect CUDA
+CUDA_HOME = $(shell "$(R_HOME)/bin/R" CMD config CUDA_HOME)
+ifneq (,$(CUDA_HOME))
+  HAVE_CUDA := 1
+  NVCC = "$(CUDA_HOME)/bin/nvcc"
+  PKG_LIBS += -L"$(CUDA_HOME)/lib/x64" -lcudart
+  PKG_CPPFLAGS += -I"$(CUDA_HOME)/include"
+endif
+
+# Source files
+CPPLIBS = \
+  cpu/ms_deform_attn_cpu.cpp \
+  vision.cpp
+
+# CUDA source
+ifneq (,$(HAVE_CUDA))
+  CUDA_SOURCES = cuda/ms_deform_attn_cuda.cu
+endif
+
+# Disable CUB version check (common with RTools and CUDA 11+)
+PKG_CXXFLAGS += -DTHRUST_IGNORE_CUB_VERSION_CHECK
+
+# --- Windows DLL Export Handling for torchexport ---
+.PHONY: all clean dll
+
+all: dll
+
+# Generate import library from .def file
 # Keeping the def file in the source folder makes more sense because it's easy
-# to inspect it in version control suystems and it's easier to edit - since it's
+# to inspect it in version control systems and it's easier to edit - since it's
 # a plain text file.
 # But MingGW can't take the .def file as an input to the linker, so we need to
 # create the import library.
-torchvisionlib: clean
+dll:
 	$(DLLTOOL) -d ../inst/def/torchvisionlib.def -l torchvisionlib.lib
+	$(SHLIB_CMD) $(SHLIB_PICFLAGS) $(CPPLIBS) $(CUDA_SOURCES) $(ALL_LIBS)
+	cp $(DLLNAME) ..  # Ensure DLL is accessible
 
 clean:
-	rm -rf torchvisionlib.lib
+	-rm -f torchvisionlib.lib $(DLLNAME) *.o *.lo

@@ -1,1 +1,25 @@
-PKG_CPPFLAGS = -I../inst/include/
+# Use torch's C++ flags and libraries
+PKG_CXXFLAGS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_cxxflags()" --quiet)
+PKG_LIBS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_libs()" --quiet)
+
+# Include auto-generated exports header
+PKG_CPPFLAGS += -I../inst/include
+
+# Detect CUDA
+CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)
+ifneq (,$(CUDA_HOME))
+  HAVE_CUDA := 1
+  NVCC := $(CUDA_HOME)/bin/nvcc
+  PKG_LIBS += -L"$(CUDA_HOME)/lib64" -lcudart
+  PKG_CPPFLAGS += -I"$(CUDA_HOME)/include"
+endif
+
+# Source local files
+CPPLIBS = \
+  cpu/ms_deform_attn_cpu.cpp \
+  vision.cpp
+
+# CUDA source
+ifneq (,$(HAVE_CUDA))
+  CUDA_SOURCES = cuda/ms_deform_attn_cuda.cu
+endif
