@@ -1,9 +1,6 @@
-# Use torch's C++ flags and libraries
-PKG_CXXFLAGS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_cxxflags()" --quiet)
-PKG_LIBS = $(shell "$(R_HOME)/bin/Rscript" -e "torch:::pkg_libs()" --quiet)
-
 # Include auto-generated exports header
 PKG_CPPFLAGS += -I../inst/include
+PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
 
 # Detect CUDA
 CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)
