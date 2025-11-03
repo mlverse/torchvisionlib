@@ -18,7 +18,7 @@ at::Tensor ms_deform_attn_forward_wrapper(
     const at::Tensor &level_start_index,
     const at::Tensor &sampling_loc,
     const at::Tensor &attn_weight,
-    const int im2col_step) {
+    const int8_t im2col_step) {
   auto result = ms_deform_attn_forward(
     value, spatial_shapes, level_start_index,
     sampling_loc, attn_weight, im2col_step);
@@ -33,19 +33,12 @@ std::vector<at::Tensor> ms_deform_attn_backward_wrapper(
     const at::Tensor &level_start_index,
     const at::Tensor &sampling_loc,
     const at::Tensor &attn_weight,
-    const int im2col_step) {
-  auto grad_input = ms_deform_attn_backward(
+    const int8_t im2col_step) {
+  auto grad_vector = ms_deform_attn_backward(
     grad_output, value, spatial_shapes,
     level_start_index, sampling_loc, attn_weight, im2col_step);
 
-  // Return gradients for all inputs (even if not all computed)
-  return {
-      grad_input,                    // grad_value
-      at::Tensor(),                  // grad_spatial_shapes (not differentiable)
-      at::Tensor(),                  // grad_level_start_index (not differentiable)
-      at::Tensor(),                  // grad_sampling_loc (TODO: implement)
-      at::Tensor()                   // grad_attn_weight (TODO: implement)
-    };
+  return grad_vector;
 }
 
 // TORCH_LIBRARY macro: register under a custom namespace

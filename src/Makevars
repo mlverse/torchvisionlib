@@ -1,9 +1,8 @@
 # Include auto-generated exports header
 PKG_CPPFLAGS += -I../inst/include
-PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
 
 # Detect CUDA
-CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)
+# CUDA_HOME must exist as an env var, so not through CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)
 ifneq (,$(CUDA_HOME))
   HAVE_CUDA := 1
   NVCC := $(CUDA_HOME)/bin/nvcc
