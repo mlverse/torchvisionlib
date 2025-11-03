@@ -1,6 +1,6 @@
 Package: torchvisionlib
 Title: Additional Operators for Image Models
-Version: 0.6.0
+Version: 0.6.0.9000
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
     person(family = "RStudio", role = c("cph"))
@@ -11,7 +11,7 @@ Description: Implements additional operators for computer vision models, includi
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Depends: 
     R (>= 3.6)
 LinkingTo: 
