@@ -1,5 +1,20 @@
+# Bad but Working imports
+# PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
+# PKG_CPPFLAGS += -I/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/torch/include/torch/csrc/api/include
+# PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Headers
+
 # Include auto-generated exports header
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+  # This logic is macOS-specific and finds the C++ standard library headers (like <cmath>)
+  SDK_PATH=$(shell xcrun --show-sdk-path)
+  PKG_CPPFLAGS += -I"$(SDK_PATH)/usr/include/c++/v1"
+endif
+
 PKG_CPPFLAGS += -I../inst/include
+
+LIBTORCH_INCLUDE := $(shell $(R_HOME)/bin/R -s -e "cat(torch:::torch_install_path())")
+PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
 
 # Detect CUDA
 # CUDA_HOME must exist as an env var, so not through CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)

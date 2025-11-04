@@ -10,8 +10,8 @@
 
 #pragma once
 
+#include <ATen/Tensor.h>
 #include "cpu/ms_deform_attn_cpu.h"
-#include <torch/extension.h>
 
 #ifdef WITH_CUDA
 #include "cuda/ms_deform_attn_cuda.h"

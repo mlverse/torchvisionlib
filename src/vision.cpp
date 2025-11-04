@@ -8,7 +8,7 @@
 **************************************************************************************************
 */
 
-#include <torch/extension.h>
+#include <torch.h>
 #include "ms_deform_attn.h"
 
 // Wrapper for forward (returns single tensor for R simplicity)
