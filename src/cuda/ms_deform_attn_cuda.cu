@@ -4,40 +4,40 @@
 * Copyright (c) 2020 SenseTime. All Rights Reserved.
 * Licensed under the Apache License, Version 2.0 [see LICENSE for details]
 **************************************************************************************************
-* Modified from https://github.com/chengdazhi/Deformable-Convolution-V2-PyTorch/tree/pytorch_1.0.0
+* Modified from https://github.com/fundamentalvision/Deformable-DETR/tree/main/models/ops
 **************************************************************************************************
 */
 
+#include <torch.h>
 #include <vector>
 #include "../ms_deform_attn.h"
 #include "ms_deform_attn_cuda.h"
 #include "cuda/ms_deform_im2col_cuda.cuh"
 
-#include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
 
 
-at::Tensor ms_deform_attn_cuda_forward(
-    const at::Tensor &value,
-    const at::Tensor &spatial_shapes,
-    const at::Tensor &level_start_index,
-    const at::Tensor &sampling_loc,
-    const at::Tensor &attn_weight,
+torch::Tensor ms_deform_attn_cuda_forward(
+    const torch::Tensor &value,
+    const torch::Tensor &spatial_shapes,
+    const torch::Tensor &level_start_index,
+    const torch::Tensor &sampling_loc,
+    const torch::Tensor &attn_weight,
     const int im2col_step)
 {
-    AT_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
-    AT_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
-    AT_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
-    AT_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
-    AT_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
+    TORCH_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
+    TORCH_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
+    TORCH_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
+    TORCH_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
+    TORCH_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
 
-    AT_ASSERTM(value.is_cuda(), "value must be a CUDA tensor");
-    AT_ASSERTM(spatial_shapes.is_cuda(), "spatial_shapes must be a CUDA tensor");
-    AT_ASSERTM(level_start_index.is_cuda(), "level_start_index must be a CUDA tensor");
-    AT_ASSERTM(sampling_loc.is_cuda(), "sampling_loc must be a CUDA tensor");
-    AT_ASSERTM(attn_weight.is_cuda(), "attn_weight must be a CUDA tensor");
+    TORCH_ASSERTM(value->is_cuda(), "value must be a CUDA tensor");
+    TORCH_ASSERTM(spatial_shapes->is_cuda(), "spatial_shapes must be a CUDA tensor");
+    TORCH_ASSERTM(level_start_index->is_cuda(), "level_start_index must be a CUDA tensor");
+    TORCH_ASSERTM(sampling_loc->is_cuda(), "sampling_loc must be a CUDA tensor");
+    TORCH_ASSERTM(attn_weight->is_cuda(), "attn_weight must be a CUDA tensor");
 
     const int batch = value.size(0);
     const int spatial_size = value.size(1);
@@ -51,9 +51,9 @@ at::Tensor ms_deform_attn_cuda_forward(
 
     const int im2col_step_ = std::min(batch, im2col_step);
 
-    AT_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
+    TORCH_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
 
-    auto output = at::zeros({batch, num_query, num_heads, channels}, value.options());
+    auto output = torch::zeros({batch, num_query, num_heads, channels}, value.options());
 
     const int batch_n = im2col_step_;
     auto output_n = output.view({batch/im2col_step_, batch_n, num_query, num_heads, channels});
@@ -64,7 +64,7 @@ at::Tensor ms_deform_attn_cuda_forward(
     {
         auto columns = output_n.select(0, n);
         AT_DISPATCH_FLOATING_TYPES_AND_HALF(value.scalar_type(), "ms_deform_attn_forward_cuda", ([&] {
-            ms_deformable_im2col_cuda(at::cuda::getCurrentCUDAStream(),
+            ms_deformable_im2col_cuda(torch::cuda::getCurrentCUDAStream(),
                 value.data<scalar_t>() + n * im2col_step_ * per_value_size,
                 spatial_shapes.data<int64_t>(),
                 level_start_index.data<int64_t>(),
@@ -82,29 +82,29 @@ at::Tensor ms_deform_attn_cuda_forward(
 }
 
 
-std::vector<at::Tensor> ms_deform_attn_cuda_backward(
-    const at::Tensor &value,
-    const at::Tensor &spatial_shapes,
-    const at::Tensor &level_start_index,
-    const at::Tensor &sampling_loc,
-    const at::Tensor &attn_weight,
-    const at::Tensor &grad_output,
+std::vector<torch::Tensor> ms_deform_attn_cuda_backward(
+    const torch::Tensor &value,
+    const torch::Tensor &spatial_shapes,
+    const torch::Tensor &level_start_index,
+    const torch::Tensor &sampling_loc,
+    const torch::Tensor &attn_weight,
+    const torch::Tensor &grad_output,
     const int im2col_step)
 {
 
-    AT_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
-    AT_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
-    AT_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
-    AT_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
-    AT_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
-    AT_ASSERTM(grad_output.is_contiguous(), "grad_output tensor has to be contiguous");
+    TORCH_ASSERTM(value.is_contiguous(), "value tensor has to be contiguous");
+    TORCH_ASSERTM(spatial_shapes.is_contiguous(), "spatial_shapes tensor has to be contiguous");
+    TORCH_ASSERTM(level_start_index.is_contiguous(), "level_start_index tensor has to be contiguous");
+    TORCH_ASSERTM(sampling_loc.is_contiguous(), "sampling_loc tensor has to be contiguous");
+    TORCH_ASSERTM(attn_weight.is_contiguous(), "attn_weight tensor has to be contiguous");
+    TORCH_ASSERTM(grad_output.is_contiguous(), "grad_output tensor has to be contiguous");
 
-    AT_ASSERTM(value.is_cuda(), "value must be a CUDA tensor");
-    AT_ASSERTM(spatial_shapes.is_cuda(), "spatial_shapes must be a CUDA tensor");
-    AT_ASSERTM(level_start_index.is_cuda(), "level_start_index must be a CUDA tensor");
-    AT_ASSERTM(sampling_loc.is_cuda(), "sampling_loc must be a CUDA tensor");
-    AT_ASSERTM(attn_weight.is_cuda(), "attn_weight must be a CUDA tensor");
-    AT_ASSERTM(grad_output.is_cuda(), "grad_output must be a CUDA tensor");
+    TORCH_ASSERTM(value->is_cuda(), "value must be a CUDA tensor");
+    TORCH_ASSERTM(spatial_shapes->is_cuda(), "spatial_shapes must be a CUDA tensor");
+    TORCH_ASSERTM(level_start_index->is_cuda(), "level_start_index must be a CUDA tensor");
+    TORCH_ASSERTM(sampling_loc->is_cuda(), "sampling_loc must be a CUDA tensor");
+    TORCH_ASSERTM(attn_weight->is_cuda(), "attn_weight must be a CUDA tensor");
+    TORCH_ASSERTM(grad_output->is_cuda(), "grad_output must be a CUDA tensor");
 
     const int batch = value.size(0);
     const int spatial_size = value.size(1);
@@ -118,11 +118,11 @@ std::vector<at::Tensor> ms_deform_attn_cuda_backward(
 
     const int im2col_step_ = std::min(batch, im2col_step);
 
-    AT_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
+    TORCH_ASSERTM(batch % im2col_step_ == 0, "batch(%d) must divide im2col_step(%d)", batch, im2col_step_);
 
-    auto grad_value = at::zeros_like(value);
-    auto grad_sampling_loc = at::zeros_like(sampling_loc);
-    auto grad_attn_weight = at::zeros_like(attn_weight);
+    auto grad_value = torch::zeros_like(value);
+    auto grad_sampling_loc = torch::zeros_like(sampling_loc);
+    auto grad_attn_weight = torch::zeros_like(attn_weight);
 
     const int batch_n = im2col_step_;
     auto per_value_size = spatial_size * num_heads * channels;
@@ -134,7 +134,7 @@ std::vector<at::Tensor> ms_deform_attn_cuda_backward(
     {
         auto grad_output_g = grad_output_n.select(0, n);
         AT_DISPATCH_FLOATING_TYPES(value.scalar_type(), "ms_deform_attn_backward_cuda", ([&] {
-            ms_deformable_col2im_cuda(at::cuda::getCurrentCUDAStream(),
+            ms_deformable_col2im_cuda(torch::cuda::getCurrentCUDAStream(),
                                     grad_output_g.data<scalar_t>(),
                                     value.data<scalar_t>() + n * im2col_step_ * per_value_size,
                                     spatial_shapes.data<int64_t>(),

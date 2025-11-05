@@ -4,7 +4,7 @@
 * Copyright (c) 2020 SenseTime. All Rights Reserved.
 * Licensed under the Apache License, Version 2.0 [see LICENSE for details]
 **************************************************************************************************
-* Modified from https://github.com/chengdazhi/Deformable-Convolution-V2-PyTorch/tree/pytorch_1.0.0
+* Modified from https://github.com/fundamentalvision/Deformable-DETR/tree/main/models/ops
 **************************************************************************************************
 */
 
@@ -12,12 +12,12 @@
 #include "ms_deform_attn.h"
 
 // Wrapper for forward (returns single tensor for R simplicity)
-at::Tensor ms_deform_attn_forward_wrapper(
-    const at::Tensor &value,
-    const at::Tensor &spatial_shapes,
-    const at::Tensor &level_start_index,
-    const at::Tensor &sampling_loc,
-    const at::Tensor &attn_weight,
+torch::Tensor ms_deform_attn_forward_wrapper(
+    const torch::Tensor &value,
+    const torch::Tensor &spatial_shapes,
+    const torch::Tensor &level_start_index,
+    const torch::Tensor &sampling_loc,
+    const torch::Tensor &attn_weight,
     const int8_t im2col_step) {
   auto result = ms_deform_attn_forward(
     value, spatial_shapes, level_start_index,
@@ -26,13 +26,13 @@ at::Tensor ms_deform_attn_forward_wrapper(
 }
 
 // Backward wrapper
-std::vector<at::Tensor> ms_deform_attn_backward_wrapper(
-    const at::Tensor &grad_output,
-    const at::Tensor &value,
-    const at::Tensor &spatial_shapes,
-    const at::Tensor &level_start_index,
-    const at::Tensor &sampling_loc,
-    const at::Tensor &attn_weight,
+std::vector<torch::Tensor> ms_deform_attn_backward_wrapper(
+    const torch::Tensor &grad_output,
+    const torch::Tensor &value,
+    const torch::Tensor &spatial_shapes,
+    const torch::Tensor &level_start_index,
+    const torch::Tensor &sampling_loc,
+    const torch::Tensor &attn_weight,
     const int8_t im2col_step) {
   auto grad_vector = ms_deform_attn_backward(
     grad_output, value, spatial_shapes,
