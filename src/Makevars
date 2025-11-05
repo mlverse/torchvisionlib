@@ -1,8 +1,3 @@
-# Bad but Working imports
-# PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1
-# PKG_CPPFLAGS += -I/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/torch/include/torch/csrc/api/include
-# PKG_CPPFLAGS += -I/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Headers
-
 # Include auto-generated exports header
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -15,14 +10,29 @@ PKG_CPPFLAGS += -I../inst/include
 
 LIBTORCH_INCLUDE := $(shell $(R_HOME)/bin/R -s -e "cat(torch:::torch_install_path())")
 PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
+# Add torch include path
+PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include
 
 # Detect CUDA
-# CUDA_HOME must exist as an env var, so not through CUDA_HOME ?= $(shell $(R_HOME)/bin/R CMD config CUDA_HOME)
+# CUDA_HOME must exist as an env var.
 ifneq (,$(CUDA_HOME))
   HAVE_CUDA := 1
   NVCC := $(CUDA_HOME)/bin/nvcc
   PKG_LIBS += -L"$(CUDA_HOME)/lib64" -lcudart
-  PKG_CPPFLAGS += -I"$(CUDA_HOME)/include"
+  PKG_CPPFLAGS += -I"$(CUDA_HOME)/include" -DWITH_CUDA
+endif
+
+# Add torch library path
+PKG_LIBS += -L"$(LIBTORCH_INCLUDE)"/lib -ltorch -ltorch_cpu
+
+# For CUDA support
+ifneq (,$(HAVE_CUDA))
+  PKG_LIBS += -ltorch_cuda
+endif
+
+# macOS specific linking
+ifeq ($(UNAME), Darwin)
+  PKG_LIBS += -ldl -lm -lpthread
 endif
 
 # Source local files
@@ -34,3 +44,6 @@ CPPLIBS = \
 ifneq (,$(HAVE_CUDA))
   CUDA_SOURCES = cuda/ms_deform_attn_cuda.cu
 endif
+
+# Compiler settings
+CXX_STD = CXX17
