@@ -1,5 +1,9 @@
 # torchvisionlib (development version)
 
+# torchvisionlib 0.6.0
+
+- add multiscale deformable attention (#26 @cregouby)
+
 # torchvisionlib 0.5.0
 
 - Updates to support LibTorch v2.0.1

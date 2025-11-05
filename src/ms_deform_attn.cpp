@@ -42,8 +42,3 @@ std::vector<torch::Tensor> ms_deform_attn_backward_wrapper(
     level_start_index, sampling_loc, attn_weight, im2col_step);
 }
 
-// TORCH_LIBRARY macro: register under a custom namespace
-// TORCH_LIBRARY(tvision, m) {
-//   m.def("ms_deform_attn_forward", &ms_deform_attn_forward_wrapper);
-//   m.def("ms_deform_attn_backward", &ms_deform_attn_backward_wrapper);
-// }

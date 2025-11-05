@@ -3,6 +3,7 @@ Title: Additional Operators for Image Models
 Version: 0.6.0
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
+    person("Christophe", "Regouby", , "christophe.regouby@free.fr", role = c("ctb")),
     person(family = "RStudio", role = c("cph"))
     )
 Description: Implements additional operators for computer vision models, including

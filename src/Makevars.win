@@ -13,7 +13,7 @@ endif
 # Source files
 CPPLIBS = \
   cpu/ms_deform_attn_cpu.cpp \
-  vision.cpp
+  ms_deform_attn.cpp
 
 # CUDA source
 ifneq (,$(HAVE_CUDA))
