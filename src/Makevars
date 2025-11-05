@@ -8,7 +8,7 @@ endif
 
 PKG_CPPFLAGS += -I../inst/include
 
-LIBTORCH_INCLUDE := $(shell $(R_HOME)/bin/R -s -e "cat(torch:::torch_install_path())")
+LIBTORCH_INCLUDE := $(shell Rscript -e "cat(torch:::torch_install_path())")
 PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
 # Add torch include path
 PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include
@@ -23,7 +23,7 @@ ifneq (,$(CUDA_HOME))
 endif
 
 # Add torch library path
-PKG_LIBS += -L"$(LIBTORCH_INCLUDE)"/lib -ltorch -ltorch_cpu
+PKG_LIBS += -L"$(LIBTORCH_INCLUDE)"/lib -ltorch -ltorch_cpu -lc10
 
 # For CUDA support
 ifneq (,$(HAVE_CUDA))
@@ -46,4 +46,4 @@ ifneq (,$(HAVE_CUDA))
 endif
 
 # Compiler settings
-CXX_STD = CXX17
+CXX_STD = CXX20
