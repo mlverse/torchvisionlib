@@ -1,12 +1,12 @@
 # Include auto-generated exports header
+PKG_CPPFLAGS += -I../inst/include
+
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
   # This logic is macOS-specific and finds the C++ standard library headers (like <cmath>)
   SDK_PATH=$(shell xcrun --show-sdk-path)
   PKG_CPPFLAGS += -I"$(SDK_PATH)/usr/include/c++/v1"
 endif
-
-PKG_CPPFLAGS += -I../inst/include
 
 LIBTORCH_INCLUDE := $(shell Rscript -e "cat(torch:::torch_install_path())")
 PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
