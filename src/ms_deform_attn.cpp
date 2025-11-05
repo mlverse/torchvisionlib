@@ -9,7 +9,6 @@
 */
 
 #include <torch/torch.h>
-#include <Rcpp.h>
 #include "ms_deform_attn.h"
 
 // Wrapper for forward (returns single tensor for R simplicity)
@@ -20,7 +19,7 @@ torch::Tensor ms_deform_attn_forward_wrapper(
     const torch::Tensor &level_start_index,
     const torch::Tensor &sampling_loc,
     const torch::Tensor &attn_weight,
-    const int8_t im2col_step) {
+    const int im2col_step) {
   auto result = ms_deform_attn_forward(
     value, spatial_shapes, level_start_index,
     sampling_loc, attn_weight, im2col_step);
@@ -36,7 +35,7 @@ std::vector<torch::Tensor> ms_deform_attn_backward_wrapper(
     const torch::Tensor &level_start_index,
     const torch::Tensor &sampling_loc,
     const torch::Tensor &attn_weight,
-    const int8_t im2col_step) {
+    const int im2col_step) {
   return ms_deform_attn_backward(
     grad_output, value, spatial_shapes,
     level_start_index, sampling_loc, attn_weight, im2col_step);
