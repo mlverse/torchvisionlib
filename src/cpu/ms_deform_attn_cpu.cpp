@@ -8,16 +8,10 @@
  **************************************************************************************************
  */
 
-#include <torch/torch.h>
-#include <vector>
-
-#include "../ms_deform_attn.h"
-#include "ms_deform_attn_cpu.h"
-#include <ATen/cpu/CPUBlas.h>
-#include <ATen/cuda/CUDAContext.h>
+#include "ms_deform_attn.h"
 
 std::vector<torch::Tensor>
-  ms_deform_attn_cpu_forward(
+  ms_deform_attn_forward(
     const torch::Tensor &value,
     const torch::Tensor &spatial_shapes,
     const torch::Tensor &level_start_index,
@@ -25,11 +19,21 @@ std::vector<torch::Tensor>
     const torch::Tensor &attn_weight,
     const int im2col_step)
   {
-    TORCH_ERROR("Not implement on cpu");
+    if (value.is_cuda())
+    {
+#ifdef WITH_CUDA
+      return ms_deform_attn_cuda_forward(
+        value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step);
+#else
+      throw std::runtime_error("Not compiled with GPU support");
+#endif
+    }
+    return ms_deform_attn_cpu_forward(
+      value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step);
   }
 
 std::vector<torch::Tensor>
-  ms_deform_attn_cpu_backward(
+  ms_deform_attn_backward(
     const torch::Tensor &value,
     const torch::Tensor &spatial_shapes,
     const torch::Tensor &level_start_index,
@@ -38,5 +42,15 @@ std::vector<torch::Tensor>
     const torch::Tensor &grad_output,
     const int im2col_step)
   {
-    TORCH_ERROR("Not implement on cpu");
+    if (value.is_cuda())
+    {
+#ifdef WITH_CUDA
+      return ms_deform_attn_cuda_backward(
+        value, spatial_shapes, level_start_index, sampling_loc, attn_weight, grad_output, im2col_step);
+#else
+      throw std::runtime_error("Not compiled with GPU support");
+#endif
+    }
+    return ms_deform_attn_cpu_backward(
+      value, spatial_shapes, level_start_index, sampling_loc, attn_weight, grad_output, im2col_step);
   }
