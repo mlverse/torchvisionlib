@@ -45,11 +45,3 @@ rcpp_tensor_pair_get_second <- function(x) {
     .Call('_torchvisionlib_rcpp_tensor_pair_get_second', PACKAGE = 'torchvisionlib', x)
 }
 
-ms_deform_attn_forward_wrapper <- function(value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step) {
-    .Call('_torchvisionlib_ms_deform_attn_forward_wrapper', PACKAGE = 'torchvisionlib', value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step)
-}
-
-ms_deform_attn_backward_wrapper <- function(grad_output, value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step) {
-    .Call('_torchvisionlib_ms_deform_attn_backward_wrapper', PACKAGE = 'torchvisionlib', grad_output, value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step)
-}
-

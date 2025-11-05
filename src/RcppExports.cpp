@@ -165,39 +165,8 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ms_deform_attn_forward_wrapper
-torch::Tensor ms_deform_attn_forward_wrapper(const torch::Tensor& value, const torch::Tensor& spatial_shapes, const torch::Tensor& level_start_index, const torch::Tensor& sampling_loc, const torch::Tensor& attn_weight, const int im2col_step);
-RcppExport SEXP _torchvisionlib_ms_deform_attn_forward_wrapper(SEXP valueSEXP, SEXP spatial_shapesSEXP, SEXP level_start_indexSEXP, SEXP sampling_locSEXP, SEXP attn_weightSEXP, SEXP im2col_stepSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type value(valueSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type spatial_shapes(spatial_shapesSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type level_start_index(level_start_indexSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type sampling_loc(sampling_locSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type attn_weight(attn_weightSEXP);
-    Rcpp::traits::input_parameter< const int >::type im2col_step(im2col_stepSEXP);
-    rcpp_result_gen = Rcpp::wrap(ms_deform_attn_forward_wrapper(value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step));
-    return rcpp_result_gen;
-END_RCPP
-}
-// ms_deform_attn_backward_wrapper
-std::vector<torch::Tensor> ms_deform_attn_backward_wrapper(const torch::Tensor& grad_output, const torch::Tensor& value, const torch::Tensor& spatial_shapes, const torch::Tensor& level_start_index, const torch::Tensor& sampling_loc, const torch::Tensor& attn_weight, const int im2col_step);
-RcppExport SEXP _torchvisionlib_ms_deform_attn_backward_wrapper(SEXP grad_outputSEXP, SEXP valueSEXP, SEXP spatial_shapesSEXP, SEXP level_start_indexSEXP, SEXP sampling_locSEXP, SEXP attn_weightSEXP, SEXP im2col_stepSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type grad_output(grad_outputSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type value(valueSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type spatial_shapes(spatial_shapesSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type level_start_index(level_start_indexSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type sampling_loc(sampling_locSEXP);
-    Rcpp::traits::input_parameter< const torch::Tensor& >::type attn_weight(attn_weightSEXP);
-    Rcpp::traits::input_parameter< const int >::type im2col_step(im2col_stepSEXP);
-    rcpp_result_gen = Rcpp::wrap(ms_deform_attn_backward_wrapper(grad_output, value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step));
-    return rcpp_result_gen;
-END_RCPP
-}
+
+RcppExport SEXP multiscale_deformable_attn(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
@@ -211,8 +180,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_delete_tensor_pair", (DL_FUNC) &_torchvisionlib_rcpp_delete_tensor_pair, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_first", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_first, 1},
     {"_torchvisionlib_rcpp_tensor_pair_get_second", (DL_FUNC) &_torchvisionlib_rcpp_tensor_pair_get_second, 1},
-    {"_torchvisionlib_ms_deform_attn_forward_wrapper", (DL_FUNC) &_torchvisionlib_ms_deform_attn_forward_wrapper, 6},
-    {"_torchvisionlib_ms_deform_attn_backward_wrapper", (DL_FUNC) &_torchvisionlib_ms_deform_attn_backward_wrapper, 7},
+    {"multiscale_deformable_attn", (DL_FUNC) &multiscale_deformable_attn, 6},
     {NULL, NULL, 0}
 };
 
