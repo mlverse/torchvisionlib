@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <torch.h>
+#include <torch/torch.h>
 
 torch::Tensor ms_deform_attn_cuda_forward(
     const torch::Tensor &value,
