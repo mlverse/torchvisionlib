@@ -1,6 +1,8 @@
 # Include auto-generated exports header
 PKG_CPPFLAGS += -I../inst/include
 
+R_HOME := $(shell R RHOME)
+
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
   # This logic is macOS-specific and finds the C++ standard library headers (like <cmath>)
@@ -8,10 +10,13 @@ ifeq ($(UNAME), Darwin)
   PKG_CPPFLAGS += -I"$(SDK_PATH)/usr/include/c++/v1"
 endif
 
-LIBTORCH_INCLUDE := $(shell Rscript -e "cat(torch:::torch_install_path())")
-PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
 # Add torch include path
+LIBTORCH_INCLUDE := $(shell $(R_HOME)/bin/R -s -e "cat(torch:::torch_install_path())")
+PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include/torch/csrc/api/include
 PKG_CPPFLAGS += -I"$(LIBTORCH_INCLUDE)"/include
+
+# Debug: Print paths to verify
+$(info LIBTORCH_INCLUDE is $(LIBTORCH_INCLUDE))
 
 # Detect CUDA
 # CUDA_HOME must exist as an env var.
@@ -37,8 +42,9 @@ endif
 
 # Source local files
 CPPLIBS = \
-  cpu/ms_deform_attn_cpu.cpp \
-  ms_deform_attn.cpp
+  ms_deform_attn_autograd.cpp \
+  torchvisionlib.cpp \
+  torchvisionlib_types.cpp
 
 # CUDA source
 ifneq (,$(HAVE_CUDA))
