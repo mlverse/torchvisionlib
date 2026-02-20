@@ -92,8 +92,8 @@ jobs:
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           fname=$(Rscript -e "cat(list.files('csrc/build/', '*.zip'))")
-          echo "::set-output name=version::$version"
-          echo "::set-output name=fname::$fname"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "fname=$fname" >> $GITHUB_OUTPUT
 
       - uses: svenstaro/upload-release-action@v2
         if: github.ref_name == 'main'
@@ -156,7 +156,7 @@ jobs:
         id: version
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - uses: actions/download-artifact@v4
         with:
