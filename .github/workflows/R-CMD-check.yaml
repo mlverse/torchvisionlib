@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-13,             r_version: release, os: macOS}
+          - {runner: macOS-14,             r_version: release, os: macOS}
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2022,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
@@ -117,7 +117,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: mac,     runner: macOS-13,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
+          - {os: mac,     runner: macOS-14,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
           - {os: m1mac,   runner: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows, runner: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
           - {os: ubuntu,  runner: [self-hosted, linux],   r: 'release', artifact: '+cpu-Linux.zip'}
