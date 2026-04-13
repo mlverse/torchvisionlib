@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-14,             r_version: release, os: macOS}
+          - {runner: macOS-14,             r_version: release, os: macOS, torch_url: 'https://github.com/mlverse/libtorch-mac-m1/releases/download/LibTorch-for-R/libtorch-x86_64-v2.8.0.zip', cmake_args: '-DCMAKE_OSX_ARCHITECTURES=x86_64'}
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2022,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
@@ -38,6 +38,7 @@ jobs:
       TORCH_TEST: 1
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
+      TORCH_URL: ${{matrix.config.torch_url}}
       MAKEFLAGS: '-j8'
       DEBIAN_FRONTEND: 'noninteractive'
       TZ: 'Etc/UTC'
@@ -82,7 +83,7 @@ jobs:
       - run: |
           cd csrc
           mkdir build && cd build
-          cmake ..
+          cmake .. ${{ matrix.config.cmake_args }}
           cmake --build . --target package --config Release --parallel 4
 
       - id: version
