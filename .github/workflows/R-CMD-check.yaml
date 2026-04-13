@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-14,             r_version: release, os: macOS, torch_url: 'https://github.com/mlverse/libtorch-mac-m1/releases/download/LibTorch-for-R/libtorch-x86_64-v2.8.0.zip', cmake_args: '-DCMAKE_OSX_ARCHITECTURES=x86_64'}
+          - {runner: macOS-14,             r_version: release, os: macOS, torch_url: 'https://github.com/mlverse/libtorch-mac-m1/releases/download/LibTorch-for-R/libtorch-x86_64-v2.8.0.zip', cmake_args: '-DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_IGNORE_PATH=/opt/homebrew -DCMAKE_PREFIX_PATH=/usr/local'}
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2022,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
@@ -79,6 +79,12 @@ jobs:
         run: |
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms', 'cli'))"
           Rscript -e "remotes::install_github('mlverse/torchexport', force = TRUE)"
+
+      - name: Install x86_64 Homebrew and libraries
+        if: ${{ contains(matrix.config.cmake_args, 'x86_64') }}
+        run: |
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
 
       - run: |
           cd csrc
