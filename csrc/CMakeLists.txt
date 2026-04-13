@@ -32,6 +32,7 @@ else()
   )
   message(STATUS "TORCH_R_VERSION: ${TORCH_R_VERSION}")
   SET(TORCH_HOME "${CMAKE_CURRENT_BINARY_DIR}/torch")
+  file(MAKE_DIRECTORY ${TORCH_HOME})
   execute_process(
       COMMAND Rscript -e "library(cli);Sys.setenv(TORCH_HOME='${TORCH_HOME}', TORCH_R_VERSION='${TORCH_R_VERSION}', TORCH_COMMIT_SHA='none');source('${TORCH_INSTALL_SCRIPT}'); install_torch();"
   )
