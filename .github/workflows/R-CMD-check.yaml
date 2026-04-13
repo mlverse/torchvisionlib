@@ -26,8 +26,8 @@ jobs:
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
           - {runner: windows-2019,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
-          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 11.8, cuda_patch: 0}
-          - {runner: windows-2019,         r_version: release, os: windows, cuda: 11.8, cuda_patch: 0}
+          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 12.6, cuda_patch: 0}
+          - {runner: windows-2019,         r_version: release, os: windows, cuda: 12.6, cuda_patch: 0}
 
         include:
           - config: {os: ubuntu}
@@ -63,7 +63,7 @@ jobs:
           cmake-version: '3.31'
 
       - if: ${{matrix.config.cuda != ''}}
-        uses: Jimver/cuda-toolkit@v0.2.21
+        uses: Jimver/cuda-toolkit@v0.2.23
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
@@ -90,8 +90,8 @@ jobs:
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           fname=$(Rscript -e "cat(list.files('csrc/build/', '*.zip'))")
-          echo "::set-output name=version::$version"
-          echo "::set-output name=fname::$fname"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "fname=$fname" >> $GITHUB_OUTPUT
 
       - uses: svenstaro/upload-release-action@v2
         if: github.ref_name == 'main'
@@ -154,7 +154,7 @@ jobs:
         id: version
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - uses: actions/download-artifact@v4
         with:

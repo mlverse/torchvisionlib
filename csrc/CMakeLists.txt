@@ -105,7 +105,7 @@ endif()
 message(STATUS "CMAKE_ARGS: ${TORCHVISION_CMAKE_ARGS}")
 ExternalProject_Add(TorchVision-project
   GIT_REPOSITORY https://github.com/pytorch/vision
-  GIT_TAG v0.20.1
+  GIT_TAG v0.23.0
   DEPENDS ${TORCHVISION_DEPENDS}
   CMAKE_CACHE_ARGS ${TORCHVISION_CMAKE_ARGS}
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/libtorchvision"

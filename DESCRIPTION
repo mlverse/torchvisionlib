@@ -1,6 +1,6 @@
 Package: torchvisionlib
 Title: Additional Operators for Image Models
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
     person(family = "RStudio", role = c("cph"))
@@ -19,7 +19,7 @@ LinkingTo:
     torch
 Imports: 
     Rcpp,
-    torch (>= 0.14.0),
+    torch (>= 0.17.0),
     rlang,
     glue,
     withr
