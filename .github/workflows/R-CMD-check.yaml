@@ -151,13 +151,15 @@ jobs:
           use-public-rspm: true
           windows-path-include-mingw: false
 
-      - name: Install x86_64 R via rig
+      - name: Install x86_64 R and libraries
         if: ${{ matrix.config.arch == 'x86_64' }}
         run: |
           brew tap r-lib/rig
           brew install --cask rig
           sudo rig add release --arch x86_64
           sudo rig default release
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
 
       - name: Install dependencies
         run: |
