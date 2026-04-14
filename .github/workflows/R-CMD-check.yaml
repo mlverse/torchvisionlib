@@ -154,8 +154,8 @@ jobs:
       - name: Install x86_64 R via rig
         if: ${{ matrix.config.arch == 'x86_64' }}
         run: |
-          curl -Ls https://github.com/r-lib/rig/releases/download/latest/rig-macOS-arm64.pkg -o rig.pkg
-          sudo installer -pkg rig.pkg -target /
+          brew tap r-lib/rig
+          brew install --cask rig
           sudo rig add release --arch x86_64
           sudo rig default release
 
