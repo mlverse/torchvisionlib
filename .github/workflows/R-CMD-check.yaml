@@ -83,7 +83,6 @@ jobs:
       - name: Install x86_64 Homebrew and libraries
         if: ${{ contains(matrix.config.cmake_args, 'x86_64') }}
         run: |
-          sudo chown -R $(whoami) /usr/local/share/zsh /usr/local/share/zsh/site-functions
           arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
 
@@ -155,13 +154,12 @@ jobs:
       - name: Install x86_64 R and libraries
         if: ${{ matrix.config.arch == 'x86_64' }}
         run: |
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
           brew tap r-lib/rig
           brew install --cask rig
           sudo rig add release --arch x86_64
           sudo rig default release
-          sudo chown -R $(whoami) /usr/local/share/zsh /usr/local/share/zsh/site-functions
-          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
 
       - name: Install dependencies
         run: |
