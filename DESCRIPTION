@@ -1,9 +1,10 @@
 Package: torchvisionlib
 Title: Additional Operators for Image Models
-Version: 0.7.0.9000
+Version: 0.8.0
 Authors@R: c(
-    person("Daniel", "Falbel", , "daniel@rstudio.com", role = c("aut", "cre")),
-    person(family = "RStudio", role = c("cph"))
+    person("Daniel", "Falbel", , "daniel@rstudio.com", role = "aut"),
+    person("Tomasz", "Kalinowski", , "tomasz@posit.co", role = c("ctb", "cre")),
+    person(family = "RStudio", role = "cph")
     )
 Description: Implements additional operators for computer vision models, including
     operators necessary for image segmentation and object detection deep learning
