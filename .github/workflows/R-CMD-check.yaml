@@ -127,7 +127,7 @@ jobs:
           - {os: mac,     runner: macOS-14,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
           - {os: m1mac,   runner: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows, runner: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
-          - {os: ubuntu,  runner: [self-hosted, linux],   r: 'release', artifact: '+cpu-Linux.zip'}
+          - {os: ubuntu,  runner: ubuntu-latest,   r: 'release', artifact: '+cpu-Linux.zip'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
