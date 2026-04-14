@@ -22,12 +22,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {runner: macOS-13,             r_version: release, os: macOS}
+          - {runner: macOS-14,             r_version: release, os: macOS, torch_url: 'https://github.com/mlverse/libtorch-mac-m1/releases/download/LibTorch-for-R/libtorch-x86_64-v2.8.0.zip', cmake_args: '-DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_IGNORE_PATH=/opt/homebrew -DCMAKE_PREFIX_PATH=/usr/local'}
           - {runner: [self-hosted, m1],    r_version: '',      os: macOS}
-          - {runner: windows-2019,         r_version: release, os: windows}
+          - {runner: windows-2022,         r_version: release, os: windows}
           - {runner: ubuntu-latest,        r_version: release, os: ubuntu}
-          - {runner: [self-hosted, linux], r_version: release, os: ubuntu, cuda: 11.8, cuda_patch: 0}
-          - {runner: windows-2019,         r_version: release, os: windows, cuda: 11.8, cuda_patch: 0}
+          - {runner: ubuntu-latest,        r_version: release, os: ubuntu, cuda: 12.8, cuda_patch: 0}
+          - {runner: windows-2022,         r_version: release, os: windows, cuda: 12.8, cuda_patch: 0}
 
         include:
           - config: {os: ubuntu}
@@ -38,6 +38,7 @@ jobs:
       TORCH_TEST: 1
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       CUDA: ${{matrix.config.cuda}}
+      TORCH_URL: ${{matrix.config.torch_url}}
       MAKEFLAGS: '-j8'
       DEBIAN_FRONTEND: 'noninteractive'
       TZ: 'Etc/UTC'
@@ -63,7 +64,7 @@ jobs:
           cmake-version: '3.31'
 
       - if: ${{matrix.config.cuda != ''}}
-        uses: Jimver/cuda-toolkit@v0.2.21
+        uses: Jimver/cuda-toolkit@v0.2.23
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
@@ -76,13 +77,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms'))"
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms', 'cli'))"
           Rscript -e "remotes::install_github('mlverse/torchexport', force = TRUE)"
+
+      - name: Install x86_64 Homebrew and libraries
+        if: ${{ contains(matrix.config.cmake_args, 'x86_64') }}
+        run: |
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
 
       - run: |
           cd csrc
           mkdir build && cd build
-          cmake ..
+          cmake .. ${{ matrix.config.cmake_args }}
           cmake --build . --target package --config Release --parallel 4
 
       - id: version
@@ -90,8 +97,8 @@ jobs:
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           fname=$(Rscript -e "cat(list.files('csrc/build/', '*.zip'))")
-          echo "::set-output name=version::$version"
-          echo "::set-output name=fname::$fname"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "fname=$fname" >> $GITHUB_OUTPUT
 
       - uses: svenstaro/upload-release-action@v2
         if: github.ref_name == 'main'
@@ -117,10 +124,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: mac,     runner: macOS-13,   r: 'release', artifact: '+cpu+x86_64-Darwin.zip'}
+          - {os: mac,     runner: macOS-15,   r: 'release', arch: 'x86_64', artifact: '+cpu+x86_64-Darwin.zip'}
           - {os: m1mac,   runner: ['self-hosted', 'm1'], artifact: '+cpu+arm64-Darwin.zip'}
           - {os: windows, runner: windows-latest, r: 'release', rtools: '42', artifact: '+cpu-win64.zip'}
-          - {os: ubuntu,  runner: ubuntu-20.04,   r: 'release', artifact: '+cpu-Linux.zip'}
+          - {os: ubuntu,  runner: ubuntu-latest,   r: 'release', artifact: '+cpu-Linux.zip'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -136,13 +143,23 @@ jobs:
         if: ${{ !contains(matrix.config.os, 'm1') }}
 
       - uses: r-lib/actions/setup-r@v2
-        if: ${{ !contains(matrix.config.os, 'm1') }}
+        if: ${{ !contains(matrix.config.os, 'm1') && matrix.config.arch != 'x86_64' }}
         with:
           r-version: ${{ matrix.config.r }}
           rtools-version: ${{ matrix.config.rtools }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
           windows-path-include-mingw: false
+
+      - name: Install x86_64 R and libraries
+        if: ${{ matrix.config.arch == 'x86_64' }}
+        run: |
+          arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          arch -x86_64 /usr/local/bin/brew install libpng jpeg-turbo
+          brew tap r-lib/rig
+          brew install --cask rig
+          sudo rig add release --arch x86_64
+          sudo rig default release
 
       - name: Install dependencies
         run: |
@@ -154,7 +171,7 @@ jobs:
         id: version
         run: |
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - uses: actions/download-artifact@v4
         with:
