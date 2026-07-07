@@ -126,6 +126,51 @@ ops_deform_conv2d <- function(input,
   )
 }
 
+#' Multi-scale deformable attention
+#'
+#' Computes multi-scale deformable attention as used by Deformable-DETR and
+#' LW-DETR. Only a CUDA implementation is provided; all input tensors must be on
+#' the same CUDA device. On CPU, models should fall back to a pure-R
+#' implementation (e.g. based on [torch::nnf_grid_sample()]).
+#'
+#' @details
+#' `spatial_shapes` and `level_start_index` use the kernel's 0-based indexing
+#' convention: `level_start_index[l]` is the flat offset (into the `Len_in`
+#' dimension of `value`) of the first element of level `l`, and the output is a
+#' feature tensor, so no 1-based index adjustment is applied.
+#'
+#' @param value (`Tensor[batch, Len_in, n_heads, head_dim]`): flattened
+#'   multi-scale feature values.
+#' @param spatial_shapes (`Tensor[n_levels, 2]`, integer): the `(H, W)` of each
+#'   feature level. The sum of `H * W` over levels must equal `Len_in`.
+#' @param level_start_index (`Tensor[n_levels]`, integer): 0-based start offset
+#'   of each level within `Len_in`.
+#' @param sampling_locations (`Tensor[batch, Len_q, n_heads, n_levels, n_points, 2]`):
+#'   sampling locations in `[0, 1]` (normalized `x, y`).
+#' @param attention_weights (`Tensor[batch, Len_q, n_heads, n_levels, n_points]`):
+#'   attention weights, typically normalized over the `n_levels * n_points` axis.
+#' @param im2col_step (int): batch chunk size used internally by the kernel.
+#'   Must divide `batch`. Default: 64.
+#'
+#' @returns
+#'   `Tensor[batch, Len_q, n_heads * head_dim]`: the attended output.
+#'
+#' @family ops
+#' @export
+ops_ms_deform_attn <- function(value, spatial_shapes, level_start_index,
+                               sampling_locations, attention_weights,
+                               im2col_step = 64L) {
+  rcpp_vision_ops_ms_deform_attn(
+    value,
+    spatial_shapes,
+    level_start_index,
+    sampling_locations,
+    attention_weights,
+    im2col_step
+  )
+}
+
+
 #' Performs Position-Sensitive Region of Interest (RoI) Align operator
 #'
 #' The (RoI) Align operator is mentioned in [Light-Head R-CNN](https://arxiv.org/abs/1711.07264).
