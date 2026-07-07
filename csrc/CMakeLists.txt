@@ -134,10 +134,22 @@ endif()
 
 set(TORCHVISION_SRC src/torchvisionlib.cpp src/ops.cpp src/exports.cpp src/torchvisionlib_types.cpp)
 
+# Multi-scale deformable attention op. Host/registration code always builds;
+# the CUDA kernel is added only when CUDA is enabled.
+list(APPEND TORCHVISION_SRC
+    ops/ms_deform_attn/ms_deform_attn.cpp
+    ops/ms_deform_attn/cpu/ms_deform_attn_kernel.cpp
+    ops/ms_deform_attn/autograd/ms_deform_attn_kernel.cpp
+)
+if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
+  list(APPEND TORCHVISION_SRC ops/ms_deform_attn/cuda/ms_deform_attn_kernel.cu)
+endif()
+
 add_library(torchvisionlib SHARED ${TORCHVISION_SRC})
 add_library(torchvisionlib::library ALIAS torchvisionlib)
 
 target_include_directories(torchvisionlib PUBLIC
+    ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include
     ${TORCH_HOME}/include
     ${TORCHVISION_INCLUDE_DIR}
@@ -162,6 +174,15 @@ add_custom_target(torchvisionlib_export
 add_dependencies(torchvisionlib torchvisionlib_export)
 
 set_property(TARGET torchvisionlib PROPERTY CXX_STANDARD 17)
+
+# CUDA build settings for the ms_deform_attn kernel (CUDA-enabled builds only).
+if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
+  target_compile_definitions(torchvisionlib PRIVATE WITH_CUDA)
+  set_property(TARGET torchvisionlib PROPERTY CUDA_STANDARD 17)
+  if (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+    set_property(TARGET torchvisionlib PROPERTY CUDA_ARCHITECTURES OFF)
+  endif()
+endif()
 
 target_link_libraries(torchvisionlib "${TORCH_LIBRARIES}")
 target_link_libraries(torchvisionlib TorchVision)
