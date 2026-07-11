@@ -3,6 +3,11 @@
 - Added `ops_ms_deform_attn()`, a CUDA implementation of multi-scale deformable
   attention (used by Deformable-DETR and LW-DETR). Vendored from Deformable-DETR
   (Apache-2.0). (#25)
+  
+# torchvisionlib 0.8.0
+
+- Updates to support LibTorch v2.8
+
 
 # torchvisionlib 0.5.0
 
