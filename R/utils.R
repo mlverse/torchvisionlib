@@ -21,6 +21,50 @@ runtime_error <- function(...) {
   rlang::abort(..., class = "runtime_error")
 }
 
+# Convert a set of rotated boxes to `cxcywhr`, the format expected by the
+# `box_iou_rotated` C++ op. Conversions mirror torchvision's `box_convert`.
+.rotated_boxes_to_cxcywhr <- function(boxes, fmt) {
+  switch(
+    fmt,
+    cxcywhr = boxes,
+    xywhr = .box_xywhr_to_cxcywhr(boxes),
+    xyxyxyxy = .box_xyxyxyxy_to_cxcywhr(boxes),
+    runtime_error(sprintf(
+      "Unsupported format '%s'. Supported rotated formats: cxcywhr, xywhr, xyxyxyxy.",
+      fmt
+    ))
+  )
+}
+
+.box_xywhr_to_cxcywhr <- function(boxes) {
+  b <- torch::torch_unbind(boxes, dim = -1)
+  x1 <- b[[1]]
+  y1 <- b[[2]]
+  w <- b[[3]]
+  h <- b[[4]]
+  r <- b[[5]]
+  r_rad <- r * pi / 180
+  cos <- torch::torch_cos(r_rad)
+  sin <- torch::torch_sin(r_rad)
+  cx <- x1 + w / 2 * cos + h / 2 * sin
+  cy <- y1 - w / 2 * sin + h / 2 * cos
+  torch::torch_stack(list(cx, cy, w, h, r), dim = -1)
+}
+
+.box_xyxyxyxy_to_cxcywhr <- function(boxes) {
+  b <- torch::torch_unbind(boxes, dim = -1)
+  x1 <- b[[1]]
+  y1 <- b[[2]]
+  x2 <- b[[3]]
+  y2 <- b[[4]]
+  x3 <- b[[5]]
+  y3 <- b[[6]]
+  r <- torch::torch_atan2(y1 - y2, x2 - x1) * 180 / pi
+  w <- ((x2 - x1) * (x2 - x1) + (y1 - y2) * (y1 - y2))$sqrt()
+  h <- ((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2))$sqrt()
+  .box_xywhr_to_cxcywhr(torch::torch_stack(list(x1, y1, w, h, r), dim = -1))
+}
+
 # Efficient version of torch.cat that avoids a copy if there is only a single element in a list
 .cat <- function(tensors, dim = 1) {
   if (length(tensors) == 1)
