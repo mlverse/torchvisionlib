@@ -1,5 +1,5 @@
-project(torchvisionlib)
 cmake_minimum_required(VERSION 3.21)
+project(torchvisionlib)
 
 # accommodate differing conventions
 include(GNUInstallDirs)
@@ -187,7 +187,7 @@ add_custom_command(TARGET torchvisionlib POST_BUILD
 # binaries bundles and upload them to the GitHub Releases page.
 set(CPACK_GENERATOR ZIP)
 execute_process (
-    COMMAND Rscript -e "cat(desc::description$new(file = '../../DESCRIPTION')\$get('Version'))"
+    COMMAND Rscript -e "cat(desc::description\$new(file = '../../DESCRIPTION')\$get('Version'))"
     OUTPUT_VARIABLE CPACK_PACKAGE_VERSION
 )
 
