@@ -7,11 +7,17 @@
 #include <torchvision/io/image/cpu/decode_jpeg.h>
 #include <torchvisionlib/torchvisionlib.h>
 #include <torchvisionlib/torchvisionlib_types.h>
+#include "ops/box_iou_rotated/box_iou_rotated.h"
 
 
 // [[torch::export]]
 torch::Tensor vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold) {
   return vision::ops::nms(dets, scores, iou_threshold);
+}
+
+// [[torch::export]]
+torch::Tensor vision_ops_box_iou_rotated(torch::Tensor boxes1, torch::Tensor boxes2) {
+  return vision::ops::box_iou_rotated(boxes1, boxes2);
 }
 
 // [[torch::export]]

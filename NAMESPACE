@@ -2,6 +2,7 @@
 
 export(install_torchvisionlib)
 export(nn_ps_roi_align)
+export(ops_box_iou_rotated)
 export(ops_deform_conv2d)
 export(ops_nms)
 export(ops_ps_roi_align)

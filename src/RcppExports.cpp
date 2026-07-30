@@ -24,6 +24,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_box_iou_rotated
+torch::Tensor rcpp_vision_ops_box_iou_rotated(torch::Tensor boxes1, torch::Tensor boxes2);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_box_iou_rotated(SEXP boxes1SEXP, SEXP boxes2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type boxes1(boxes1SEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type boxes2(boxes2SEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_box_iou_rotated(boxes1, boxes2));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_vision_ops_deform_conv2d
 torch::Tensor rcpp_vision_ops_deform_conv2d(torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 RcppExport SEXP _torchvisionlib_rcpp_vision_ops_deform_conv2d(SEXP inputSEXP, SEXP weightSEXP, SEXP offsetSEXP, SEXP maskSEXP, SEXP biasSEXP, SEXP stride_hSEXP, SEXP stride_wSEXP, SEXP pad_hSEXP, SEXP pad_wSEXP, SEXP dilation_hSEXP, SEXP dilation_wSEXP, SEXP groupsSEXP, SEXP offset_groupsSEXP, SEXP use_maskSEXP) {
@@ -168,6 +180,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
+    {"_torchvisionlib_rcpp_vision_ops_box_iou_rotated", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_box_iou_rotated, 2},
     {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_align, 6},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_pool, 5},

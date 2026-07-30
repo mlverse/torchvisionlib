@@ -28,6 +28,7 @@ TORCHVISIONLIB_API void* torchvisionlib_last_error ();
 TORCHVISIONLIB_API void torchvisionlib_last_error_clear();
 
 TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_threshold);
+TORCHVISIONLIB_API void* _vision_ops_box_iou_rotated (void* boxes1, void* boxes2);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio);
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
@@ -42,6 +43,11 @@ TORCHVISIONLIB_API void* _tensor_pair_get_second (void* x);
 #ifdef RCPP_VERSION
 inline void* vision_ops_nms (void* dets, void* scores, double iou_threshold) {
   auto ret =  _vision_ops_nms(dets, scores, iou_threshold);
+  host_exception_handler();
+  return ret;
+}
+inline void* vision_ops_box_iou_rotated (void* boxes1, void* boxes2) {
+  auto ret =  _vision_ops_box_iou_rotated(boxes1, boxes2);
   host_exception_handler();
   return ret;
 }

@@ -8,6 +8,10 @@ torch::Tensor rcpp_vision_ops_nms (torch::Tensor dets, torch::Tensor scores, dou
   return  vision_ops_nms(dets.get(), scores.get(), iou_threshold);
 }
 // [[Rcpp::export]]
+torch::Tensor rcpp_vision_ops_box_iou_rotated (torch::Tensor boxes1, torch::Tensor boxes2) {
+  return  vision_ops_box_iou_rotated(boxes1.get(), boxes2.get());
+}
+// [[Rcpp::export]]
 torch::Tensor rcpp_vision_ops_deform_conv2d (torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask) {
   return  vision_ops_deform_conv2d(input.get(), weight.get(), offset.get(), mask.get(), bias.get(), stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask);
 }

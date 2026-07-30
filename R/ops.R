@@ -33,6 +33,37 @@ ops_nms <- function(boxes, scores, iou_threshold) {
 }
 
 
+#' Intersection-over-union between rotated boxes
+#'
+#' Computes the pairwise intersection-over-union (IoU) between two sets of
+#' rotated bounding boxes.
+#'
+#' @param boxes1 `Tensor[N, K]` first set of rotated boxes.
+#' @param boxes2 `Tensor[M, K]` second set of rotated boxes.
+#' @param fmt format of the input boxes. One of:
+#'   * `"cxcywhr"` (`K = 5`): center `(cx, cy)`, width, height and rotation
+#'     angle `r` in degrees (counter-clockwise positive).
+#'   * `"xywhr"` (`K = 5`): top-left corner `(x1, y1)`, width, height and angle.
+#'   * `"xyxyxyxy"` (`K = 8`): the four corners
+#'     `(x1, y1, x2, y2, x3, y3, x4, y4)`.
+#'
+#' @returns
+#' `Tensor[N, M]` float32 matrix of pairwise IoU values.
+#'
+#' @examples
+#' if (torchvisionlib_is_installed()) {
+#'   boxes <- torch::torch_tensor(matrix(c(0, 0, 10, 10, 45), nrow = 1))
+#'   ops_box_iou_rotated(boxes, boxes)
+#' }
+#' @family ops
+#' @export
+ops_box_iou_rotated <- function(boxes1, boxes2, fmt = "cxcywhr") {
+  boxes1 <- .rotated_boxes_to_cxcywhr(boxes1, fmt)
+  boxes2 <- .rotated_boxes_to_cxcywhr(boxes2, fmt)
+  rcpp_vision_ops_box_iou_rotated(boxes1, boxes2)
+}
+
+
 #' Performs Deformable Convolution v2,
 #'
 #' Ddescribed in [Deformable ConvNets v2: More Deformable, Better Results](https://arxiv.org/abs/1811.11168)
