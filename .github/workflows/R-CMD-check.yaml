@@ -78,7 +78,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms', 'cli', 'fs', 'pkgload'))"
+          Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms', 'cli'))"
           Rscript -e "remotes::install_github('mlverse/torchexport', force = TRUE)"
 
       - name: Install x86_64 Homebrew and libraries
