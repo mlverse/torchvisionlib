@@ -145,7 +145,7 @@ test_that("box_iou_rotated is numerically stable (Detectron2 regressions)", {
     # Precision at large coordinates: IoU is the height ratio.
     b1 <- torch::torch_tensor(matrix(c(565, 565, 10, 10, 0), nrow = 1), dtype = dtype)
     b2 <- torch::torch_tensor(matrix(c(565, 565, 10, 8.3, 0), nrow = 1), dtype = dtype)
-    expect_equal(as.numeric(ops_box_iou_rotated(b1, b2)), 8.3 / 10, tolerance = 1e-4)
+    expect_equal(as.numeric(ops_box_iou_rotated(b1, b2)), 8.3 / 10, tolerance = 1e-5)
 
     # Nearly identical large boxes should have IoU close to 1.
     b3 <- torch::torch_tensor(matrix(c(2563.74462890625, 1436.7901611328125,
@@ -154,7 +154,7 @@ test_that("box_iou_rotated is numerically stable (Detectron2 regressions)", {
     b4 <- torch::torch_tensor(matrix(c(2563.74462890625, 1436.790283203125,
                                        2174.702880859375, 214.0949554443359375,
                                        115.11835479736328125), nrow = 1), dtype = dtype)
-    expect_equal(as.numeric(ops_box_iou_rotated(b3, b4)), 1, tolerance = 1e-3)
+    expect_equal(as.numeric(ops_box_iou_rotated(b3, b4)), 1, tolerance = 1e-5)
 
     # Extreme coordinates must not push the IoU outside [0, 1].
     b5 <- torch::torch_tensor(matrix(c(160, 153, 230, 23, -37), nrow = 1), dtype = dtype)

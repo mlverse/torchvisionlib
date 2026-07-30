@@ -16,7 +16,7 @@ at::Tensor box_iou_rotated(
   return op.call(boxes1, boxes2);
 }
 
-// Vendored because the pinned TorchVision (v0.20.1) has no box_iou_rotated.
+// Vendored because the pinned TorchVision (v0.23.0) has no box_iou_rotated.
 // Drop this directory if TorchVision is bumped to a release that ships the op,
 // otherwise the schema below is registered twice and loading fails.
 TORCH_LIBRARY_FRAGMENT(torchvision, m) {
