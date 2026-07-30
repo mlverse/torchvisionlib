@@ -1,5 +1,5 @@
-project(torchvisionlib)
 cmake_minimum_required(VERSION 3.21)
+project(torchvisionlib)
 
 # accommodate differing conventions
 include(GNUInstallDirs)
@@ -159,7 +159,7 @@ set_property(TARGET torchvisionlib
 add_dependencies(torchvisionlib TorchVision-project)
 
 add_custom_target(torchvisionlib_export
-  COMMAND Rscript -e "torchexport::export()"
+  COMMAND Rscript -e "lib_user <- Sys.getenv('R_LIBS_USER'); if (nzchar(lib_user)) .libPaths(c(lib_user, .libPaths())); torchexport::export()"
   COMMENT "Regenerating export code."
   VERBATIM
 )
