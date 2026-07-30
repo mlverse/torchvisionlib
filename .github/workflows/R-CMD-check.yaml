@@ -44,7 +44,7 @@ jobs:
       TZ: 'Etc/UTC'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
       - uses: mlverse/torch/.github/actions/setup-r@main
         with:
