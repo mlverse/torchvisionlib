@@ -21,6 +21,13 @@ TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_t
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
+torch::Tensor vision_ops_ms_deform_attn (torch::Tensor value, torch::Tensor spatial_shapes, torch::Tensor level_start_index, torch::Tensor sampling_loc, torch::Tensor attn_weight, std::int64_t im2col_step);
+TORCHVISIONLIB_API void* _vision_ops_ms_deform_attn (void* value, void* spatial_shapes, void* level_start_index, void* sampling_loc, void* attn_weight, std::int64_t im2col_step) {
+  try {
+    return  make_raw::Tensor(vision_ops_ms_deform_attn(from_raw::Tensor(value), from_raw::Tensor(spatial_shapes), from_raw::Tensor(level_start_index), from_raw::Tensor(sampling_loc), from_raw::Tensor(attn_weight), im2col_step));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
 torch::Tensor vision_ops_deform_conv2d (torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask) {
   try {

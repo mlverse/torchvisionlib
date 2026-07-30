@@ -7,11 +7,29 @@
 #include <torchvision/io/image/cpu/decode_jpeg.h>
 #include <torchvisionlib/torchvisionlib.h>
 #include <torchvisionlib/torchvisionlib_types.h>
-
+#include "ops/ms_deform_attn/ms_deform_attn.h"
 
 // [[torch::export]]
 torch::Tensor vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold) {
   return vision::ops::nms(dets, scores, iou_threshold);
+}
+
+// [[torch::export]]
+torch::Tensor vision_ops_ms_deform_attn(
+    torch::Tensor value,
+    torch::Tensor spatial_shapes,
+    torch::Tensor level_start_index,
+    torch::Tensor sampling_loc,
+    torch::Tensor attn_weight,
+    std::int64_t im2col_step) {
+  return vision::ops::ms_deform_attn(
+    value,
+    spatial_shapes,
+    level_start_index,
+    sampling_loc,
+    attn_weight,
+    im2col_step
+  );
 }
 
 // [[torch::export]]

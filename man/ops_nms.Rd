@@ -36,4 +36,8 @@ if (torchvisionlib_is_installed()) {
   ops_nms(torch::torch_rand(3, 4), torch::torch_rand(3), 0.5)
 }
 }
+\seealso{
+Other ops:
+\code{\link[=ops_ms_deform_attn]{ops_ms_deform_attn()}}
+}
 \concept{ops}

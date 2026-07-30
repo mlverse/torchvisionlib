@@ -24,6 +24,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_ms_deform_attn
+torch::Tensor rcpp_vision_ops_ms_deform_attn(torch::Tensor value, torch::Tensor spatial_shapes, torch::Tensor level_start_index, torch::Tensor sampling_loc, torch::Tensor attn_weight, std::int64_t im2col_step);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_ms_deform_attn(SEXP valueSEXP, SEXP spatial_shapesSEXP, SEXP level_start_indexSEXP, SEXP sampling_locSEXP, SEXP attn_weightSEXP, SEXP im2col_stepSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type value(valueSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type spatial_shapes(spatial_shapesSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type level_start_index(level_start_indexSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type sampling_loc(sampling_locSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type attn_weight(attn_weightSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type im2col_step(im2col_stepSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_ms_deform_attn(value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_vision_ops_deform_conv2d
 torch::Tensor rcpp_vision_ops_deform_conv2d(torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 RcppExport SEXP _torchvisionlib_rcpp_vision_ops_deform_conv2d(SEXP inputSEXP, SEXP weightSEXP, SEXP offsetSEXP, SEXP maskSEXP, SEXP biasSEXP, SEXP stride_hSEXP, SEXP stride_wSEXP, SEXP pad_hSEXP, SEXP pad_wSEXP, SEXP dilation_hSEXP, SEXP dilation_wSEXP, SEXP groupsSEXP, SEXP offset_groupsSEXP, SEXP use_maskSEXP) {
@@ -168,6 +184,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
+    {"_torchvisionlib_rcpp_vision_ops_ms_deform_attn", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ms_deform_attn, 6},
     {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_align, 6},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_pool", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_pool, 5},
