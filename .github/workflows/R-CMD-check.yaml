@@ -44,7 +44,7 @@ jobs:
       TZ: 'Etc/UTC'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
       - uses: mlverse/torch/.github/actions/setup-r@main
         with:
@@ -54,7 +54,8 @@ jobs:
         if: matrix.container != ''
         run: |
           apt-get update
-          apt-get install -y curl sudo libxml2-dev wget chrpath rsync git libjpeg-dev
+          apt-get install -y curl sudo libxml2-dev wget chrpath rsync git libjpeg-dev libpng-dev \
+            libcurl4-openssl-dev pkg-config patchelf libuv1-dev
           curl -fsSL https://get.docker.com -o get-docker.sh
           DRY_RUN=1 sh ./get-docker.sh
 
@@ -64,7 +65,7 @@ jobs:
           cmake-version: '3.31'
 
       - if: ${{matrix.config.cuda != ''}}
-        uses: Jimver/cuda-toolkit@v0.2.23
+        uses: Jimver/cuda-toolkit@v0.2.35
         id: cuda-toolkit
         with:
           cuda: '${{matrix.config.cuda}}.${{matrix.config.cuda_patch}}'
@@ -91,7 +92,6 @@ jobs:
           mkdir build && cd build
           cmake .. ${{ matrix.config.cmake_args }}
           cmake --build . --target package --config Release --parallel 4
-
       - id: version
         shell: bash
         run: |
@@ -109,7 +109,7 @@ jobs:
           file_glob: true
           tag: v${{ steps.version.outputs.version }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.version.outputs.fname }}
           path: csrc/build/*.zip
@@ -139,7 +139,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-pandoc@v2
         if: ${{ !contains(matrix.config.os, 'm1') }}
 
       - uses: r-lib/actions/setup-r@v2
@@ -173,7 +173,7 @@ jobs:
           version=$(Rscript -e "cat(as.character(desc::desc_get_version()))")
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: 'torchvisionlib-${{ steps.version.outputs.version }}${{ matrix.config.artifact }}'
           path: build/
