@@ -159,14 +159,7 @@ set_property(TARGET torchvisionlib
 add_dependencies(torchvisionlib TorchVision-project)
 
 add_custom_target(torchvisionlib_export
-  COMMAND Rscript -e "lib_user <- Sys.getenv('R_LIBS_USER')
-    if (nzchar(lib_user)) .libPaths(c(lib_user, .libPaths()))
-    cat('Current .libPaths():', paste(.libPaths(), collapse=', '), '\n')
-    if (!requireNamespace('torchexport', quietly = TRUE)) {
-      stop('ERROR: torchexport package not found. Please ensure it is installed in ', lib_path)
-    }
-    torchexport::export()
-  "
+  COMMAND Rscript -e "torchexport::export()"
   COMMENT "Regenerating export code."
   VERBATIM
 )
@@ -191,7 +184,7 @@ add_custom_command(TARGET torchvisionlib POST_BUILD
 # binaries bundles and upload them to the GitHub Releases page.
 set(CPACK_GENERATOR ZIP)
 execute_process (
-    COMMAND Rscript -e "cat(desc::description\$new(file = '../../DESCRIPTION')$get('Version'))"
+    COMMAND Rscript -e "cat(desc::description\$new(file = '../../DESCRIPTION')\$get('Version'))"
     OUTPUT_VARIABLE CPACK_PACKAGE_VERSION
 )
 

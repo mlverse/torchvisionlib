@@ -54,7 +54,8 @@ jobs:
         if: matrix.container != ''
         run: |
           apt-get update
-          apt-get install -y curl sudo libxml2-dev wget chrpath rsync git libjpeg-dev
+          apt-get install -y curl sudo libxml2-dev wget chrpath rsync git libjpeg-dev libpng-dev \
+            libcurl4-openssl-dev pkg-config patchelf
           curl -fsSL https://get.docker.com -o get-docker.sh
           DRY_RUN=1 sh ./get-docker.sh
 
@@ -77,11 +78,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          mkdir -p $R_LIBS_USER
           Rscript -e "install.packages(c('remotes', 'desc', 'rcmdcheck', 'hms', 'cli'))"
-          Rscript -e ".libPaths(c(Sys.getenv('R_LIBS_USER'), .libPaths())); torch::install_torch()"
-          Rscript -e ".libPaths(c(Sys.getenv('R_LIBS_USER'), .libPaths())); remotes::install_github('mlverse/torchexport', force = TRUE, lib = Sys.getenv('R_LIBS_USER'))"
-          Rscript -e ".libPaths(c(Sys.getenv('R_LIBS_USER'), .libPaths())); stopifnot('torch' %in% installed.packages()[,'Package']); stopifnot('torchexport' %in% installed.packages()[,'Package']); cat('✅ torch and torchexport successfully installed in:', Sys.getenv('R_LIBS_USER'), '\n')"
+          Rscript -e "remotes::install_github('mlverse/torchexport', force = TRUE)"
 
       - name: Install x86_64 Homebrew and libraries
         if: ${{ contains(matrix.config.cmake_args, 'x86_64') }}
@@ -92,7 +90,7 @@ jobs:
       - run: |
           cd csrc
           mkdir build && cd build
-          cmake .. -DR_LIB_USER=$R_LIBS_USER ${{ matrix.config.cmake_args }}
+          cmake .. ${{ matrix.config.cmake_args }}
           cmake --build . --target package --config Release --parallel 4
       - id: version
         shell: bash
