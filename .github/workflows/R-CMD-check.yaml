@@ -55,7 +55,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y curl sudo libxml2-dev wget chrpath rsync git libjpeg-dev libpng-dev \
-            libcurl4-openssl-dev pkg-config patchelf
+            libcurl4-openssl-dev pkg-config patchelf libuv1-dev
           curl -fsSL https://get.docker.com -o get-docker.sh
           DRY_RUN=1 sh ./get-docker.sh
 
