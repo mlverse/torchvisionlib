@@ -8,6 +8,7 @@
 #include <torchvisionlib/torchvisionlib.h>
 #include <torchvisionlib/torchvisionlib_types.h>
 #include "ops/ms_deform_attn/ms_deform_attn.h"
+#include "ops/roi_align_rotated/roi_align_rotated.h"
 
 // [[torch::export]]
 torch::Tensor vision_ops_nms(torch::Tensor dets, torch::Tensor scores, double iou_threshold) {
@@ -29,6 +30,28 @@ torch::Tensor vision_ops_ms_deform_attn(
     sampling_loc,
     attn_weight,
     im2col_step
+  );
+}
+
+// [[torch::export]]
+torch::Tensor vision_ops_roi_align_rotated(
+    torch::Tensor input,
+    torch::Tensor rois,
+    std::int64_t pooled_height,
+    std::int64_t pooled_width,
+    double spatial_scale,
+    std::int64_t sampling_ratio,
+    bool aligned,
+    bool clockwise) {
+  return vision::ops::roi_align_rotated(
+    input,
+    rois,
+    pooled_height,
+    pooled_width,
+    spatial_scale,
+    sampling_ratio,
+    aligned,
+    clockwise
   );
 }
 

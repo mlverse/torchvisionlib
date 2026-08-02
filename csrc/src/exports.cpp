@@ -28,6 +28,13 @@ TORCHVISIONLIB_API void* _vision_ops_ms_deform_attn (void* value, void* spatial_
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
+torch::Tensor vision_ops_roi_align_rotated (torch::Tensor input, torch::Tensor rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise);
+TORCHVISIONLIB_API void* _vision_ops_roi_align_rotated (void* input, void* rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise) {
+  try {
+    return  make_raw::Tensor(vision_ops_roi_align_rotated(from_raw::Tensor(input), from_raw::Tensor(rois), pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
 torch::Tensor vision_ops_deform_conv2d (torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask) {
   try {
