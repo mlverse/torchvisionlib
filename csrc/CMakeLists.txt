@@ -149,6 +149,13 @@ if (DEFINED ENV{CUDA} AND NOT '$ENV{CUDA}' STREQUAL '')
   list(APPEND TORCHVISION_SRC ops/ms_deform_attn/cuda/ms_deform_attn_kernel.cu)
 endif()
 
+# RoI align pooling for rotated proposals (mmcv roi_align_rotated, CPU only).
+list(APPEND TORCHVISION_SRC
+    ops/roi_align_rotated/roi_align_rotated.cpp
+    ops/roi_align_rotated/cpu/roi_align_rotated_kernel.cpp
+    ops/roi_align_rotated/autograd/roi_align_rotated_kernel.cpp
+)
+
 add_library(torchvisionlib SHARED ${TORCHVISION_SRC})
 add_library(torchvisionlib::library ALIAS torchvisionlib)
 

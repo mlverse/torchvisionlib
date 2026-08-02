@@ -2,10 +2,12 @@
 
 export(install_torchvisionlib)
 export(nn_ps_roi_align)
+export(nn_roi_align_rotated)
 export(ops_deform_conv2d)
 export(ops_ms_deform_attn)
 export(ops_nms)
 export(ops_ps_roi_align)
+export(ops_roi_align_rotated)
 export(torchvisionlib_is_installed)
 export(vision_read_jpeg)
 importFrom(Rcpp,sourceCpp)

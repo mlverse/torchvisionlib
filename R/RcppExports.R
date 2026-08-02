@@ -9,6 +9,10 @@ rcpp_vision_ops_ms_deform_attn <- function(value, spatial_shapes, level_start_in
     .Call('_torchvisionlib_rcpp_vision_ops_ms_deform_attn', PACKAGE = 'torchvisionlib', value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step)
 }
 
+rcpp_vision_ops_roi_align_rotated <- function(input, rois, pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise) {
+    .Call('_torchvisionlib_rcpp_vision_ops_roi_align_rotated', PACKAGE = 'torchvisionlib', input, rois, pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise)
+}
+
 rcpp_vision_ops_deform_conv2d <- function(input, weight, offset, mask, bias, stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask) {
     .Call('_torchvisionlib_rcpp_vision_ops_deform_conv2d', PACKAGE = 'torchvisionlib', input, weight, offset, mask, bias, stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask)
 }

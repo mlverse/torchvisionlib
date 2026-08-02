@@ -38,6 +38,7 @@ if (torchvisionlib_is_installed()) {
 }
 \seealso{
 Other ops:
-\code{\link[=ops_ms_deform_attn]{ops_ms_deform_attn()}}
+\code{\link[=ops_ms_deform_attn]{ops_ms_deform_attn()}},
+\code{\link[=ops_roi_align_rotated]{ops_roi_align_rotated()}}
 }
 \concept{ops}

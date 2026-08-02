@@ -29,6 +29,7 @@ TORCHVISIONLIB_API void torchvisionlib_last_error_clear();
 
 TORCHVISIONLIB_API void* _vision_ops_nms (void* dets, void* scores, double iou_threshold);
 TORCHVISIONLIB_API void* _vision_ops_ms_deform_attn (void* value, void* spatial_shapes, void* level_start_index, void* sampling_loc, void* attn_weight, std::int64_t im2col_step);
+TORCHVISIONLIB_API void* _vision_ops_roi_align_rotated (void* input, void* rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise);
 TORCHVISIONLIB_API void* _vision_ops_deform_conv2d (void* input, void* weight, void* offset, void* mask, void* bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask);
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_align (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width, int64_t sampling_ratio);
 TORCHVISIONLIB_API void* _vision_ops_ps_roi_pool (void* input, void* rois, double spatial_scale, int64_t pooled_height, int64_t pooled_width);
@@ -48,6 +49,11 @@ inline void* vision_ops_nms (void* dets, void* scores, double iou_threshold) {
 }
 inline void* vision_ops_ms_deform_attn (void* value, void* spatial_shapes, void* level_start_index, void* sampling_loc, void* attn_weight, std::int64_t im2col_step) {
   auto ret =  _vision_ops_ms_deform_attn(value, spatial_shapes, level_start_index, sampling_loc, attn_weight, im2col_step);
+  host_exception_handler();
+  return ret;
+}
+inline void* vision_ops_roi_align_rotated (void* input, void* rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise) {
+  auto ret =  _vision_ops_roi_align_rotated(input, rois, pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise);
   host_exception_handler();
   return ret;
 }

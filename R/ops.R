@@ -239,3 +239,79 @@ nn_ps_roi_align <- torch::nn_module(
 )
 
 
+#' RoI align pooling for rotated proposals
+#'
+#' Performs RoI align pooling for rotated proposals, as implemented by the MMCV
+#' `roi_align_rotated` operator
+#' (see <https://mmcv.readthedocs.io/en/latest/deployment/mmcv_ops_definition.html#mmcvroialignrotated>).
+#' Only a CPU implementation is provided.
+#'
+#' @param input (`Tensor[N, C, H, W]`): input feature map.
+#' @param rois (`Tensor[K, 6]`): rotated boxes with columns
+#'   `(batch_index, cx, cy, w, h, angle)`, where `batch_index` is a **0-based**
+#'   index into the first dimension of `input`, `(cx, cy)` is the box center,
+#'   `(w, h)` the box size and `angle` the rotation angle in radians
+#'   (counterclockwise unless `clockwise = TRUE`).
+#' @param output_size (int or `Tuple[int, int]`): the output size `(height, width)`
+#'   after pooling.
+#' @param spatial_scale (float): scaling factor mapping box coordinates to input
+#'   coordinates. For example, if boxes are defined on a 224x224 image and
+#'   `input` is a 112x112 feature map, set this to 0.5.
+#' @param sampling_ratio (int): number of sampling points per output bin. If `<= 0`,
+#'   an adaptive number of grid points is used (computed as `ceil(roi_size / output_size)`).
+#'   Default: 0
+#' @param aligned (bool): if `TRUE` (default), the aligned implementation is
+#'   used (results are shifted by -0.5 before interpolation, matching
+#'   detectron2). If `FALSE`, the legacy MMDetection implementation is used and
+#'   boxes are clamped to a minimum size of 1.
+#' @param clockwise (bool): if `TRUE`, the rotation angle is interpreted in a
+#'   clockwise fashion in image space, otherwise it is counterclockwise.
+#'   Default: `FALSE`
+#'
+#' @returns
+#' `Tensor[K, C, output_size[1], output_size[2]]`: the pooled features, where
+#' the `r`-th element corresponds to the `r`-th RoI in `rois`.
+#'
+#' @examples
+#' if (torchvisionlib_is_installed()) {
+#'   library(torch)
+#'   input <- torch_randn(1, 3, 28, 28)
+#'   # (batch_index, cx, cy, w, h, angle) with 0-based batch index
+#'   rois <- torch_tensor(matrix(c(0, 14, 14, 10, 10, 0.5), ncol = 6))
+#'   ops_roi_align_rotated(input, rois, output_size = c(5, 5),
+#'                         spatial_scale = 1, sampling_ratio = 2)
+#' }
+#'
+#' @family ops
+#' @export
+ops_roi_align_rotated <- function(input, rois, output_size, spatial_scale,
+                                  sampling_ratio = 0, aligned = TRUE,
+                                  clockwise = FALSE) {
+  output_size <- .pair(output_size)
+  rcpp_vision_ops_roi_align_rotated(
+    input, rois,
+    output_size[1], output_size[2],
+    spatial_scale, sampling_ratio,
+    aligned, clockwise
+  )
+}
+
+
+#' @describeIn ops_roi_align_rotated The [torch::nn_module()] wrapper for [ops_roi_align_rotated()].
+#' @export
+nn_roi_align_rotated <- torch::nn_module(
+  initialize = function(output_size, spatial_scale, sampling_ratio = 0,
+                        aligned = TRUE, clockwise = FALSE) {
+    self$output_size <- output_size
+    self$spatial_scale <- spatial_scale
+    self$sampling_ratio <- sampling_ratio
+    self$aligned <- aligned
+    self$clockwise <- clockwise
+  },
+  forward = function(input, rois) {
+    ops_roi_align_rotated(input, rois, self$output_size, self$spatial_scale,
+                          self$sampling_ratio, self$aligned, self$clockwise)
+  }
+)
+
+

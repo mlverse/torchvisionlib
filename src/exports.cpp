@@ -12,6 +12,10 @@ torch::Tensor rcpp_vision_ops_ms_deform_attn (torch::Tensor value, torch::Tensor
   return  vision_ops_ms_deform_attn(value.get(), spatial_shapes.get(), level_start_index.get(), sampling_loc.get(), attn_weight.get(), im2col_step);
 }
 // [[Rcpp::export]]
+torch::Tensor rcpp_vision_ops_roi_align_rotated (torch::Tensor input, torch::Tensor rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise) {
+  return  vision_ops_roi_align_rotated(input.get(), rois.get(), pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise);
+}
+// [[Rcpp::export]]
 torch::Tensor rcpp_vision_ops_deform_conv2d (torch::Tensor input, torch::Tensor weight, torch::Tensor offset, torch::Tensor mask, torch::Tensor bias, std::int64_t stride_h, std::int64_t stride_w, std::int64_t pad_h, std::int64_t pad_w, std::int64_t dilation_h, std::int64_t dilation_w, std::int64_t groups, std::int64_t offset_groups, bool use_mask) {
   return  vision_ops_deform_conv2d(input.get(), weight.get(), offset.get(), mask.get(), bias.get(), stride_h, stride_w, pad_h, pad_w, dilation_h, dilation_w, groups, offset_groups, use_mask);
 }
