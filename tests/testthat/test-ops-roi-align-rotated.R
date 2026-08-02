@@ -143,6 +143,7 @@ test_that("roi_align_rotated is differentiable and matches finite differences", 
 
   eps <- 1e-3
   num_grad <- torch_empty_like(input)
+  num_grad_flat <- num_grad$flatten()
   input_flat <- input$detach()$flatten()
   for (i in seq_len(numel <- prod(dim(input)))) {
     x_p <- input_flat$clone()
@@ -153,7 +154,7 @@ test_that("roi_align_rotated is differentiable and matches finite differences", 
                                  sampling_ratio = 2)$sum()
     f_m <- ops_roi_align_rotated(x_m$view(dim(input)), rois, output_size, 1,
                                  sampling_ratio = 2)$sum()
-    num_grad$flatten()[i] <- as.numeric(f_p - f_m) / (2 * eps)
+    num_grad_flat[i] <- as.numeric(f_p - f_m) / (2 * eps)
   }
 
   expect_true(torch_allclose(input$grad, num_grad, atol = 1e-3, rtol = 1e-3))
