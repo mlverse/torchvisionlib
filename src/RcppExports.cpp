@@ -40,6 +40,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rcpp_vision_ops_roi_align_rotated
+torch::Tensor rcpp_vision_ops_roi_align_rotated(torch::Tensor input, torch::Tensor rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise);
+RcppExport SEXP _torchvisionlib_rcpp_vision_ops_roi_align_rotated(SEXP inputSEXP, SEXP roisSEXP, SEXP pooled_heightSEXP, SEXP pooled_widthSEXP, SEXP spatial_scaleSEXP, SEXP sampling_ratioSEXP, SEXP alignedSEXP, SEXP clockwiseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< torch::Tensor >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< torch::Tensor >::type rois(roisSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type pooled_height(pooled_heightSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type pooled_width(pooled_widthSEXP);
+    Rcpp::traits::input_parameter< double >::type spatial_scale(spatial_scaleSEXP);
+    Rcpp::traits::input_parameter< std::int64_t >::type sampling_ratio(sampling_ratioSEXP);
+    Rcpp::traits::input_parameter< bool >::type aligned(alignedSEXP);
+    Rcpp::traits::input_parameter< bool >::type clockwise(clockwiseSEXP);
+    rcpp_result_gen = Rcpp::wrap(rcpp_vision_ops_roi_align_rotated(input, rois, pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise));
+    return rcpp_result_gen;
+END_RCPP
+}
 // rcpp_vision_ops_box_iou_rotated
 torch::Tensor rcpp_vision_ops_box_iou_rotated(torch::Tensor boxes1, torch::Tensor boxes2);
 RcppExport SEXP _torchvisionlib_rcpp_vision_ops_box_iou_rotated(SEXP boxes1SEXP, SEXP boxes2SEXP) {
@@ -197,6 +215,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_torchvisionlib_rcpp_vision_ops_nms", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_nms, 3},
     {"_torchvisionlib_rcpp_vision_ops_ms_deform_attn", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ms_deform_attn, 6},
+    {"_torchvisionlib_rcpp_vision_ops_roi_align_rotated", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_roi_align_rotated, 8},
     {"_torchvisionlib_rcpp_vision_ops_box_iou_rotated", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_box_iou_rotated, 2},
     {"_torchvisionlib_rcpp_vision_ops_deform_conv2d", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_deform_conv2d, 14},
     {"_torchvisionlib_rcpp_vision_ops_ps_roi_align", (DL_FUNC) &_torchvisionlib_rcpp_vision_ops_ps_roi_align, 6},

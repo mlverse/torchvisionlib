@@ -28,6 +28,13 @@ TORCHVISIONLIB_API void* _vision_ops_ms_deform_attn (void* value, void* spatial_
   } TORCHVISIONLIB_HANDLE_EXCEPTION
   return (void*) NULL;
 }
+torch::Tensor vision_ops_roi_align_rotated (torch::Tensor input, torch::Tensor rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise);
+TORCHVISIONLIB_API void* _vision_ops_roi_align_rotated (void* input, void* rois, std::int64_t pooled_height, std::int64_t pooled_width, double spatial_scale, std::int64_t sampling_ratio, bool aligned, bool clockwise) {
+  try {
+    return  make_raw::Tensor(vision_ops_roi_align_rotated(from_raw::Tensor(input), from_raw::Tensor(rois), pooled_height, pooled_width, spatial_scale, sampling_ratio, aligned, clockwise));
+  } TORCHVISIONLIB_HANDLE_EXCEPTION
+  return (void*) NULL;
+}
 torch::Tensor vision_ops_box_iou_rotated (torch::Tensor boxes1, torch::Tensor boxes2);
 TORCHVISIONLIB_API void* _vision_ops_box_iou_rotated (void* boxes1, void* boxes2) {
   try {

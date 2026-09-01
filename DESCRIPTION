@@ -4,6 +4,7 @@ Version: 0.8.0.9000
 Authors@R: c(
     person("Daniel", "Falbel", , "daniel@rstudio.com", role = "aut"),
     person("Tomasz", "Kalinowski", , "tomasz@posit.co", role = c("ctb", "cre")),
+    person("Derrick", "Richard", email = "derrickrds@gmail.com", role = c("ctb")),
     person(, "RStudio", role = "cph")
   )
 Description: Implements additional operators for computer vision models,
@@ -26,7 +27,7 @@ LinkingTo:
     Rcpp,
     torch
 Config/Needs/development: Rcpp, torch, torchexport, testthat, roxygen2
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
 Config/torchvisionlib/binaries: Set TORCHVISIONLIB_URL to a URL, local
     ZIP, or directory containing pre-built torchvisionlib binaries. If
